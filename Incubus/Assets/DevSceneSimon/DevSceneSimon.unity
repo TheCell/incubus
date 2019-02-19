@@ -779,6 +779,7 @@ GameObject:
   - component: {fileID: 3093976753762571636}
   - component: {fileID: 171468037211428252}
   - component: {fileID: 8456831472705001127}
+  - component: {fileID: 4943717879631048938}
   m_Layer: 0
   m_Name: Platonic
   m_TagString: Untagged
@@ -786,6 +787,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!64 &4943717879631048938
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4943717879631048937}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: -8844700393703326736, guid: 25fefa2be0f9842dcbedddadc14aea39, type: 3}
 --- !u!33 &5418072277409767086
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -944,6 +959,7 @@ GameObject:
   - component: {fileID: 9211750849735328945}
   - component: {fileID: 5418072277409767086}
   - component: {fileID: 3316039405235821326}
+  - component: {fileID: 8982603978769958940}
   m_Layer: 0
   m_Name: Cube_2_2
   m_TagString: Untagged
@@ -951,6 +967,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!65 &8982603978769958940
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8982603978769958939}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &9211750849735328945
 Transform:
   m_ObjectHideFlags: 0
