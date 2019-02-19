@@ -46,7 +46,6 @@ public class PlayerCharacterController : MonoBehaviour
 
 	private bool IsGrounded()
 	{
-		Debug.DrawRay(transform.position, Vector3.down);
 		return Physics.Raycast(transform.position, Vector3.down, moveSettings.distToGrounded, moveSettings.ground);
 	}
 
@@ -111,16 +110,16 @@ public class PlayerCharacterController : MonoBehaviour
 
 	private void Jump()
 	{
-		Debug.Log(IsGrounded());
-
-		if (jumpInput > 0 && IsGrounded())
+		if (IsGrounded())
 		{
-			velocity.y = moveSettings.jumpVelocity;
-		}
-		else if (jumpInput == 0 && IsGrounded())
-		{
-			// zero out our velocity.y
-			velocity.y = 0;
+			if (jumpInput > 0)
+			{
+				velocity.y = moveSettings.jumpVelocity;
+			}
+			else if (jumpInput == 0)
+			{
+				velocity.y = 0;
+			}
 		}
 		else
 		{
