@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1232,10 +1232,13 @@ MonoBehaviour:
   - {x: -0.18864718, y: 0.38195315, z: -0.9047232}
   - {x: -0.19659972, y: 0.19652292, z: -0.96058697}
   isMeshReady: 0
-  isEditMode: 1
+  isEditMode: 0
   showTransformHandle: 1
-  selectedIndices: 
+  selectedIndices: 8e010000
   pickSize: 0.01
+  radiusofeffect: 0.3
+  pullvalue: 0.3
+  duration: 1.2
 --- !u!1 &724161287
 GameObject:
   m_ObjectHideFlags: 0
