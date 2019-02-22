@@ -39,37 +39,9 @@ public class PlayerCamera : MonoBehaviour
 
     private void LateUpdate()
     {
-        // moving
-        //MoveToTarget();
-        // rotate
-        //LookAtTarget();
         RotateCamera();
-        updateCameraPosition();
-        //updateCameraPositionAndRotation();
+        UpdateCameraPosition();
     }
-
-    /*
-    private void updateCameraPositionAndRotation()
-    {
-        float eulerXDelta = cameraHorizontal * cameraSpeed;
-        float eulerYDelta = cameraVertical * cameraSpeed;
-
-        Quaternion frameRotationDelta = Quaternion.Euler(eulerXDelta, eulerYDelta, 0f);
-
-        //Debug.Log(transform.rotation.eulerAngles);
-        // set camera inside player for rotation
-        transform.position = playerController.transform.position;
-
-        // rotate
-        Quaternion currentCameraAngle = transform.rotation;
-        //transform.rotation = currentCameraAngle * frameRotationDelta;
-        Vector3 newOffset = currentCameraAngle * frameRotationDelta * cameraPlayerOffset;
-
-        // set camera offset again
-        Vector3 newPos = newOffset;
-        transform.position = newPos;
-    }
-    */
 
     private void RotateCamera()
     {
@@ -78,11 +50,10 @@ public class PlayerCamera : MonoBehaviour
 
         // this does not work how I wish it would after rotating around a bit
         cameraPlayerOffset = cameraRotationYDelta * cameraRotationXDelta * cameraPlayerOffset;
-        //transform.rotation = transform.rotation * cameraRotationXDelta * cameraRotationYDelta;
 
     }
 
-    private void updateCameraPosition()
+    private void UpdateCameraPosition()
     {
         // prevent camera from clipping through floor
         Vector3 newPos = playerController.transform.position + cameraPlayerOffset;
