@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
 	[System.Serializable]
 	public class InputSettings : System.Object
 	{
-		public float inputDelay = 0.1f;
+		public float inputThreshold = 0.1f;
 		public string FORWARD_AXIS = "Vertical";
 		public string TURN_AXIS = "Horizontal";
 		public string JUMP_AXIS = "Jump";
@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
 
 	private void Run()
 	{
-		if (Mathf.Abs(forwardInput) > inputSettings.inputDelay)
+		if (Mathf.Abs(forwardInput) > inputSettings.inputThreshold)
 		{
 			// move
 			velocity.z = moveSettings.forwardVelocity * forwardInput;
@@ -98,7 +98,7 @@ public class PlayerController : MonoBehaviour
 			velocity.z = 0;
 		}
 
-		if (Mathf.Abs(sidewardInput) > inputSettings.inputDelay)
+		if (Mathf.Abs(sidewardInput) > inputSettings.inputThreshold)
 		{
 			// move
 			velocity.x = moveSettings.sidewardVelocity * sidewardInput;
