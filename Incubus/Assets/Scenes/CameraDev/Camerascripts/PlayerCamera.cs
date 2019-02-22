@@ -46,7 +46,7 @@ public class PlayerCamera : MonoBehaviour
     private void RotateCamera()
     {
         Quaternion cameraRotationXDelta = Quaternion.AngleAxis(cameraHorizontal * cameraSpeed, Vector3.up);
-        Quaternion cameraRotationYDelta = Quaternion.AngleAxis(cameraVertical * cameraSpeed, Vector3.right);
+        Quaternion cameraRotationYDelta = Quaternion.AngleAxis(cameraVertical * cameraSpeed, transform.right);
 
         // this does not work how I wish it would after rotating around a bit
         cameraPlayerOffset = cameraRotationYDelta * cameraRotationXDelta * cameraPlayerOffset;
