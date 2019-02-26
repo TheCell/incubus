@@ -57,7 +57,7 @@ public class PlayerCamera : MonoBehaviour
     {
         // prevent camera from clipping through floor
         Vector3 newPos = playerController.transform.position + cameraPlayerOffset;
-        newPos.y = newPos.y < 0.2f ? newPos.y = 0.2f : newPos.y;
+        newPos.y = newPos.y < playerController.transform.position.y ? newPos.y = playerController.transform.position.y : newPos.y;
         transform.position = newPos;
         transform.LookAt(target.transform.position + lookAtPlayerOffset);
     }
