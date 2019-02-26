@@ -213,6 +213,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 581011713}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 36da211c62e741046a3b2d80887f5388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -384,24 +385,6 @@ Light:
     m_Bias: 0.05
     m_NormalBias: 0.4
     m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
@@ -416,8 +399,6 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!4 &1559077993
@@ -703,7 +684,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8476600282304877174}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.31, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8476600282069263112}
@@ -740,15 +721,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 8476600282304877174}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 51c204a0cb4ee8b4baee7e07ab1b909e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSettings:
-    forwardVelocity: 12
-    sidewardVelocity: 12
+    movementVelocity: 12
     rotationVelocity: 100
-    jumpVelocity: 25
-    distToGrounded: 0.78
+    jumpVelocity: 15
+    distToGrounded: 0.6
     ground:
       serializedVersion: 2
       m_Bits: 4294967295
@@ -759,3 +740,4 @@ MonoBehaviour:
     FORWARD_AXIS: Vertical
     TURN_AXIS: Horizontal
     JUMP_AXIS: Jump
+  cameraTransform: {fileID: 581011716}

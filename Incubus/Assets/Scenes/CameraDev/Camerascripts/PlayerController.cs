@@ -7,8 +7,9 @@ public class PlayerController : MonoBehaviour
 	[System.Serializable]
 	public class MoveSettings : System.Object
 	{
-		public float forwardVelocity = 12;
-		public float sidewardVelocity = 12;
+		// public float forwardVelocity = 12;
+		// public float sidewardVelocity = 12;
+		public float movementVelocity = 12;
 		public float rotationVelocity = 100;
 		public float jumpVelocity = 25;
 		public float distToGrounded = 0.78f;
@@ -34,6 +35,11 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private MoveSettings moveSettings = new MoveSettings();
 	[SerializeField] private PhysicsSettings physicsSettings = new PhysicsSettings();
 	[SerializeField] private InputSettings inputSettings = new InputSettings();
+
+	// movement direction based on camera view
+	[SerializeField] private Transform cameraTransform;
+	private Vector3 movementForwardDirection;
+	private Vector3 movementPlaneOrthogonal = new Vector3(0f, 1f, 0f);
 
 	private Vector3 velocity = Vector3.zero;
 	private Quaternion targetRotation;
@@ -62,6 +68,15 @@ public class PlayerController : MonoBehaviour
 			Debug.LogError("The Character needs a rigidbody");
 		}
 
+		if (cameraTransform != null)
+		{
+			movementForwardDirection = Vector3.ProjectOnPlane(cameraTransform.forward, movementPlaneOrthogonal);
+		}
+		else
+		{
+			Debug.LogError("player Controller has no camera Reference");
+		}
+
 		forwardInput = sidewardInput = jumpInput = 0;
 	}
 
@@ -72,9 +87,15 @@ public class PlayerController : MonoBehaviour
 		jumpInput = Input.GetAxisRaw(inputSettings.JUMP_AXIS); // non-interpolated
 	}
 
+	private void updateMovementForward()
+	{
+		movementForwardDirection = Vector3.ProjectOnPlane(cameraTransform.forward, movementPlaneOrthogonal).normalized;
+	}
+
 	private void Update()
 	{
 		GetInput();
+		updateMovementForward();
 	}
 
 	private void FixedUpdate()
@@ -87,27 +108,23 @@ public class PlayerController : MonoBehaviour
 
 	private void Run()
 	{
+		float downAcceleration = velocity.y;
+		Vector3 combinedDirection = Vector3.zero;
+
 		if (Mathf.Abs(forwardInput) > inputSettings.inputThreshold)
 		{
-			// move
-			velocity.z = moveSettings.forwardVelocity * forwardInput;
-		}
-		else
-		{
-			// zero velocity
-			velocity.z = 0;
+			combinedDirection = forwardInput * movementForwardDirection;
 		}
 
 		if (Mathf.Abs(sidewardInput) > inputSettings.inputThreshold)
 		{
-			// move
-			velocity.x = moveSettings.sidewardVelocity * sidewardInput;
+			Vector3 movementSidewardDirection = Quaternion.AngleAxis(90, Vector3.up) * movementForwardDirection;
+			combinedDirection = combinedDirection + sidewardInput * movementSidewardDirection;
 		}
-		else
-		{
-			// zero velocity
-			velocity.x = 0;
-		}
+		
+		Vector3 newVelocity = combinedDirection * moveSettings.movementVelocity;
+		newVelocity.y = downAcceleration;
+		velocity = newVelocity;
 	}
 
 	private void Jump()
