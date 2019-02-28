@@ -143,13 +143,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   playerCamera: {fileID: 2104273048}
-  manipulationObject:
-    mesh: {fileID: 0}
-    filter: {fileID: 0}
-    triangleIndex: 0
-    suroundingVertices: 
-    vertices: []
-    normals: []
 --- !u!135 &11417495
 SphereCollider:
   m_ObjectHideFlags: 0
