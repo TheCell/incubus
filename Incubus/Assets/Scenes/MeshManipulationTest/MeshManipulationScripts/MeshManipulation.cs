@@ -55,6 +55,11 @@ public class MeshManipulation : MonoBehaviour
 		GetInput();
 		CheckAndResetObjectToManipulate();
 		RayCast();
+		//ManipulateVertex();
+	}
+
+	private void FixedUpdate()
+	{
 		ManipulateVertex();
 	}
 
@@ -144,7 +149,7 @@ public class MeshManipulation : MonoBehaviour
 		else if (distanceToP1 < distanceToP2)
 		{
 			targetPosition = p1;
-			targetVertexIndex = vertexIndexP2;
+			targetVertexIndex = vertexIndexP1;
 		}
 		else
 		{
@@ -152,7 +157,7 @@ public class MeshManipulation : MonoBehaviour
 			targetVertexIndex = vertexIndexP2;
 		}
 
-		DisplaceVertex(targetVertexIndex, cameraVertical);
+		DisplaceVertex(targetVertexIndex, cameraVertical * -1);
 		UpdateTargetPosition();
 
 		Debug.DrawLine(p0, p1);
@@ -162,11 +167,39 @@ public class MeshManipulation : MonoBehaviour
 
 	private void DisplaceVertex(int vertexIndex, float force)
 	{
-		Vector3 vertexPoint = meshVertices[meshTriangles[vertexIndex]];
-		Vector3 translate = (vertexPoint * force) * Time.deltaTime;
-		Quaternion rotation = Quaternion.Euler(translate);
-		Matrix4x4 m = Matrix4x4.TRS(translate, rotation, Vector3.one);
-		meshVertices[meshTriangles[vertexIndex]] = m.MultiplyPoint3x4(meshVertices[meshTriangles[vertexIndex]]);
+		Vector3 targetVertexPoint = meshVertices[meshTriangles[vertexIndex]];
+		Vector3 vertexPoint = Vector3.zero;
+		float sqrRadius = 0.2f * 0.2f;
+
+		List<int> indices = new List<int>();
+		Vector3 normal = Vector3.zero;
+
+		for (int i = 0; i < meshTriangles.Length; i++)
+		{
+			vertexPoint = meshVertices[meshTriangles[i]];
+			float sqrMagnitude = (vertexPoint - targetVertexPoint).sqrMagnitude;
+			
+			if (sqrMagnitude > sqrRadius)
+			{
+				// not the vertexpoints we are looking for
+				continue;
+			}
+
+			indices.Add(i);
+			normal += targetMesh.normals[meshTriangles[i]];
+		}
+
+		normal = normal.normalized;
+		if (indices.Count > 0)
+		{
+			Vector3 newPosition = meshVertices[meshTriangles[indices[0]]] + ((normal * force) * Time.fixedDeltaTime);
+
+			indices.ForEach(delegate (int index)
+			{
+				meshVertices[meshTriangles[index]] = newPosition;
+			});
+		}
+
 		UpdateMeshData();
 	}
 
