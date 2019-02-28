@@ -16,7 +16,7 @@ public class PlayerCamera : MonoBehaviour
 
     [SerializeField] private Transform target;
     [SerializeField] private float cameraSpeed = 2;
-    [SerializeField] private Vector3 lookAtPlayerOffset = new Vector3(0f, 0.6f);
+    [SerializeField] private Vector3 lookAtPlayerOffset = new Vector3(0f, 1.2f, 0f);
 
     private PlayerController playerController;
     private float cameraHorizontal, cameraVertical;
@@ -24,7 +24,12 @@ public class PlayerCamera : MonoBehaviour
     private InputSettings inputSettings;
     private Vector3 cameraPlayerOffset;
 
-    void Start()
+	public Vector3 LookAtPlayerOffset
+	{
+		get { return lookAtPlayerOffset; }
+	}
+
+    private void Start()
     {
         SetCameraTarget(target);
 
