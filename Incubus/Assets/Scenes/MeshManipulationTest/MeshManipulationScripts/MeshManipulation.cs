@@ -75,6 +75,13 @@ public class MeshManipulation : MonoBehaviour
 			rayStartPoint = transform.position + playerCamera.LookAtPlayerOffset;
 			Ray ray = new Ray(rayStartPoint, playerCamera.transform.forward);
 			Physics.Raycast(ray, out rayCastHit, maxRayDistance, manipulatableLayers);
+			if (rayCastHit.collider == null)
+			{
+				// player does not aim at the ground, try backup ray
+				Vector3 directionToGround = playerCamera.GetFloorLevelDot.transform.position - (transform.position + playerCamera.LookAtPlayerOffset);
+				ray = new Ray(rayStartPoint, directionToGround);
+				Physics.Raycast(ray, out rayCastHit, maxRayDistance + 2f, manipulatableLayers);
+			}
 
 			if (rayCastHit.collider != null)
 			{

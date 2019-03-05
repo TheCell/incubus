@@ -23,18 +23,29 @@ public class PlayerCamera : MonoBehaviour
     private float lockPyramid, lockArea;
     private InputSettings inputSettings;
     private Vector3 cameraPlayerOffset;
+	private GameObject floorLevelDot;
 
 	public Vector3 LookAtPlayerOffset
 	{
 		get { return lookAtPlayerOffset; }
 	}
 
-    private void Start()
+	public GameObject GetFloorLevelDot
+	{
+		get { return floorLevelDot; }
+	}
+	
+	private void Start()
     {
         SetCameraTarget(target);
 
         inputSettings = new InputSettings();
         cameraPlayerOffset = transform.position - playerController.transform.position;
+
+		floorLevelDot = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+		Destroy(floorLevelDot.GetComponent<Collider>());
+		floorLevelDot.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+		floorLevelDot.GetComponent<MeshRenderer>().enabled = false;
     }
 
     private void Update()
@@ -46,7 +57,8 @@ public class PlayerCamera : MonoBehaviour
     {
         RotateCamera();
         UpdateCameraPosition();
-    }
+		UpdateFloorLevelDot();
+	}
 
     private void RotateCamera()
     {
@@ -96,4 +108,11 @@ public class PlayerCamera : MonoBehaviour
             Debug.LogError("Your camera needs a target");
         }
     }
+
+	private void UpdateFloorLevelDot()
+	{
+		floorLevelDot.transform.position = target.transform.position - new Vector3(0.5f, 0.5f, 0.5f);
+		floorLevelDot.transform.rotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
+		floorLevelDot.transform.position = floorLevelDot.transform.position + floorLevelDot.transform.forward * 3f;
+	}
 }
