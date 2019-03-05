@@ -16,7 +16,7 @@ public class MeshManipulation : MonoBehaviour
 	private RaycastHit rayCastHit;
 
 	// inputs
-	private float lockToPyramid, lockToArea, cameraVertical, cameraHorizontal;
+	private float lockToPyramid, lockToArea, cameraVertical, cameraHorizontal, strecht, shrink;
 
 	// Mesh infos
 	Mesh targetMesh;
@@ -65,12 +65,12 @@ public class MeshManipulation : MonoBehaviour
 
 	private void RayCast()
 	{
-		if (isManipulating && lockToPyramid <= 0.3f)
+		if (isManipulating && (Mathf.Abs(shrink) + Mathf.Abs(strecht) <= 0.3f))
 		{
 			isManipulating = !isManipulating;
 		}
 
-		if (!isManipulating && lockToPyramid > 0.3f)
+		if (!isManipulating && (Mathf.Abs(shrink) + Mathf.Abs(strecht) > 0.3f))
 		{
 			rayStartPoint = transform.position + playerCamera.LookAtPlayerOffset;
 			Ray ray = new Ray(rayStartPoint, playerCamera.transform.forward);
@@ -157,7 +157,7 @@ public class MeshManipulation : MonoBehaviour
 			targetVertexIndex = vertexIndexP2;
 		}
 
-		DisplaceVertex(targetVertexIndex, cameraVertical * -1);
+		DisplaceVertex(targetVertexIndex, (shrink + strecht));
 		UpdateTargetPosition();
 
 		Debug.DrawLine(p0, p1);
@@ -228,6 +228,16 @@ public class MeshManipulation : MonoBehaviour
 	{
 		lockToArea = Input.GetAxis("LockToArea");
 		lockToPyramid = Input.GetAxis("LockToPyramid");
+		strecht = 0f;
+		shrink = 0f;
+		if (Input.GetButton("ExtrudeMesh"))
+		{
+			strecht = 1f;
+		}
+		if ((Input.GetButton("ShrinkMesh")))
+		{
+			shrink = -1f;
+		}
 		cameraVertical = Input.GetAxis("CameraVertical");
 		cameraHorizontal = Input.GetAxis("CameraHorizontal");
 	}
