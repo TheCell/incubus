@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private MoveSettings moveSettings = new MoveSettings();
 	[SerializeField] private PhysicsSettings physicsSettings = new PhysicsSettings();
 	[SerializeField] private InputSettings inputSettings = new InputSettings();
+	public GameObject visualContainer;
 
 	// movement direction based on camera view
 	[SerializeField] private Transform cameraTransform;
@@ -114,14 +115,17 @@ public class PlayerController : MonoBehaviour
 		if (Mathf.Abs(forwardInput) > inputSettings.inputThreshold)
 		{
 			combinedDirection = forwardInput * movementForwardDirection;
+			visualContainer.transform.Rotate(cameraTransform.right, forwardInput * 10f, Space.World);
+			
 		}
 
 		if (Mathf.Abs(sidewardInput) > inputSettings.inputThreshold)
 		{
 			Vector3 movementSidewardDirection = Quaternion.AngleAxis(90, Vector3.up) * movementForwardDirection;
 			combinedDirection = combinedDirection + sidewardInput * movementSidewardDirection;
+			visualContainer.transform.Rotate(cameraTransform.forward, sidewardInput * -10f, Space.World);
 		}
-		
+
 		Vector3 newVelocity = combinedDirection * moveSettings.movementVelocity;
 		newVelocity.y = downAcceleration;
 		velocity = newVelocity;
