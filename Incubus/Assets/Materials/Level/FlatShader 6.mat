@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FlatShader 1
+  m_Name: FlatShader 6
   m_Shader: {fileID: -6465566751694194690, guid: 32b69493ed3130c4887166bab24c7890,
     type: 3}
   m_ShaderKeywords: 
@@ -21,7 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_4A398082:
-        m_Texture: {fileID: 2800000, guid: 6f02fe5e83b7140d9a2d08217b0e2963, type: 3}
+        m_Texture: {fileID: 2800000, guid: 948e59ce049534e94bb4d3883488cf3f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
