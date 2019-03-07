@@ -56,9 +56,8 @@ public class PlayerController : MonoBehaviour
 
 	private bool IsGrounded()
 	{
-		Vector3 downwardOffset = new Vector3(-0.1f, -0.1f, -0.1f);
-		Debug.Log(transform.position + downwardOffset);
-		return Physics.CheckSphere(transform.position + downwardOffset, sphereCollider.radius + 0.1f, groundIgnoreLayerMask);
+		Vector3 downwardOffset = new Vector3(0f, -0.32f, 0f);
+		return Physics.CheckSphere(visualContainer.transform.position + downwardOffset, sphereCollider.radius - 0.3f, groundIgnoreLayerMask);
 		// Physics.Raycast(transform.position, Vector3.down, moveSettings.distToGrounded, moveSettings.ground);
 	}
 
