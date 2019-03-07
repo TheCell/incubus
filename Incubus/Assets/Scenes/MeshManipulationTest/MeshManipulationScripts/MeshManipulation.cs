@@ -6,6 +6,7 @@ public class MeshManipulation : MonoBehaviour
 {
 	[SerializeField] private LayerMask manipulatableLayers;
 	[SerializeField] private PlayerCamera playerCamera;
+	[SerializeField] private float manipulationSpeed = 0.8f;
 	private PlayerController playerController;
 
 	// Ray Logic
@@ -235,9 +236,11 @@ public class MeshManipulation : MonoBehaviour
 	{
 		lockToArea = Input.GetAxis("LockToArea");
 		lockToPyramid = Input.GetAxis("LockToPyramid");
-		strecht = 0f;
-		shrink = 0f;
-		if (Input.GetButton("ExtrudeMesh"))
+		strecht = Input.GetAxisRaw("StretchMeshTrigger");
+		shrink = -1f * Input.GetAxisRaw("ShrinkMeshTrigger");
+
+		// x and B button
+		if (Input.GetButton("StretchMesh"))
 		{
 			strecht = 1f;
 		}
@@ -245,6 +248,9 @@ public class MeshManipulation : MonoBehaviour
 		{
 			shrink = -1f;
 		}
+
+		shrink = manipulationSpeed * shrink;
+		strecht = manipulationSpeed * strecht;
 		cameraVertical = Input.GetAxis("CameraVertical");
 		cameraHorizontal = Input.GetAxis("CameraHorizontal");
 	}
