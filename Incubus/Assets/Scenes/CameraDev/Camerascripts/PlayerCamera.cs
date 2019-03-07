@@ -10,8 +10,10 @@ public class PlayerCamera : MonoBehaviour
         public float inputThreshold = 0.1f;
         public string VERTICAL_AXIS = "CameraVertical";
         public string HORIZONTAL_AXIS = "CameraHorizontal";
+		/*
         public string LOCK_TARGET_PYRAMID = "LockToPyramid";
         public string LOCK_TARGET_AREA = "LockToArea";
+		*/
     }
 
     [SerializeField] private Transform target;
@@ -20,7 +22,7 @@ public class PlayerCamera : MonoBehaviour
 
     private PlayerController playerController;
     private float cameraHorizontal, cameraVertical;
-    private float lockPyramid, lockArea;
+    // private float lockPyramid, lockArea;
     private InputSettings inputSettings;
     private Vector3 cameraPlayerOffset;
 	private GameObject floorLevelDot;
@@ -84,8 +86,10 @@ public class PlayerCamera : MonoBehaviour
         cameraHorizontal = Input.GetAxis(inputSettings.HORIZONTAL_AXIS); // interpolated
         cameraVertical = Input.GetAxis(inputSettings.VERTICAL_AXIS); // interpolated
 
+		/*
         lockPyramid = Input.GetAxis(inputSettings.LOCK_TARGET_PYRAMID); // interpolated
         lockArea = Input.GetAxis(inputSettings.LOCK_TARGET_AREA); // interpolated
+		*/
     }
 
     private void SetCameraTarget(Transform targetTransform)
