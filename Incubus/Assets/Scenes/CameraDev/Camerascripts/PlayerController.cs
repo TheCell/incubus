@@ -45,6 +45,8 @@ public class PlayerController : MonoBehaviour
 	private Vector3 velocity = Vector3.zero;
 	private Quaternion targetRotation;
 	private Rigidbody rigidb;
+	private SphereCollider sphereCollider;
+	private int groundIgnoreLayerMask = ~(1 << 8);
 	private float forwardInput, sidewardInput, jumpInput;
 
 	public Quaternion TargetRotation
@@ -54,7 +56,10 @@ public class PlayerController : MonoBehaviour
 
 	private bool IsGrounded()
 	{
-		return Physics.Raycast(transform.position, Vector3.down, moveSettings.distToGrounded, moveSettings.ground);
+		Vector3 downwardOffset = new Vector3(-0.1f, -0.1f, -0.1f);
+		Debug.Log(transform.position + downwardOffset);
+		return Physics.CheckSphere(transform.position + downwardOffset, sphereCollider.radius + 0.1f, groundIgnoreLayerMask);
+		// Physics.Raycast(transform.position, Vector3.down, moveSettings.distToGrounded, moveSettings.ground);
 	}
 
 	private void Start()
@@ -67,6 +72,15 @@ public class PlayerController : MonoBehaviour
 		else
 		{
 			Debug.LogError("The Character needs a rigidbody");
+		}
+
+		if (GetComponent<SphereCollider>())
+		{
+			sphereCollider = GetComponent<SphereCollider>();
+		}
+		else
+		{
+			Debug.LogError("The Character needs a Collider");
 		}
 
 		if (cameraTransform != null)
