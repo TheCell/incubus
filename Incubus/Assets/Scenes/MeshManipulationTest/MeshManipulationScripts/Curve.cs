@@ -55,6 +55,7 @@ public class Curve
 		}
 	}
 
+	// returns customlerped Vector3
 	public Vector3 GetPoint(float t)
 	{
 		t = Mathf.Clamp01(t);
