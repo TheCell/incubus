@@ -16,11 +16,6 @@ public class MeshManipulation : MonoBehaviour
 		Mesh = 2
 	}
 
-	public enum CurveType
-	{
-		Curve1, Curve2
-	}
-
 	// Ray Logic
 	private Vector3 rayStartPoint;
 	private float maxRayDistance = 5f;
@@ -43,11 +38,6 @@ public class MeshManipulation : MonoBehaviour
 	Vector3 targetPosition = Vector3.zero;
 	private ManipulationModes manipulationMode = ManipulationModes.Pyramid;
 
-	// area Manipulation
-
-	private CurveType curveType;
-	Curve curve;
-
 	private void Start()
 	{
 		if (GetComponent<PlayerController>() != null)
@@ -68,8 +58,6 @@ public class MeshManipulation : MonoBehaviour
 		Destroy(manipulationBall.GetComponent<Collider>());
 		manipulationBall.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
 		manipulationBall.SetActive(false);
-
-		CurveType1();
 	}
 
 	private void Update()
@@ -208,11 +196,6 @@ public class MeshManipulation : MonoBehaviour
 		}
 		else if (manipulationMode == ManipulationModes.Mesh)
 		{
-			/*
-			Vector3 targetVertex = meshVertices[targetVertexIndex];
-			Vector3 relativePoint = meshFilter.transform.InverseTransformPoint(targetVertex);
-			DisplaceVertices(relativePoint, (shrink + strecht), radiusOfEffect);
-			*/
 			if (displacementNormal == Vector3.zero)
 			{
 				displacementNormal = targetMesh.normals[meshTriangles[targetTriangleIndex]];
@@ -221,12 +204,7 @@ public class MeshManipulation : MonoBehaviour
 		}
 
 		UpdateTargetPosition();
-
-		/*
-		Debug.DrawLine(p0, p1);
-		Debug.DrawLine(p1, p2);
-		Debug.DrawLine(p2, p0);
-		*/
+		
 	}
 
 
@@ -323,39 +301,7 @@ public class MeshManipulation : MonoBehaviour
 
 		return triangleIndex;
 	}
-
-	/*
-	private void DisplaceVertices(Vector3 pos, float force, float radius)
-	{
-		Vector3 vertex = Vector3.zero;
-		float sqrRadius = radius * radius;
-
-		for (int i = 0; i < meshTriangles.Length; i++)
-		{
-			Vector3 normal = Vector3.zero;
-			float sqrMagnitude = (meshVertices[meshTriangles[i]] - pos).sqrMagnitude;
-			if (sqrMagnitude > sqrRadius)
-			{
-				continue;
-			}
-
-			vertex = meshVertices[meshTriangles[i]];
-			normal += targetMesh.normals[meshTriangles[i]];
-			float distance = Mathf.Sqrt(sqrMagnitude);
-
-			float increment = curve.GetPoint(distance).y * force;
-			Vector3 newPosition = meshVertices[meshTriangles[i]] + ((normal * increment) * Time.fixedDeltaTime);
-			meshVertices[meshTriangles[i]] = newPosition;
-			//Vector3 translate = (vertex * increment) * Time.deltaTime;
-			//Quaternion rotation = Quaternion.Euler(translate);
-			//Matrix4x4 m = Matrix4x4.TRS(translate, rotation, Vector3.one);
-			//meshVertices[meshTriangles[i]] = m.MultiplyPoint3x4(meshVertices[meshTriangles[i]]);
-		}
-
-		UpdateMeshData();
-	}
-	*/
-
+	
 	private void DisplaceVertexGroup(List<int> indices, Vector3 normal, float force)
 	{
 		if (indices.Count > 0)
@@ -390,24 +336,6 @@ public class MeshManipulation : MonoBehaviour
 		{
 			manipulationBall.SetActive(false);
 		}
-	}
-
-	void CurveType1()
-	{
-		Vector3[] curvepoints = new Vector3[3];
-		curvepoints[0] = new Vector3(0, 1, 0);
-		curvepoints[1] = new Vector3(0.5f, 0.5f, 0);
-		curvepoints[2] = new Vector3(1, 0, 0);
-		curve = new Curve(curvepoints[0], curvepoints[1], curvepoints[2], false);
-	}
-
-	void CurveType2()
-	{
-		Vector3[] curvepoints = new Vector3[3];
-		curvepoints[0] = new Vector3(0, 0, 0);
-		curvepoints[1] = new Vector3(0.5f, 1, 0);
-		curvepoints[2] = new Vector3(1, 0, 0);
-		curve = new Curve(curvepoints[0], curvepoints[1], curvepoints[2], false);
 	}
 
 	private void GetInput()
