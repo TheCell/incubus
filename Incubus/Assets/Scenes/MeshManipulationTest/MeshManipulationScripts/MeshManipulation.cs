@@ -168,10 +168,11 @@ public class MeshManipulation : MonoBehaviour
 		Vector3 p1 = meshVertices[meshTriangles[vertexIndexP1]];
 		Vector3 p2 = meshVertices[meshTriangles[vertexIndexP2]];
 		Transform hitTransform = rayCastHit.collider.transform;
+		// Transforms position from local space to worldspace
 		p0 = hitTransform.TransformPoint(p0);
 		p1 = hitTransform.TransformPoint(p1);
 		p2 = hitTransform.TransformPoint(p2);
-
+		
 		float distanceToP0 = Vector3.Distance(targetPosition, p0);
 		float distanceToP1 = Vector3.Distance(targetPosition, p1);
 		float distanceToP2 = Vector3.Distance(targetPosition, p2);
