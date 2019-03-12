@@ -7,7 +7,19 @@ public class MeshManipulation : MonoBehaviour
 	[SerializeField] private LayerMask manipulatableLayers;
 	[SerializeField] private PlayerCamera playerCamera;
 	[SerializeField] private float manipulationSpeed = 0.8f;
+	[SerializeField] private float radiusOfEffect = 0.3f;
 	private PlayerController playerController;
+	
+	enum ManipulationModes
+	{
+		Pyramid = 1,
+		Mesh = 2
+	}
+
+	public enum CurveType
+	{
+		Curve1, Curve2
+	}
 
 	// Ray Logic
 	private Vector3 rayStartPoint;
@@ -17,17 +29,23 @@ public class MeshManipulation : MonoBehaviour
 	private RaycastHit rayCastHit;
 
 	// inputs
-	private float lockToPyramid, lockToArea, cameraVertical, cameraHorizontal, strecht, shrink;
+	private float strecht, shrink;
 
 	// Mesh infos
-	Mesh targetMesh;
-	MeshCollider meshCollider;
-	Vector3[] meshVertices;
-	int[] meshTriangles;
+	private Mesh targetMesh;
+	private MeshCollider meshCollider;
+	private MeshFilter meshFilter;
+	private Vector3[] meshVertices;
+	private int[] meshTriangles;
 
 	// pyramidManipulation
 	Vector3 targetPosition = Vector3.zero;
+	private ManipulationModes manipulationMode = ManipulationModes.Pyramid;
 
+	// area Manipulation
+
+	private CurveType curveType;
+	Curve curve;
 
 	private void Start()
 	{
@@ -49,6 +67,8 @@ public class MeshManipulation : MonoBehaviour
 		Destroy(manipulationBall.GetComponent<Collider>());
 		manipulationBall.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
 		manipulationBall.SetActive(false);
+
+		CurveType1();
 	}
 
 	private void Update()
@@ -56,7 +76,6 @@ public class MeshManipulation : MonoBehaviour
 		GetInput();
 		CheckAndResetObjectToManipulate();
 		RayCast();
-		//ManipulateVertex();
 	}
 
 	private void FixedUpdate()
@@ -100,9 +119,17 @@ public class MeshManipulation : MonoBehaviour
 	private void SetObjectToManipulate()
 	{
 		meshCollider = rayCastHit.collider as MeshCollider;
+		meshFilter = rayCastHit.collider.gameObject.GetComponent<MeshFilter>();
+
 		if (meshCollider == null || meshCollider.sharedMesh == null)
 		{
 			Debug.LogError("no meshCollider or sharedMesh on collider");
+			return;
+		}
+
+		if (meshFilter == null && manipulationMode == ManipulationModes.Mesh)
+		{
+			Debug.LogError("no meshFilter found");
 			return;
 		}
 
@@ -165,19 +192,37 @@ public class MeshManipulation : MonoBehaviour
 			targetVertexIndex = vertexIndexP2;
 		}
 
-		DisplaceVertex(targetVertexIndex, (shrink + strecht));
+		if (manipulationMode == ManipulationModes.Pyramid)
+		{
+			DisplaceVertex(targetVertexIndex, (shrink + strecht));
+		}
+		else if (manipulationMode == ManipulationModes.Mesh)
+		{
+			/*
+			Vector3 targetVertex = meshVertices[targetVertexIndex];
+			Vector3 relativePoint = meshFilter.transform.InverseTransformPoint(targetVertex);
+			DisplaceVertices(relativePoint, (shrink + strecht), radiusOfEffect);
+			*/
+			DisplaceVertices(targetVertexIndex, (shrink + strecht), 10f);
+
+		}
+
 		UpdateTargetPosition();
 
+		/*
 		Debug.DrawLine(p0, p1);
 		Debug.DrawLine(p1, p2);
 		Debug.DrawLine(p2, p0);
+		*/
 	}
 
+	/**
+	 *  Saving points in List is important to extrude based on a combination of the vertices
+	 */
 	private void DisplaceVertex(int vertexIndex, float force)
 	{
 		Vector3 targetVertexPoint = meshVertices[meshTriangles[vertexIndex]];
 		Vector3 vertexPoint = Vector3.zero;
-		float sqrRadius = 0.2f * 0.2f;
 
 		List<int> indices = new List<int>();
 		Vector3 normal = Vector3.zero;
@@ -187,9 +232,8 @@ public class MeshManipulation : MonoBehaviour
 			vertexPoint = meshVertices[meshTriangles[i]];
 			float sqrMagnitude = (vertexPoint - targetVertexPoint).sqrMagnitude;
 			
-			if (sqrMagnitude > sqrRadius)
+			if (vertexPoint != targetVertexPoint)
 			{
-				// not the vertexpoints we are looking for
 				continue;
 			}
 
@@ -198,6 +242,74 @@ public class MeshManipulation : MonoBehaviour
 		}
 
 		normal = normal.normalized;
+		DisplaceVertexGroup(indices, normal, force);
+
+		UpdateMeshData();
+	}
+
+	private void DisplaceVertices(int middleVertexIndex, float force, float brushSizeRadius)
+	{
+		// search indices > 0.2f < brushSizeRadius
+		// adjust force
+		//DisplaceVertex(vertexIndex, force, 0.2f);
+
+		for (int i = 0; i < meshVertices.Length; i++)
+		{
+			
+		}
+	}
+
+	private int GetTriangleIndexFromVertex(Vector3 vertex)
+	{
+		int triangleIndex = -1;
+		int counter = 0;
+		
+		while (triangleIndex < 0 || counter < meshTriangles.Length)
+		{
+			if (meshVertices[meshTriangles[counter]] == vertex)
+			{
+				triangleIndex = counter;
+			}
+			counter++;
+		}
+
+		return triangleIndex;
+	}
+
+	/*
+	private void DisplaceVertices(Vector3 pos, float force, float radius)
+	{
+		Vector3 vertex = Vector3.zero;
+		float sqrRadius = radius * radius;
+
+		for (int i = 0; i < meshTriangles.Length; i++)
+		{
+			Vector3 normal = Vector3.zero;
+			float sqrMagnitude = (meshVertices[meshTriangles[i]] - pos).sqrMagnitude;
+			if (sqrMagnitude > sqrRadius)
+			{
+				continue;
+			}
+
+			vertex = meshVertices[meshTriangles[i]];
+			normal += targetMesh.normals[meshTriangles[i]];
+			float distance = Mathf.Sqrt(sqrMagnitude);
+
+			float increment = curve.GetPoint(distance).y * force;
+			Vector3 newPosition = meshVertices[meshTriangles[i]] + ((normal * increment) * Time.fixedDeltaTime);
+			meshVertices[meshTriangles[i]] = newPosition;
+			//Vector3 translate = (vertex * increment) * Time.deltaTime;
+			//Quaternion rotation = Quaternion.Euler(translate);
+			//Matrix4x4 m = Matrix4x4.TRS(translate, rotation, Vector3.one);
+			//meshVertices[meshTriangles[i]] = m.MultiplyPoint3x4(meshVertices[meshTriangles[i]]);
+		}
+
+		UpdateMeshData();
+	}
+	*/
+
+	private void DisplaceVertexGroup(List<int> indices, Vector3 normal, float force)
+	{
 		if (indices.Count > 0)
 		{
 			Vector3 newPosition = meshVertices[meshTriangles[indices[0]]] + ((normal * force) * Time.fixedDeltaTime);
@@ -207,8 +319,6 @@ public class MeshManipulation : MonoBehaviour
 				meshVertices[meshTriangles[index]] = newPosition;
 			});
 		}
-
-		UpdateMeshData();
 	}
 
 	private void UpdateMeshData()
@@ -232,10 +342,42 @@ public class MeshManipulation : MonoBehaviour
 		}
 	}
 
+	void CurveType1()
+	{
+		Vector3[] curvepoints = new Vector3[3];
+		curvepoints[0] = new Vector3(0, 1, 0);
+		curvepoints[1] = new Vector3(0.5f, 0.5f, 0);
+		curvepoints[2] = new Vector3(1, 0, 0);
+		curve = new Curve(curvepoints[0], curvepoints[1], curvepoints[2], false);
+	}
+
+	void CurveType2()
+	{
+		Vector3[] curvepoints = new Vector3[3];
+		curvepoints[0] = new Vector3(0, 0, 0);
+		curvepoints[1] = new Vector3(0.5f, 1, 0);
+		curvepoints[2] = new Vector3(1, 0, 0);
+		curve = new Curve(curvepoints[0], curvepoints[1], curvepoints[2], false);
+	}
+
 	private void GetInput()
 	{
-		lockToArea = Input.GetAxis("LockToArea");
-		lockToPyramid = Input.GetAxis("LockToPyramid");
+		if (Input.GetButtonDown("SwitchManipulation"))
+		{
+			switch (manipulationMode)
+			{
+				case ManipulationModes.Pyramid:
+					manipulationMode = ManipulationModes.Mesh;
+					break;
+				case ManipulationModes.Mesh:
+					manipulationMode = ManipulationModes.Pyramid;
+					break;
+				default:
+					manipulationMode = ManipulationModes.Pyramid;
+					break;
+			}
+		}
+
 		strecht = Input.GetAxisRaw("StretchMeshTrigger");
 		shrink = -1f * Input.GetAxisRaw("ShrinkMeshTrigger");
 
@@ -251,7 +393,5 @@ public class MeshManipulation : MonoBehaviour
 
 		shrink = manipulationSpeed * shrink;
 		strecht = manipulationSpeed * strecht;
-		cameraVertical = Input.GetAxis("CameraVertical");
-		cameraHorizontal = Input.GetAxis("CameraHorizontal");
 	}
 }
