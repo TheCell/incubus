@@ -37,6 +37,7 @@ public class MeshManipulation : MonoBehaviour
 	private MeshFilter meshFilter;
 	private Vector3[] meshVertices;
 	private int[] meshTriangles;
+	private Vector3 displacementNormal = Vector3.zero;
 
 	// pyramidManipulation
 	Vector3 targetPosition = Vector3.zero;
@@ -137,6 +138,7 @@ public class MeshManipulation : MonoBehaviour
 		targetMesh = meshCollider.sharedMesh;
 		meshVertices = targetMesh.vertices;
 		meshTriangles = targetMesh.triangles;
+		displacementNormal = Vector3.zero;
 	}
 
 	private void ResetObjectToManipulate()
@@ -211,7 +213,11 @@ public class MeshManipulation : MonoBehaviour
 			Vector3 relativePoint = meshFilter.transform.InverseTransformPoint(targetVertex);
 			DisplaceVertices(relativePoint, (shrink + strecht), radiusOfEffect);
 			*/
-			DisplaceVertices(targetVertexIndex, (shrink + strecht), 1.3f);
+			if (displacementNormal == Vector3.zero)
+			{
+				displacementNormal = targetMesh.normals[meshTriangles[targetTriangleIndex]];
+			}
+			DisplaceVertices(targetVertexIndex, (shrink + strecht), 1.3f, displacementNormal);
 		}
 
 		UpdateTargetPosition();
@@ -221,6 +227,31 @@ public class MeshManipulation : MonoBehaviour
 		Debug.DrawLine(p1, p2);
 		Debug.DrawLine(p2, p0);
 		*/
+	}
+
+
+	private void DisplaceVertex(int targetTriangleIndex, Vector3 normal, float force)
+	{
+		Vector3 targetVertexPoint = meshVertices[meshTriangles[targetTriangleIndex]];
+		Vector3 vertexPoint = Vector3.zero;
+
+		List<int> indices = new List<int>();
+
+		for (int i = 0; i < meshTriangles.Length; i++)
+		{
+			vertexPoint = meshVertices[meshTriangles[i]];
+			float sqrMagnitude = (vertexPoint - targetVertexPoint).sqrMagnitude;
+
+			if (vertexPoint != targetVertexPoint)
+			{
+				continue;
+			}
+
+			indices.Add(i);
+		}
+
+		normal = normal.normalized;
+		DisplaceVertexGroup(indices, normal, force);
 	}
 
 	/**
@@ -252,13 +283,13 @@ public class MeshManipulation : MonoBehaviour
 		DisplaceVertexGroup(indices, normal, force);
 	}
 
-	private void DisplaceVertices(int middleVertexIndex, float force, float brushSizeRadius)
+	private void DisplaceVertices(int middleVertexIndex, float force, float brushSizeRadius, Vector3 displaceNormal)
 	{
 		// search indices > 0.2f < brushSizeRadius
 		// adjust force
 		//DisplaceVertex(vertexIndex, force, 0.2f);
+
 		Vector3 middleVertex = meshVertices[middleVertexIndex];
-		
 
 		for (int i = 0; i < meshVertices.Length; i++)
 		{
@@ -270,8 +301,9 @@ public class MeshManipulation : MonoBehaviour
 			}
 
 			int triangleIndex = GetTriangleIndexFromVertex(tempVertex);
-			float relativeForce = Mathf.Lerp(force, 0f, distance / brushSizeRadius);
-			DisplaceVertex(triangleIndex, relativeForce);
+			float relativeForce = Mathf.Lerp(force, force / 3, distance / brushSizeRadius);
+			// normal += targetMesh.normals[meshTriangles[i]];
+			DisplaceVertex(triangleIndex, displaceNormal, relativeForce);
 		}
 	}
 
