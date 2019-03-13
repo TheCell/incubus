@@ -37,6 +37,7 @@ public class MeshManipulation : MonoBehaviour
 	// pyramidManipulation
 	Vector3 targetPosition = Vector3.zero;
 	private ManipulationModes manipulationMode = ManipulationModes.Pyramid;
+	[SerializeField] private float brushSize = 0.8f;
 
 	private void Start()
 	{
@@ -200,7 +201,7 @@ public class MeshManipulation : MonoBehaviour
 			{
 				displacementNormal = targetMesh.normals[meshTriangles[targetTriangleIndex]];
 			}
-			DisplaceVertices(targetVertexIndex, (shrink + strecht), 1.3f, displacementNormal);
+			DisplaceVertices(targetVertexIndex, (shrink + strecht), brushSize, displacementNormal);
 		}
 
 		UpdateTargetPosition();
@@ -281,7 +282,7 @@ public class MeshManipulation : MonoBehaviour
 			int triangleIndex = GetTriangleIndexFromVertex(tempVertex);
 			float relativeForce = Mathf.Lerp(force, force / 3, distance / brushSizeRadius);
 			// normal += targetMesh.normals[meshTriangles[i]];
-			DisplaceVertex(triangleIndex, displaceNormal, relativeForce);
+			DisplaceVertex(triangleIndex, displaceNormal, force);
 		}
 	}
 
