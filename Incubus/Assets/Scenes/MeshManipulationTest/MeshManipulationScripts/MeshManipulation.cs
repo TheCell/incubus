@@ -8,6 +8,7 @@ public class MeshManipulation : MonoBehaviour
 	[SerializeField] private PlayerCamera playerCamera;
 	[SerializeField] private float manipulationSpeed = 0.8f;
 	[SerializeField] private float radiusOfEffect = 0.3f;
+	[SerializeField] private float displacementSpeed = 5f;
 	private PlayerController playerController;
 	
 	enum ManipulationModes
@@ -191,9 +192,12 @@ public class MeshManipulation : MonoBehaviour
 			targetVertexIndex = meshTriangles[targetTriangleIndex];
 		}
 
+		float forceOnMesh = (shrink + strecht) / ((hitTransform.localScale.x + hitTransform.localScale.y + hitTransform.localScale.z) / 3);
+		forceOnMesh = displacementSpeed * forceOnMesh;
 		if (manipulationMode == ManipulationModes.Pyramid)
 		{
-			DisplaceVertex(targetTriangleIndex, (shrink + strecht));
+			
+			DisplaceVertex(targetTriangleIndex, forceOnMesh);
 		}
 		else if (manipulationMode == ManipulationModes.Mesh)
 		{
@@ -201,11 +205,10 @@ public class MeshManipulation : MonoBehaviour
 			{
 				displacementNormal = targetMesh.normals[meshTriangles[targetTriangleIndex]];
 			}
-			DisplaceVertices(targetVertexIndex, (shrink + strecht), brushSize, displacementNormal);
+			DisplaceVertices(targetVertexIndex, forceOnMesh, brushSize, displacementNormal);
 		}
 
 		UpdateTargetPosition();
-		
 	}
 
 
@@ -216,6 +219,7 @@ public class MeshManipulation : MonoBehaviour
 
 		List<int> indices = new List<int>();
 
+		// learned somewhere else, todo here: Only one vertex point needed
 		for (int i = 0; i < meshTriangles.Length; i++)
 		{
 			vertexPoint = meshVertices[meshTriangles[i]];
@@ -307,6 +311,7 @@ public class MeshManipulation : MonoBehaviour
 	{
 		if (indices.Count > 0)
 		{
+			//Debug.Log("normal: " + normal + " force: " + force);
 			Vector3 newPosition = meshVertices[meshTriangles[indices[0]]] + ((normal * force) * Time.fixedDeltaTime);
 
 			indices.ForEach(delegate (int index)
