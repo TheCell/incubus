@@ -110,6 +110,9 @@ MonoBehaviour:
     m_Bits: 1024
   playerCamera: {fileID: 5997314378945587814}
   manipulationSpeed: 0.8
+  radiusOfEffect: 0.3
+  displacementSpeed: 5
+  brushSize: 0.8
 --- !u!1 &5997314378945587810
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,7 +242,7 @@ GameObject:
   - component: {fileID: 5997314380659820499}
   m_Layer: 0
   m_Name: PlayerRig
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
