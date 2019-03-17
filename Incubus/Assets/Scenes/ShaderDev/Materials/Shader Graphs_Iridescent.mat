@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Shader Graphs_Iridescent
+  m_Shader: {fileID: -6465566751694194690, guid: 369a4d0ffb4f4a4489a2c47808e24692,
+    type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - Texture2D_12D77990:
+        m_Texture: {fileID: 2800000, guid: 3902b54502ab44d4c9febfc8a33a673c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_F25AAF48:
+        m_Texture: {fileID: 2800000, guid: b6dbd2ec10239474b97bb1ff1e005030, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Vector1_D7CFAF5D: 0.8
+    m_Colors:
+    - Color_3AF8CBE2: {r: 1, g: 0.895, b: 0.895, a: 0}

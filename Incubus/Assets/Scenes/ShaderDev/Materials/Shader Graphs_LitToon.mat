@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Shader Graphs_LitToon
+  m_Shader: {fileID: -6465566751694194690, guid: 0e925e9560020ee44ad34611f4c1028a,
+    type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - Texture2D_9D97196B:
+        m_Texture: {fileID: 2800000, guid: 689f022c85ad14bb2ab59ce2620b2b27, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Vector1_6BB603DB: 0.5
+    - Vector1_EF45FCF2: 0
+    - _LightIntensity: 0.5
+    m_Colors:
+    - Color_271560D9: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _LightDirectionVec: {r: 1, g: 1, b: 0, a: 0}
