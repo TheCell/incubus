@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour
 	private SphereCollider sphereCollider;
 	private int groundIgnoreLayerMask = ~(1 << 8);
 	private float forwardInput, sidewardInput, jumpInput;
+	private Vector3 impactToAdd = Vector3.zero;
 
 	public Quaternion TargetRotation
 	{
@@ -116,6 +117,7 @@ public class PlayerController : MonoBehaviour
 	{
 		Run();
 		Jump();
+		ApplyImpact();
 
 		rigidb.velocity = transform.TransformDirection(velocity);
 	}
@@ -162,5 +164,16 @@ public class PlayerController : MonoBehaviour
 			// decrease velocity.y
 			velocity.y -= physicsSettings.downAcceleration;
 		}
+	}
+
+	private void ApplyImpact()
+	{
+		velocity += impactToAdd;
+		impactToAdd = Vector3.zero;
+	}
+
+	public void SetImpact(Vector3 impact)
+	{
+		impactToAdd += impact;
 	}
 }

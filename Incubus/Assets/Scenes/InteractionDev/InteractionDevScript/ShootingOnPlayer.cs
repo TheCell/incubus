@@ -83,10 +83,11 @@ public class ShootingOnPlayer : MonoBehaviour
 			GameObject bullet = bulletEnumerator.Current;
 			bullet.transform.position = transform.position;
 			Vector3 targetDirection = targetPosition - transform.position;
-			Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, 180f, 0.0f);
+			Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, 180f, 180.0f);
 			bullet.transform.rotation = Quaternion.LookRotation(newDirection);
 			bullet.SetActive(true);
 			bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * bulletSpeed;
+			Debug.DrawRay(bullet.transform.position, bullet.transform.forward, Color.red, 1f);
 		}
 	}
 }
