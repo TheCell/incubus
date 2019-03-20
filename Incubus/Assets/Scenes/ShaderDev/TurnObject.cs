@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TurnObject : MonoBehaviour
 {
-    [SerializeField] private float turnSpeed = 15f;
+    [SerializeField] public float turnSpeed = 15f;
 
     void Update()
     {
