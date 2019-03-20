@@ -7,7 +7,6 @@ public class MeshManipulation : MonoBehaviour
 	[SerializeField] private LayerMask manipulatableLayers;
 	[SerializeField] private PlayerCamera playerCamera;
 	[SerializeField] private float manipulationSpeed = 0.8f;
-	[SerializeField] private float radiusOfEffect = 0.3f;
 	[SerializeField] private float displacementSpeed = 5f;
 	private PlayerController playerController;
 	
