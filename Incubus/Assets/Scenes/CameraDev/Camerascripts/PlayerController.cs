@@ -57,10 +57,19 @@ public class PlayerController : MonoBehaviour
 
 	private bool IsGrounded()
 	{
-		Vector3 downwardOffset = new Vector3(0f, -0.35f, 0f);
-		return Physics.CheckSphere(visualContainer.transform.position + downwardOffset, sphereCollider.radius - 0.3f, groundIgnoreLayerMask);
+		Vector3 downwardOffset = new Vector3(0f, -0.20f, 0f);
+		return Physics.CheckSphere(visualContainer.transform.position + downwardOffset, sphereCollider.radius - 0.15f, groundIgnoreLayerMask);
 		// Physics.Raycast(transform.position, Vector3.down, moveSettings.distToGrounded, moveSettings.ground);
 	}
+
+	/*
+	private void OnDrawGizmosSelected()
+	{
+		Gizmos.color = Color.red;
+		Vector3 downwardOffset = new Vector3(0f, -0.20f, 0f);
+		Gizmos.DrawSphere(visualContainer.transform.position + downwardOffset, sphereCollider.radius - 0.15f);
+	}
+	*/
 
 	private void Start()
 	{
