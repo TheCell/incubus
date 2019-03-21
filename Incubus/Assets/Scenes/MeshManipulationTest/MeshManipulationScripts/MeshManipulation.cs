@@ -175,19 +175,19 @@ public class MeshManipulation : MonoBehaviour
 		
 		if (distanceToP0 < distanceToP1 && distanceToP0 < distanceToP2)
 		{
-			raycastHitPosition = p0;
+			targetVertexPosition = p0;
 			targetTriangleIndex = triangleVertexIndexP0;
 			targetVertexIndex = meshTriangles[targetTriangleIndex];
 		}
 		else if (distanceToP1 < distanceToP2)
 		{
-			raycastHitPosition = p1;
+			targetVertexPosition = p1;
 			targetTriangleIndex = triangleVertexIndexP1;
 			targetVertexIndex = meshTriangles[targetTriangleIndex];
 		}
 		else
 		{
-			raycastHitPosition = p2;
+			targetVertexPosition = p2;
 			targetTriangleIndex = triangleVertexIndexP2;
 			targetVertexIndex = meshTriangles[targetTriangleIndex];
 		}
@@ -196,8 +196,7 @@ public class MeshManipulation : MonoBehaviour
 		forceOnMesh = displacementSpeed * forceOnMesh;
 		if (manipulationMode == ManipulationModes.Pyramid)
 		{
-			
-			DisplaceVertex(targetTriangleIndex, forceOnMesh);
+			DisplaceVertex(targetVertexIndex, forceOnMesh);
 		}
 		else if (manipulationMode == ManipulationModes.Mesh)
 		{
@@ -211,9 +210,9 @@ public class MeshManipulation : MonoBehaviour
 		UpdateRaycastHitPosition();
 	}
 
-	private void DisplaceVertex(int targetTriangleIndex, Vector3 normal, float force)
+	private void DisplaceVertex(int targetVertexIndex, Vector3 normal, float force)
 	{
-		Vector3 targetVertexPoint = meshVertices[meshTriangles[targetTriangleIndex]];
+		Vector3 targetVertexPoint = meshVertices[targetVertexIndex];
 		Vector3 vertexPoint = Vector3.zero;
 
 		List<int> indices = new List<int>();
@@ -239,9 +238,9 @@ public class MeshManipulation : MonoBehaviour
 	/**
 	 *  Saving points in List is important to extrude based on a combination of the vertices
 	 */
-	private void DisplaceVertex(int targetTriangleIndex, float force)
+	private void DisplaceVertex(int targetVertexIndex, float force)
 	{
-		Vector3 targetVertexPoint = meshVertices[meshTriangles[targetTriangleIndex]];
+		Vector3 targetVertexPoint = meshVertices[targetVertexIndex];
 		Vector3 vertexPoint = Vector3.zero;
 
 		List<int> indices = new List<int>();
@@ -267,15 +266,12 @@ public class MeshManipulation : MonoBehaviour
 
 	private void DisplaceVertices(int middleVertexIndex, float force, float brushSizeRadius, Vector3 displaceNormal)
 	{
-		// search indices > 0.2f < brushSizeRadius
-		// adjust force
-		//DisplaceVertex(vertexIndex, force, 0.2f);
-
 		Vector3 middleVertex = meshVertices[middleVertexIndex];
 
 		for (int i = 0; i < meshVertices.Length; i++)
 		{
 			Vector3 tempVertex = meshVertices[i];
+			int tempVertexIndex = i;
 			float distance = Vector3.Distance(middleVertex, tempVertex);
 			if (distance > brushSizeRadius)
 			{
@@ -285,7 +281,7 @@ public class MeshManipulation : MonoBehaviour
 			int triangleIndex = GetTriangleIndexFromVertex(tempVertex);
 			float relativeForce = Mathf.Lerp(force, force / 3, distance / brushSizeRadius);
 			// normal += targetMesh.normals[meshTriangles[i]];
-			DisplaceVertex(triangleIndex, displaceNormal, force);
+			DisplaceVertex(tempVertexIndex, displaceNormal, force);
 		}
 	}
 
