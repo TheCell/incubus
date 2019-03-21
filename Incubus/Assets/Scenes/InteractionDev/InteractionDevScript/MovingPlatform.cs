@@ -9,7 +9,8 @@ public class MovingPlatform : MonoBehaviour
 	[SerializeField] private float durationSeconds = 2f;
 	[SerializeField] private bool inverseDirection = false;
 
-	private Rigidbody platformRB;
+
+    private Rigidbody platformRB;
 	private bool reverseDirection = false;
 	private float timeSincePlatformStart;
 	private float currentPosition = 0f;
