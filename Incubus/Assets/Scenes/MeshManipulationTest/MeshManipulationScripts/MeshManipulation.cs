@@ -9,7 +9,7 @@ public class MeshManipulation : MonoBehaviour
 	[SerializeField] private float manipulationSpeed = 0.8f;
 	[SerializeField] private float displacementSpeed = 5f;
 	private PlayerController playerController;
-	
+
 	enum ManipulationModes
 	{
 		Pyramid = 1,
@@ -20,11 +20,11 @@ public class MeshManipulation : MonoBehaviour
 	private Vector3 rayStartPoint;
 	private float maxRayDistance = 5f;
 	private bool isManipulating;
+	private GameObject manipulationBall;
 	private RaycastHit rayCastHit;
 
 	// inputs
 	private float strecht, shrink;
-	private ManipulationModes manipulationMode = ManipulationModes.Pyramid;
 
 	// Mesh infos
 	private Mesh targetMesh;
@@ -32,19 +32,12 @@ public class MeshManipulation : MonoBehaviour
 	private MeshFilter meshFilter;
 	private Vector3[] meshVertices;
 	private int[] meshTriangles;
-
-	// Manipulation Logic
-	[SerializeField] private float brushSize = 0.8f;
-	Vector3 raycastHitPosition = Vector3.zero; // does not have to be on vertex
-	Vector3 targetVertexPosition = Vector3.zero;
-	List<Vector3> selectedMeshPointsWorldCoordinates = new List<Vector3>();
 	private Vector3 displacementNormal = Vector3.zero;
 
-	// spheres
-	private GameObject targetmanipulationBall;
-	private GameObject[] areaManipulationBalls = new GameObject[10];
-	[SerializeField] private Material manipulationMainSphereMaterial;
-	[SerializeField] private Material manipulationSphereMaterial;
+	// pyramidManipulation
+	Vector3 targetPosition = Vector3.zero;
+	private ManipulationModes manipulationMode = ManipulationModes.Pyramid;
+	[SerializeField] private float brushSize = 0.8f;
 
 	private void Start()
 	{
@@ -60,7 +53,12 @@ public class MeshManipulation : MonoBehaviour
 		rayCastHit = new RaycastHit();
 		// manipulationObject = new ManipulationObject();
 		ResetObjectToManipulate();
-		InitializeSpheres();
+
+		// setup debug ball
+		manipulationBall = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+		Destroy(manipulationBall.GetComponent<Collider>());
+		manipulationBall.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
+		manipulationBall.SetActive(false);
 	}
 
 	private void Update()
@@ -68,8 +66,6 @@ public class MeshManipulation : MonoBehaviour
 		GetInput();
 		CheckAndResetObjectToManipulate();
 		RayCast();
-		CheckAndStartManipulation();
-		DisplaySpheres();
 	}
 
 	private void FixedUpdate()
@@ -79,7 +75,12 @@ public class MeshManipulation : MonoBehaviour
 
 	private void RayCast()
 	{
-		if (!isManipulating)
+		if (isManipulating && (Mathf.Abs(shrink) + Mathf.Abs(strecht) <= 0.3f))
+		{
+			isManipulating = !isManipulating;
+		}
+
+		if (!isManipulating && (Mathf.Abs(shrink) + Mathf.Abs(strecht) > 0.3f))
 		{
 			rayStartPoint = transform.position + playerCamera.LookAtPlayerOffset;
 			Ray ray = new Ray(rayStartPoint, playerCamera.transform.forward);
@@ -92,7 +93,16 @@ public class MeshManipulation : MonoBehaviour
 				Physics.Raycast(ray, out rayCastHit, maxRayDistance + 2f, manipulatableLayers);
 			}
 
-			UpdateRaycastHitPosition();
+			if (rayCastHit.collider != null)
+			{
+				isManipulating = true;
+
+				SetObjectToManipulate();
+
+				// show debug sphere
+				UpdateTargetPosition();
+				manipulationBall.SetActive(true);
+			}
 		}
 	}
 
@@ -113,22 +123,11 @@ public class MeshManipulation : MonoBehaviour
 			return;
 		}
 
+		targetPosition = rayCastHit.point;
 		targetMesh = meshCollider.sharedMesh;
 		meshVertices = targetMesh.vertices;
 		meshTriangles = targetMesh.triangles;
 		displacementNormal = Vector3.zero;
-	}
-
-	private void CheckAndStartManipulation()
-	{
-		if (!isManipulating && (Mathf.Abs(shrink) + Mathf.Abs(strecht) > 0.3f))
-		{
-			if (rayCastHit.collider != null)
-			{
-				isManipulating = true;
-				SetObjectToManipulate();
-			}
-		}
 	}
 
 	private void ResetObjectToManipulate()
@@ -159,7 +158,7 @@ public class MeshManipulation : MonoBehaviour
 		int vertexIndexP2 = meshTriangles[triangleVertexIndexP2];
 		int targetTriangleIndex;
 		int targetVertexIndex;
-		
+
 		Vector3 p0 = meshVertices[vertexIndexP0];
 		Vector3 p1 = meshVertices[vertexIndexP1];
 		Vector3 p2 = meshVertices[vertexIndexP2];
@@ -168,26 +167,26 @@ public class MeshManipulation : MonoBehaviour
 		p0 = hitTransform.TransformPoint(p0);
 		p1 = hitTransform.TransformPoint(p1);
 		p2 = hitTransform.TransformPoint(p2);
-		
-		float distanceToP0 = Vector3.Distance(raycastHitPosition, p0);
-		float distanceToP1 = Vector3.Distance(raycastHitPosition, p1);
-		float distanceToP2 = Vector3.Distance(raycastHitPosition, p2);
-		
+
+		float distanceToP0 = Vector3.Distance(targetPosition, p0);
+		float distanceToP1 = Vector3.Distance(targetPosition, p1);
+		float distanceToP2 = Vector3.Distance(targetPosition, p2);
+
 		if (distanceToP0 < distanceToP1 && distanceToP0 < distanceToP2)
 		{
-			targetVertexPosition = p0;
+			targetPosition = p0;
 			targetTriangleIndex = triangleVertexIndexP0;
 			targetVertexIndex = meshTriangles[targetTriangleIndex];
 		}
 		else if (distanceToP1 < distanceToP2)
 		{
-			targetVertexPosition = p1;
+			targetPosition = p1;
 			targetTriangleIndex = triangleVertexIndexP1;
 			targetVertexIndex = meshTriangles[targetTriangleIndex];
 		}
 		else
 		{
-			targetVertexPosition = p2;
+			targetPosition = p2;
 			targetTriangleIndex = triangleVertexIndexP2;
 			targetVertexIndex = meshTriangles[targetTriangleIndex];
 		}
@@ -196,7 +195,8 @@ public class MeshManipulation : MonoBehaviour
 		forceOnMesh = displacementSpeed * forceOnMesh;
 		if (manipulationMode == ManipulationModes.Pyramid)
 		{
-			DisplaceVertex(targetVertexIndex, forceOnMesh);
+
+			DisplaceVertex(targetTriangleIndex, forceOnMesh);
 		}
 		else if (manipulationMode == ManipulationModes.Mesh)
 		{
@@ -207,12 +207,13 @@ public class MeshManipulation : MonoBehaviour
 			DisplaceVertices(targetVertexIndex, forceOnMesh, brushSize, displacementNormal);
 		}
 
-		UpdateRaycastHitPosition();
+		UpdateTargetPosition();
 	}
 
-	private void DisplaceVertex(int targetVertexIndex, Vector3 normal, float force)
+
+	private void DisplaceVertex(int targetTriangleIndex, Vector3 normal, float force)
 	{
-		Vector3 targetVertexPoint = meshVertices[targetVertexIndex];
+		Vector3 targetVertexPoint = meshVertices[meshTriangles[targetTriangleIndex]];
 		Vector3 vertexPoint = Vector3.zero;
 
 		List<int> indices = new List<int>();
@@ -238,9 +239,9 @@ public class MeshManipulation : MonoBehaviour
 	/**
 	 *  Saving points in List is important to extrude based on a combination of the vertices
 	 */
-	private void DisplaceVertex(int targetVertexIndex, float force)
+	private void DisplaceVertex(int targetTriangleIndex, float force)
 	{
-		Vector3 targetVertexPoint = meshVertices[targetVertexIndex];
+		Vector3 targetVertexPoint = meshVertices[meshTriangles[targetTriangleIndex]];
 		Vector3 vertexPoint = Vector3.zero;
 
 		List<int> indices = new List<int>();
@@ -250,7 +251,7 @@ public class MeshManipulation : MonoBehaviour
 		{
 			vertexPoint = meshVertices[meshTriangles[i]];
 			float sqrMagnitude = (vertexPoint - targetVertexPoint).sqrMagnitude;
-			
+
 			if (vertexPoint != targetVertexPoint)
 			{
 				continue;
@@ -266,12 +267,15 @@ public class MeshManipulation : MonoBehaviour
 
 	private void DisplaceVertices(int middleVertexIndex, float force, float brushSizeRadius, Vector3 displaceNormal)
 	{
+		// search indices > 0.2f < brushSizeRadius
+		// adjust force
+		//DisplaceVertex(vertexIndex, force, 0.2f);
+
 		Vector3 middleVertex = meshVertices[middleVertexIndex];
 
 		for (int i = 0; i < meshVertices.Length; i++)
 		{
 			Vector3 tempVertex = meshVertices[i];
-			int tempVertexIndex = i;
 			float distance = Vector3.Distance(middleVertex, tempVertex);
 			if (distance > brushSizeRadius)
 			{
@@ -281,7 +285,7 @@ public class MeshManipulation : MonoBehaviour
 			int triangleIndex = GetTriangleIndexFromVertex(tempVertex);
 			float relativeForce = Mathf.Lerp(force, force / 3, distance / brushSizeRadius);
 			// normal += targetMesh.normals[meshTriangles[i]];
-			DisplaceVertex(tempVertexIndex, displaceNormal, force);
+			DisplaceVertex(triangleIndex, displaceNormal, force);
 		}
 	}
 
@@ -289,7 +293,7 @@ public class MeshManipulation : MonoBehaviour
 	{
 		int triangleIndex = -1;
 		int counter = 0;
-		
+
 		while (triangleIndex < 0 || counter < meshTriangles.Length)
 		{
 			if (meshVertices[meshTriangles[counter]] == vertex)
@@ -301,7 +305,7 @@ public class MeshManipulation : MonoBehaviour
 
 		return triangleIndex;
 	}
-	
+
 	private void DisplaceVertexGroup(List<int> indices, Vector3 normal, float force)
 	{
 		if (indices.Count > 0)
@@ -327,15 +331,15 @@ public class MeshManipulation : MonoBehaviour
 		meshCollider.gameObject.SetActive(true);
 	}
 
-	private void UpdateRaycastHitPosition()
+	private void UpdateTargetPosition()
 	{
-		if (rayCastHit.collider != null)
+		if (isManipulating)
 		{
-			raycastHitPosition = rayCastHit.point;
+			manipulationBall.transform.position = targetPosition;
 		}
 		else
 		{
-			raycastHitPosition = Vector3.zero;
+			manipulationBall.SetActive(false);
 		}
 	}
 
@@ -372,59 +376,5 @@ public class MeshManipulation : MonoBehaviour
 
 		shrink = manipulationSpeed * shrink;
 		strecht = manipulationSpeed * strecht;
-
-		if (isManipulating && (Mathf.Abs(shrink) + Mathf.Abs(strecht) <= 0.3f))
-		{
-			isManipulating = !isManipulating;
-		}
-	}
-
-	// display parts
-	private void InitializeSpheres()
-	{
-		// setup main ball
-		targetmanipulationBall = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-		Destroy(targetmanipulationBall.GetComponent<Collider>());
-		targetmanipulationBall.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
-		targetmanipulationBall.GetComponent<Renderer>().material = manipulationMainSphereMaterial;
-		targetmanipulationBall.SetActive(false);
-
-		// setup area balls
-		GameObject areaBall = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-		Destroy(areaBall.GetComponent<Collider>());
-		areaBall.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-		areaBall.GetComponent<Renderer>().material = manipulationSphereMaterial;
-		areaBall.SetActive(false);
-		//areaManipulationBalls
-
-		for (int i = 0; i < 10; i++)
-		{
-			areaManipulationBalls[i] = Instantiate(areaBall);
-		}
-	}
-
-	private void DisplaySpheres()
-	{
-		if (raycastHitPosition != Vector3.zero)
-		{
-			targetmanipulationBall.transform.position = raycastHitPosition;
-			targetmanipulationBall.SetActive(true);
-		}
-		else
-		{
-			targetmanipulationBall.SetActive(false);
-		}
-
-		int count = 0;
-		foreach(Vector3 listEntry in selectedMeshPointsWorldCoordinates)
-		{
-			areaManipulationBalls[count].transform.position = listEntry;
-			areaManipulationBalls[count].SetActive(true);
-		}
-
-		for (; count < areaManipulationBalls.Length; count++)
-		{
-			areaManipulationBalls[count].SetActive(false);
-		}
 	}
 }
