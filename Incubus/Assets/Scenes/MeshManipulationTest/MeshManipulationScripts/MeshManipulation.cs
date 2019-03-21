@@ -9,7 +9,7 @@ public class MeshManipulation : MonoBehaviour
 	[SerializeField] private float manipulationSpeed = 0.8f;
 	[SerializeField] private float displacementSpeed = 5f;
 	private PlayerController playerController;
-	
+
 	enum ManipulationModes
 	{
 		Pyramid = 1,
@@ -158,7 +158,7 @@ public class MeshManipulation : MonoBehaviour
 		int vertexIndexP2 = meshTriangles[triangleVertexIndexP2];
 		int targetTriangleIndex;
 		int targetVertexIndex;
-		
+
 		Vector3 p0 = meshVertices[vertexIndexP0];
 		Vector3 p1 = meshVertices[vertexIndexP1];
 		Vector3 p2 = meshVertices[vertexIndexP2];
@@ -167,11 +167,11 @@ public class MeshManipulation : MonoBehaviour
 		p0 = hitTransform.TransformPoint(p0);
 		p1 = hitTransform.TransformPoint(p1);
 		p2 = hitTransform.TransformPoint(p2);
-		
+
 		float distanceToP0 = Vector3.Distance(targetPosition, p0);
 		float distanceToP1 = Vector3.Distance(targetPosition, p1);
 		float distanceToP2 = Vector3.Distance(targetPosition, p2);
-		
+
 		if (distanceToP0 < distanceToP1 && distanceToP0 < distanceToP2)
 		{
 			targetPosition = p0;
@@ -195,7 +195,7 @@ public class MeshManipulation : MonoBehaviour
 		forceOnMesh = displacementSpeed * forceOnMesh;
 		if (manipulationMode == ManipulationModes.Pyramid)
 		{
-			
+
 			DisplaceVertex(targetTriangleIndex, forceOnMesh);
 		}
 		else if (manipulationMode == ManipulationModes.Mesh)
@@ -251,7 +251,7 @@ public class MeshManipulation : MonoBehaviour
 		{
 			vertexPoint = meshVertices[meshTriangles[i]];
 			float sqrMagnitude = (vertexPoint - targetVertexPoint).sqrMagnitude;
-			
+
 			if (vertexPoint != targetVertexPoint)
 			{
 				continue;
@@ -293,7 +293,7 @@ public class MeshManipulation : MonoBehaviour
 	{
 		int triangleIndex = -1;
 		int counter = 0;
-		
+
 		while (triangleIndex < 0 || counter < meshTriangles.Length)
 		{
 			if (meshVertices[meshTriangles[counter]] == vertex)
@@ -305,7 +305,7 @@ public class MeshManipulation : MonoBehaviour
 
 		return triangleIndex;
 	}
-	
+
 	private void DisplaceVertexGroup(List<int> indices, Vector3 normal, float force)
 	{
 		if (indices.Count > 0)

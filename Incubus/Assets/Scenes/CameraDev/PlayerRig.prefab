@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2781063671005540617}
   - component: {fileID: 2781063671005540628}
   - component: {fileID: 11417495}
-  - component: {fileID: 11417493}
+  - component: {fileID: 1620957198}
   m_Layer: 8
   m_Name: CharacterController
   m_TagString: Player
@@ -93,7 +93,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &11417493
+--- !u!114 &1620957198
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -102,17 +102,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 2781063671005540629}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4dcded57070e8145a7134868ccf426e, type: 3}
+  m_Script: {fileID: 11500000, guid: feba56b37e63bfd49b8c0b75d29a0cff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   manipulatableLayers:
     serializedVersion: 2
     m_Bits: 1024
   playerCamera: {fileID: 5997314378945587814}
-  manipulationSpeed: 0.8
-  radiusOfEffect: 0.3
   displacementSpeed: 5
-  brushSize: 0.8
+  meshBrushSize: 5
+  manipulationMainSphereMaterial: {fileID: 2100000, guid: 6cecc76a2e930324b8ae3f8805c33ff4,
+    type: 2}
+  manipulationSphereMaterial: {fileID: 2100000, guid: 19b084438655af84e88e104c2999406f,
+    type: 2}
 --- !u!1 &5997314378945587810
 GameObject:
   m_ObjectHideFlags: 0
