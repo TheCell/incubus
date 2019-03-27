@@ -46,30 +46,16 @@ public class PlayerController : MonoBehaviour
 	private Quaternion targetRotation;
 	private Rigidbody rigidb;
 	private SphereCollider sphereCollider;
-	private int groundIgnoreLayerMask = ~(1 << 8);
+	private int groundIgnoreLayerMask = ~(1 << 8); // ignore player objects
 	private float forwardInput, sidewardInput, jumpInput;
 	private Vector3 impactToAdd = Vector3.zero;
+	private float coyoteTime = 0.1f;
+	private float lastGroundedTime;
 
 	public Quaternion TargetRotation
 	{
 		get { return targetRotation; }
 	}
-
-	private bool IsGrounded()
-	{
-		Vector3 downwardOffset = new Vector3(0f, -0.20f, 0f);
-		return Physics.CheckSphere(visualContainer.transform.position + downwardOffset, sphereCollider.radius - 0.15f, groundIgnoreLayerMask);
-		// Physics.Raycast(transform.position, Vector3.down, moveSettings.distToGrounded, moveSettings.ground);
-	}
-
-	/*
-	private void OnDrawGizmosSelected()
-	{
-		Gizmos.color = Color.red;
-		Vector3 downwardOffset = new Vector3(0f, -0.20f, 0f);
-		Gizmos.DrawSphere(visualContainer.transform.position + downwardOffset, sphereCollider.radius - 0.15f);
-	}
-	*/
 
 	private void Start()
 	{
@@ -102,8 +88,37 @@ public class PlayerController : MonoBehaviour
 		}
 
 		forwardInput = sidewardInput = jumpInput = 0;
+		lastGroundedTime = Time.timeSinceLevelLoad;
 	}
 
+	private bool IsGrounded()
+	{
+		Vector3 downwardOffset = new Vector3(0f, -0.20f, 0f);
+		bool isGrounded = Physics.CheckSphere(visualContainer.transform.position + downwardOffset, sphereCollider.radius - 0.15f, groundIgnoreLayerMask);
+		if (isGrounded)
+		{
+			lastGroundedTime = Time.timeSinceLevelLoad;
+		}
+		else
+		{
+			if (lastGroundedTime + coyoteTime > Time.timeSinceLevelLoad)
+			{
+				isGrounded = true;
+			}
+		}
+		return isGrounded;
+		// Physics.Raycast(transform.position, Vector3.down, moveSettings.distToGrounded, moveSettings.ground);
+	}
+
+	/*
+	private void OnDrawGizmosSelected()
+	{
+		Gizmos.color = Color.red;
+		Vector3 downwardOffset = new Vector3(0f, -0.20f, 0f);
+		Gizmos.DrawSphere(visualContainer.transform.position + downwardOffset, sphereCollider.radius - 0.15f);
+	}
+	*/
+	
 	private void GetInput()
 	{
 		forwardInput = Input.GetAxis(inputSettings.FORWARD_AXIS); // interpolated
