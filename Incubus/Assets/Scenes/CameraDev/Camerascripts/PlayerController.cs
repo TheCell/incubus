@@ -40,21 +40,28 @@ public class PlayerController : MonoBehaviour
 	// movement direction based on camera view
 	[SerializeField] private Transform cameraTransform;
 	private Vector3 movementForwardDirection;
-	private Vector3 movementPlaneOrthogonal = new Vector3(0f, 1f, 0f);
+	private Vector3 movementPlaneOrthogonal = Vector3.up;
 
 	private Vector3 velocity = Vector3.zero;
 	private Quaternion targetRotation;
 	private Rigidbody rigidb;
 	private SphereCollider sphereCollider;
-	private int groundIgnoreLayerMask = ~(1 << 8); // ignore player objects
+	private LayerMask groundIgnoreLayerMask = ~(1 << 8); // ignore player objects
 	private float forwardInput, sidewardInput, jumpInput;
 	private Vector3 impactToAdd = Vector3.zero;
 	private float coyoteTime = 0.1f;
 	private float lastGroundedTime;
+	private RaycastHit groundHit;
+	private Vector3 groundAngle;
 
 	public Quaternion TargetRotation
 	{
 		get { return targetRotation; }
+	}
+
+	public void SetImpact(Vector3 impact)
+	{
+		impactToAdd += impact;
 	}
 
 	private void Start()
@@ -91,10 +98,25 @@ public class PlayerController : MonoBehaviour
 		lastGroundedTime = Time.timeSinceLevelLoad;
 	}
 
+	private void Update()
+	{
+		GetInput();
+		UpdateMovementPlane();
+		UpdateMovementForward();
+	}
+
+	private void FixedUpdate()
+	{
+		Jump();
+		Run();
+		ApplyImpact();
+
+		rigidb.velocity = transform.TransformDirection(velocity);
+	}
+
 	private bool IsGrounded()
 	{
-		Vector3 downwardOffset = new Vector3(0f, -0.20f, 0f);
-		bool isGrounded = Physics.CheckSphere(visualContainer.transform.position + downwardOffset, sphereCollider.radius - 0.15f, groundIgnoreLayerMask);
+		bool isGrounded = IsGroundedWithoutCoyoteTime();
 		if (isGrounded)
 		{
 			lastGroundedTime = Time.timeSinceLevelLoad;
@@ -107,7 +129,12 @@ public class PlayerController : MonoBehaviour
 			}
 		}
 		return isGrounded;
-		// Physics.Raycast(transform.position, Vector3.down, moveSettings.distToGrounded, moveSettings.ground);
+	}
+
+	private bool IsGroundedWithoutCoyoteTime()
+	{
+		Vector3 downwardOffset = new Vector3(0f, -0.20f, 0f);
+		return Physics.CheckSphere(visualContainer.transform.position + downwardOffset, sphereCollider.radius - 0.15f, groundIgnoreLayerMask);
 	}
 
 	/*
@@ -126,28 +153,14 @@ public class PlayerController : MonoBehaviour
 		jumpInput = Input.GetAxisRaw(inputSettings.JUMP_AXIS); // non-interpolated
 	}
 
-	private void updateMovementForward()
+	private void UpdateMovementForward()
 	{
 		movementForwardDirection = Vector3.ProjectOnPlane(cameraTransform.forward, movementPlaneOrthogonal).normalized;
 	}
 
-	private void Update()
-	{
-		GetInput();
-		updateMovementForward();
-	}
-
-	private void FixedUpdate()
-	{
-		Run();
-		Jump();
-		ApplyImpact();
-
-		rigidb.velocity = transform.TransformDirection(velocity);
-	}
-
 	private void Run()
 	{
+		// allow for strafing, more speed if moving forward and sidewards
 		float downAcceleration = velocity.y;
 		Vector3 combinedDirection = Vector3.zero;
 
@@ -155,19 +168,19 @@ public class PlayerController : MonoBehaviour
 		{
 			combinedDirection = forwardInput * movementForwardDirection;
 			visualContainer.transform.Rotate(cameraTransform.right, forwardInput * 10f, Space.World);
-			
 		}
 
 		if (Mathf.Abs(sidewardInput) > inputSettings.inputThreshold)
 		{
-			Vector3 movementSidewardDirection = Quaternion.AngleAxis(90, Vector3.up) * movementForwardDirection;
+			Vector3 movementSidewardDirection = Quaternion.AngleAxis(90, movementPlaneOrthogonal) * movementForwardDirection;
 			combinedDirection = combinedDirection + sidewardInput * movementSidewardDirection;
 			visualContainer.transform.Rotate(cameraTransform.forward, sidewardInput * -10f, Space.World);
 		}
 
 		Vector3 newVelocity = combinedDirection * moveSettings.movementVelocity;
-		newVelocity.y = downAcceleration;
+		newVelocity.y = newVelocity.y + downAcceleration;
 		velocity = newVelocity;
+		Debug.DrawRay(transform.position, movementForwardDirection, Color.red);
 	}
 
 	private void Jump()
@@ -196,8 +209,38 @@ public class PlayerController : MonoBehaviour
 		impactToAdd = Vector3.zero;
 	}
 
-	public void SetImpact(Vector3 impact)
+	private void UpdateMovementPlane()
 	{
-		impactToAdd += impact;
+		if (!IsGroundedWithoutCoyoteTime()) // don't use IsGrounded, this needs to be instant
+		{
+			movementPlaneOrthogonal = Vector3.up;
+		}
+		else
+		{
+			UpdateMovementPlaneFromAngle();
+		}
+	}
+
+	private void UpdateMovementPlaneFromAngle()
+	{
+		UpdateGroundHit();
+
+		if (groundHit.collider != null)
+		{
+			Vector3 groundNormal = groundHit.normal;
+			groundAngle = Vector3.Cross(transform.right, groundNormal);
+			movementPlaneOrthogonal = groundNormal;
+		}
+		else
+		{
+			Debug.Log("collider is null");
+			movementPlaneOrthogonal = Vector3.up;
+		}
+	}
+
+	private void UpdateGroundHit()
+	{
+		// I don't know why I have to inverse the layerMask
+		bool test = Physics.Raycast(transform.position, Vector3.down * 2f, out groundHit, ~groundIgnoreLayerMask);
 	}
 }
