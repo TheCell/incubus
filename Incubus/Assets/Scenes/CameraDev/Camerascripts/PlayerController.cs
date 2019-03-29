@@ -107,9 +107,9 @@ public class PlayerController : MonoBehaviour
 	{
 		Jump();
 		Run();
-		ApplyImpact();
 
 		rigidb.velocity = transform.TransformDirection(velocity);
+		ApplyImpact();
 	}
 
 	private bool IsGrounded()
@@ -203,7 +203,7 @@ public class PlayerController : MonoBehaviour
 
 	private void ApplyImpact()
 	{
-		velocity += impactToAdd;
+		rigidb.velocity += impactToAdd;
 		impactToAdd = Vector3.zero;
 	}
 

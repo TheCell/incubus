@@ -13,7 +13,6 @@ public class SetRespawnPoint : MonoBehaviour
 		if (respawnInfo != null)
 		{
 			respawnInfo.RespawnPosition = spawnPoint.position;
-			Debug.Log(respawnInfo.RespawnPosition);
 		}
 	}
 }

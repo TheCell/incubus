@@ -45,6 +45,12 @@ public class MovingPlatform2 : MonoBehaviour
 
 	private void OnCollisionExit(Collision collision)
 	{
+		GameObject collidingObject = collision.gameObject;
+		PlayerController playerController = collidingObject.GetComponent<PlayerController>();
+		if (playerController != null)
+		{
+			playerController.SetImpact(positionDelta);
+		}
 		collidingBodies.Remove(collision.rigidbody);
 	}
 
