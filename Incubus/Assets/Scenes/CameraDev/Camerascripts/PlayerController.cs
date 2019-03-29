@@ -31,7 +31,6 @@ public class PlayerController : MonoBehaviour
 		public string JUMP_AXIS = "Jump";
 	}
 
-
 	[SerializeField] private MoveSettings moveSettings = new MoveSettings();
 	[SerializeField] private PhysicsSettings physicsSettings = new PhysicsSettings();
 	[SerializeField] private InputSettings inputSettings = new InputSettings();
@@ -46,7 +45,6 @@ public class PlayerController : MonoBehaviour
 	private Quaternion targetRotation;
 	private Rigidbody rigidb;
 	private SphereCollider sphereCollider;
-	private LayerMask groundIgnoreLayerMask = ~(1 << 8); // ignore player objects
 	private float forwardInput, sidewardInput, jumpInput;
 	private Vector3 impactToAdd = Vector3.zero;
 	private float coyoteTime = 0.1f;
@@ -134,7 +132,7 @@ public class PlayerController : MonoBehaviour
 	private bool IsGroundedWithoutCoyoteTime()
 	{
 		Vector3 downwardOffset = new Vector3(0f, -0.20f, 0f);
-		return Physics.CheckSphere(visualContainer.transform.position + downwardOffset, sphereCollider.radius - 0.15f, groundIgnoreLayerMask);
+		return Physics.CheckSphere(visualContainer.transform.position + downwardOffset, sphereCollider.radius - 0.15f, moveSettings.ground);
 	}
 
 	/*
@@ -241,6 +239,6 @@ public class PlayerController : MonoBehaviour
 	private void UpdateGroundHit()
 	{
 		// I don't know why I have to inverse the layerMask
-		bool test = Physics.Raycast(transform.position, Vector3.down * 2f, out groundHit, ~groundIgnoreLayerMask);
+		bool test = Physics.Raycast(transform.position, Vector3.down * 2f, out groundHit, moveSettings.ground);
 	}
 }

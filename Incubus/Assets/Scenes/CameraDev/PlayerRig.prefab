@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2781063671005540628}
   - component: {fileID: 11417495}
   - component: {fileID: 1620957198}
+  - component: {fileID: 1353113964}
   m_Layer: 8
   m_Name: CharacterController
   m_TagString: Player
@@ -70,7 +71,7 @@ MonoBehaviour:
     distToGrounded: 0.6
     ground:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 1079
   physicsSettings:
     downAcceleration: 0.75
   inputSettings:
@@ -115,6 +116,19 @@ MonoBehaviour:
     type: 2}
   manipulationSphereMaterial: {fileID: 2100000, guid: 19b084438655af84e88e104c2999406f,
     type: 2}
+--- !u!114 &1353113964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2781063671005540629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44af8527c63fa6b47a779ffc737d0af0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnOnTrigger: 1
 --- !u!1 &5997314378945587810
 GameObject:
   m_ObjectHideFlags: 0
