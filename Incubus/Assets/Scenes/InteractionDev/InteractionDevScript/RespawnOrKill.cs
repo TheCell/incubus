@@ -35,6 +35,8 @@ public class RespawnOrKill : MonoBehaviour
 		{
 			rb.velocity = Vector3.zero;
 		}
+
+		respawnInfo.RespawnEffect.PlayOnce();
 	}
 
 	private void KillObject(GameObject gameObject)

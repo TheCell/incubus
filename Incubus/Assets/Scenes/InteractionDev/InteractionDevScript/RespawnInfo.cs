@@ -7,6 +7,7 @@ public class RespawnInfo : MonoBehaviour
 	public bool respawnOnTrigger = true;
 	private Vector3 respawnPosition = Vector3.zero;
 	private List<Vector3> respawnHistory = new List<Vector3>();
+	private RespawnEffect respawnEffect;
 
 	public Vector3 RespawnPosition
 	{
@@ -18,13 +19,21 @@ public class RespawnInfo : MonoBehaviour
 		}
 	}
 
+	public RespawnEffect RespawnEffect
+	{
+		get
+		{
+			if (respawnEffect == null)
+			{
+				respawnEffect = new RespawnEffect();
+			}
+			return respawnEffect;
+		}
+		set { respawnEffect = value; }
+	}
+
 	private void Start()
     {
 		RespawnPosition = transform.position;
     }
-
-	private void OnCollisionEnter(Collision collision)
-	{
-		
-	}
 }

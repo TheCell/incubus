@@ -5,6 +5,7 @@ using UnityEngine;
 public class SetRespawnPoint : MonoBehaviour
 {
 	[SerializeField] private Transform spawnPoint;
+	[SerializeField] private RespawnEffect respawnEffect;
 
 	private void OnTriggerEnter(Collider collider)
 	{
@@ -13,6 +14,7 @@ public class SetRespawnPoint : MonoBehaviour
 		if (respawnInfo != null)
 		{
 			respawnInfo.RespawnPosition = spawnPoint.position;
+			respawnInfo.RespawnEffect = respawnEffect;
 		}
 	}
 }
