@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ShootingOnPlayer : MonoBehaviour
 {
-	[SerializeField] private float scanRadius = 15f;
 	[SerializeField] private float shotIntervalSeconds = 1f;
 	[SerializeField] private GameObject shotPrefab;
 	[SerializeField] private float bulletSpeed = 20f;
@@ -13,7 +12,8 @@ public class ShootingOnPlayer : MonoBehaviour
 	private List<GameObject> bulletPool = new List<GameObject>();
 	private List<GameObject>.Enumerator bulletEnumerator;
 
-	// Start is called before the first frame update
+	private StationaryEnemyTurning stationaryEnemyTurning;
+	
 	private void Start()
     {
 		if (shotPrefab == null)
@@ -29,35 +29,22 @@ public class ShootingOnPlayer : MonoBehaviour
 			bulletPool.Add(shot);
 		}
 		bulletEnumerator = bulletPool.GetEnumerator();
-
 		lastShot = Time.time;
-	}
 
-	// Update is called once per frame
+		stationaryEnemyTurning = GetComponent<StationaryEnemyTurning>();
+		if (stationaryEnemyTurning == null)
+		{
+			Debug.LogError("missing Script StationaryEnemyTurning");
+		}
+	}
+	
 	private void Update()
     {
-		ShootPlayer();
-	}
-
-	private void ShootPlayer()
-	{
-		Vector3 playerPosition = SearchPlayer();
-		Shoot(playerPosition);
-	}
-
-	private Vector3 SearchPlayer()
-	{
-		Vector3 playerPosition = transform.forward;
-		GameObject player = GameObject.FindWithTag("Player");
-		if (player != null)
+		if (ShotReady())
 		{
-			float distance = Vector3.Distance(transform.position, player.transform.position);
-			if (distance < scanRadius)
-			{
-				playerPosition = player.transform.position;
-			}
+			//Shoot(playerPosition);
+			Shoot();
 		}
-		return playerPosition;
 	}
 
 	private bool ShotReady()
@@ -71,23 +58,44 @@ public class ShootingOnPlayer : MonoBehaviour
 		return false;
 	}
 
+	/*
 	private void Shoot(Vector3 targetPosition)
 	{
-		if (ShotReady())
+		if (!bulletEnumerator.MoveNext())
 		{
-			if (!bulletEnumerator.MoveNext())
-			{
-				bulletEnumerator = bulletPool.GetEnumerator();
-				bulletEnumerator.MoveNext();
-			}
-			GameObject bullet = bulletEnumerator.Current;
-			bullet.transform.position = transform.position;
-			Vector3 targetDirection = targetPosition - transform.position;
-			Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, 180f, 180.0f);
-			bullet.transform.rotation = Quaternion.LookRotation(newDirection);
-			bullet.SetActive(true);
-			bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * bulletSpeed;
-			Debug.DrawRay(bullet.transform.position, bullet.transform.forward, Color.red, 1f);
+			bulletEnumerator = bulletPool.GetEnumerator();
+			bulletEnumerator.MoveNext();
 		}
+		GameObject bullet = bulletEnumerator.Current;
+		bullet.transform.position = transform.position + transform.forward;
+		Vector3 targetDirection = targetPosition - transform.position;
+		Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, 180f, 180.0f);
+		bullet.transform.rotation = Quaternion.LookRotation(newDirection);
+		bullet.SetActive(true);
+		Rigidbody bulletRB = bullet.GetComponentInChildren<Rigidbody>();
+		bulletRB.gameObject.SetActive(true);
+		bulletRB.velocity = bullet.transform.forward * bulletSpeed;
+		//Debug.DrawRay(bullet.transform.position, bullet.transform.forward, Color.red, 1f);
+	}
+	*/
+
+	private void Shoot()
+	{
+		if (!bulletEnumerator.MoveNext())
+		{
+			bulletEnumerator = bulletPool.GetEnumerator();
+			bulletEnumerator.MoveNext();
+		}
+
+		GameObject bullet = bulletEnumerator.Current;
+		bullet.SetActive(true);
+		Rigidbody bulletRB = bullet.GetComponentInChildren<Rigidbody>();
+		bullet.transform.position = transform.position + transform.forward;
+		//bullet.transform.rotation = transform.rotation;
+		bulletRB.position = transform.position + transform.forward;
+		bulletRB.rotation = transform.rotation;
+		bulletRB.gameObject.SetActive(true);
+		//bulletRB.velocity = bullet.transform.forward * bulletSpeed;
+		bulletRB.velocity = transform.forward * bulletSpeed;
 	}
 }

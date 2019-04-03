@@ -10,15 +10,16 @@ public class ShotBehaviour : MonoBehaviour
 
 	private void Start()
 	{
-		audioSource = GetComponent<AudioSource>();
-		bulletRigidbody = GetComponent<Rigidbody>();
+		audioSource = GetComponentInChildren<AudioSource>();
+		bulletRigidbody = GetComponentInChildren<Rigidbody>();
 	}
 
-	private void OnTriggerEnter(Collider other)
+	public void HandleTriggerEnterFromChild(Collider other)
 	{
-		if (other.gameObject.layer == 8)
+		if (other.gameObject.layer == 8) // player layer
 		{
 			//audioSource.Play();
+			audioSource.transform.position = bulletRigidbody.position;
 			audioSource.PlayOneShot(audioSource.clip);
 			PlayerController playerController = other.GetComponent<PlayerController>();
 			if (playerController != null)
@@ -27,14 +28,12 @@ public class ShotBehaviour : MonoBehaviour
 			}
 			//Rigidbody otherRB = other.gameObject.GetComponent<Rigidbody>();
 			//otherRB.velocity = bulletRigidbody.velocity * pushForce;
+			bulletRigidbody.gameObject.SetActive(false);
 			//gameObject.SetActive(false);
 		}
-	}
-
-	private void OnDisable()
-	{
-		if (audioSource != null)
+		else
 		{
+			gameObject.SetActive(false);
 		}
 	}
 }
