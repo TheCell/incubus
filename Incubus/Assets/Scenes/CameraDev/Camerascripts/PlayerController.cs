@@ -51,6 +51,13 @@ public class PlayerController : MonoBehaviour
 	private float lastGroundedTime;
 	private RaycastHit groundHit;
 	private Vector3 groundAngle;
+	
+	private enum Surface
+	{
+		Normal = 0,
+		Slippery = 1
+	}
+	private Surface surfaceCondition;
 
 	public Quaternion TargetRotation
 	{
@@ -94,6 +101,8 @@ public class PlayerController : MonoBehaviour
 
 		forwardInput = sidewardInput = jumpInput = 0;
 		lastGroundedTime = Time.timeSinceLevelLoad;
+
+		surfaceCondition = Surface.Normal;
 	}
 
 	private void Update()
@@ -108,7 +117,9 @@ public class PlayerController : MonoBehaviour
 		Jump();
 		Run();
 
+		//Debug.DrawRay(transform.position, velocity, Color.black);
 		rigidb.velocity = transform.TransformDirection(velocity);
+		//Debug.DrawRay(transform.position, rigidb.velocity, Color.green);
 		ApplyImpact();
 	}
 
@@ -159,7 +170,7 @@ public class PlayerController : MonoBehaviour
 	private void Run()
 	{
 		// allow for strafing, more speed if moving forward and sidewards
-		float downAcceleration = velocity.y;
+		float currentYVelocity = velocity.y;
 		Vector3 combinedDirection = Vector3.zero;
 
 		if (Mathf.Abs(forwardInput) > inputSettings.inputThreshold)
@@ -171,13 +182,31 @@ public class PlayerController : MonoBehaviour
 		if (Mathf.Abs(sidewardInput) > inputSettings.inputThreshold)
 		{
 			Vector3 movementSidewardDirection = Quaternion.AngleAxis(90, movementPlaneOrthogonal) * movementForwardDirection;
+
 			combinedDirection = combinedDirection + sidewardInput * movementSidewardDirection;
 			visualContainer.transform.Rotate(cameraTransform.forward, sidewardInput * -10f, Space.World);
 		}
 
 		Vector3 newVelocity = combinedDirection * moveSettings.movementVelocity;
-		newVelocity.y = newVelocity.y + downAcceleration;
-		velocity = newVelocity;
+		newVelocity.y = newVelocity.y + currentYVelocity;
+
+		if (IsSlippery())
+		{
+			//velocity = velocity * 0.98f + newVelocity * 0.02f;
+			velocity = velocity * 0.98f + newVelocity * 0.02f;
+			//velocity = newVelocity;
+			Vector3 slideDownSpeed = movementForwardDirection;
+			//float surfaceAngle = Vector3.Angle(movementPlaneOrthogonal, Vector3.up);
+			//Debug.Log(surfaceAngle);
+			Vector3 downlookingVector = Vector3.ProjectOnPlane(movementPlaneOrthogonal, Vector3.up);
+			//Debug.Log(downlookingVector);
+			//Vector3.Dot(Vector3.up, movementForwardDirection)
+			//velocity.y = downAcceleration;
+		}
+		else
+		{
+			velocity = newVelocity;
+		}
 		Debug.DrawRay(transform.position, movementForwardDirection, Color.red);
 	}
 
@@ -238,7 +267,34 @@ public class PlayerController : MonoBehaviour
 
 	private void UpdateGroundHit()
 	{
-		// I don't know why I have to inverse the layerMask
 		bool test = Physics.Raycast(transform.position, Vector3.down * 2f, out groundHit, moveSettings.ground);
+	}
+
+	private Surface GetSurfaceType(string surfaceName)
+	{
+		Surface surfaceType = Surface.Normal;
+		switch (surfaceName)
+		{
+			case "Normal":
+				surfaceType = Surface.Normal;
+				break;
+			case "Slippery":
+				surfaceType = Surface.Slippery;
+				break;
+			default:
+				surfaceType = Surface.Normal;
+				break;
+		}
+		return surfaceType;
+	}
+
+	private bool IsSlippery()
+	{
+		bool isSlippery = false;
+		if (groundHit.collider != null)
+		{
+			isSlippery = GetSurfaceType(groundHit.transform.tag) == Surface.Slippery;
+		}
+		return isSlippery;
 	}
 }
