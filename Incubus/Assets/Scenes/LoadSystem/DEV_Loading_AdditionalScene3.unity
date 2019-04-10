@@ -732,6 +732,7 @@ MonoBehaviour:
   - DEV_Loading_AdditionalScene2
   - DEV_Loading_AdditionalScene3
   - DEV_Loading_AdditionalScene4
+  - DEV_Loading_AdditionalScene3_Environment
 --- !u!65 &1755607752
 BoxCollider:
   m_ObjectHideFlags: 0
