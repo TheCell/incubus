@@ -39,12 +39,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Incubus/HighTower.unity
     guid: b993663a108b7c24aa18d4c95b3c4bef
   - enabled: 1
-    path: Assets/Scenes/Incubus/HighLabirinth.unity
+    path: Assets/Scenes/Incubus/HighLabyrinth.unity
     guid: d6534f2e9f379dc4594c6964785ac86a
   - enabled: 1
     path: Assets/Scenes/Incubus/Boulder.unity
     guid: 42aa39040cadae64b81af21c8e11e74c
   - enabled: 1
-    path: Assets/Scenes/Incubus/BlackTower.unity
+    path: Assets/Scenes/Incubus/HighTower.unity
     guid: 45392dd7c7764e84ab185c38b8de6bf4
   m_configObjects: {}
