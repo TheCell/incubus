@@ -16,7 +16,7 @@ public class ShootingOnPlayer : MonoBehaviour
 	private void Start()
     {
 		indicator = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-		Destroy(indicator.GetComponent<BoxCollider>());
+		Destroy(indicator.GetComponent<SphereCollider>());
 		indicator.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
 
 		if (shotPrefab == null)
