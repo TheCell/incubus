@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1539564664033586640}
   - component: {fileID: 1539564664033586641}
   m_Layer: 10
-  m_Name: ManipulationPlan
+  m_Name: ManiPlane48x48
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bbb5ee6421e534445ba1763ed9486235, type: 2}
+  - {fileID: 2100000, guid: 3aed9ff342e1cd249bcaf94f7400aa8f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

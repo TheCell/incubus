@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 2084850655989382369}
   - component: {fileID: 2481911532130247942}
   - component: {fileID: 8003387831324511331}
-  m_Layer: 0
-  m_Name: Plane
+  m_Layer: 10
+  m_Name: ManiPlane12x12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: daae2a8aa6a52a2429a2a1fa64a9bb37, type: 2}
+  - {fileID: 2100000, guid: 3aed9ff342e1cd249bcaf94f7400aa8f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
