@@ -17,8 +17,9 @@ public class PlayerCamera : MonoBehaviour
     }
 
     [SerializeField] private Transform target;
-    [SerializeField] private float cameraSpeed = 2;
     [SerializeField] private Vector3 lookAtPlayerOffset = new Vector3(0f, 1.2f, 0f);
+	[SerializeField] private bool exponentialCameraTurn = true;
+	[SerializeField] private int exponentialMultiplier = 3;
 
     private PlayerController playerController;
     private float cameraHorizontal, cameraVertical;
@@ -64,8 +65,8 @@ public class PlayerCamera : MonoBehaviour
 
     private void RotateCamera()
     {
-        Quaternion cameraRotationXDelta = Quaternion.AngleAxis(cameraHorizontal * cameraSpeed, Vector3.up);
-        Quaternion cameraRotationYDelta = Quaternion.AngleAxis(cameraVertical * cameraSpeed, transform.right);
+        Quaternion cameraRotationXDelta = Quaternion.AngleAxis(CameraSpeed(cameraHorizontal), Vector3.up);
+        Quaternion cameraRotationYDelta = Quaternion.AngleAxis(CameraSpeed(cameraVertical), transform.right);
 
         // this does not work how I wish it would after rotating around a bit
         cameraPlayerOffset = cameraRotationYDelta * cameraRotationXDelta * cameraPlayerOffset;
@@ -118,5 +119,21 @@ public class PlayerCamera : MonoBehaviour
 		floorLevelDot.transform.position = target.transform.position - new Vector3(0.5f, 0.5f, 0.5f);
 		floorLevelDot.transform.rotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
 		floorLevelDot.transform.position = floorLevelDot.transform.position + floorLevelDot.transform.forward * 3f;
+	}
+
+	private float CameraSpeed(float direction)
+	{
+		float cameraSpeed = 1;
+
+		if (exponentialCameraTurn)
+		{
+			cameraSpeed = cameraSpeed * Mathf.LerpUnclamped(0, Mathf.Pow(2, 2), direction);
+		}
+		else
+		{
+			cameraSpeed = cameraSpeed * direction;
+		}
+
+		return cameraSpeed;
 	}
 }
