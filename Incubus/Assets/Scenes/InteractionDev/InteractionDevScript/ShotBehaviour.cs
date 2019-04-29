@@ -27,6 +27,12 @@ public class ShotBehaviour : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
+		if (other.gameObject.layer == 11)
+		{
+			// ignore triggers layer
+			return;
+		}
+
 		if (other.gameObject.layer == 8) // player layer
 		{
 			if (audioSource != null)
@@ -54,6 +60,12 @@ public class ShotBehaviour : MonoBehaviour
 
 	public void HandleTriggerEnterFromChild(Collider other)
 	{
+		if (other.gameObject.layer == 11)
+		{
+			// ignore triggers layer
+			return;
+		}
+
 		if (other.gameObject.layer == 8) // player layer
 		{
 			//audioSource.Play();
