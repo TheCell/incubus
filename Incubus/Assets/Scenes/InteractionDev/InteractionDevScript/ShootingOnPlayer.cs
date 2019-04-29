@@ -64,16 +64,18 @@ public class ShootingOnPlayer : MonoBehaviour
 		}
 
 		GameObject bullet = bulletEnumerator.Current;
-		bullet.transform.position = transform.position + transform.forward;
-		bullet.SetActive(true);
 		Rigidbody bulletRB = bullet.GetComponentInChildren<Rigidbody>();
+		bulletRB.gameObject.SetActive(false);
+		bullet.SetActive(false);
+		bullet.transform.position = transform.position + transform.forward;
 		//bullet.transform.rotation = transform.rotation;
 		//bulletRB.position = transform.position + transform.forward;
 		//bulletRB.gameObject.transform.position = Vector3.zero;
 		//bulletRB.gameObject.transform.rotation = transform.rotation;
 		bulletRB.position = Vector3.zero;
-		bulletRB.rotation = transform.rotation;
 		bulletRB.gameObject.SetActive(true);
+		bulletRB.rotation = transform.rotation;
+		bullet.SetActive(true);
 		//bulletRB.velocity = bullet.transform.forward * bulletSpeed;
 		bulletRB.velocity = transform.forward * bulletSpeed;
 	}
