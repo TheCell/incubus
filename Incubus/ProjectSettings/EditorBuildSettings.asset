@@ -47,4 +47,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Incubus/BlackTower.unity
     guid: 392770313d8894a4ba34b6534a7a98f0
+  - enabled: 1
+    path: Assets/Scenes/StartScene/StartLevel 2.unity
+    guid: ed188e3b04e614d298876a7bad5647d7
   m_configObjects: {}
