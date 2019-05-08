@@ -33,6 +33,7 @@ public class MeshManipulation2 : MonoBehaviour
 	private Vector3[] meshNormals;
 	private int[] meshTriangles;
 	private Vector3 displacementNormal = Vector3.zero;
+	Manipulationlogic meshManipulationLogic = null;
 
 	// Vertexpoints used to display points and indices for manipulating
 	int targetVertexIndex = -1;
@@ -134,10 +135,21 @@ public class MeshManipulation2 : MonoBehaviour
 		meshVertices = targetMesh.vertices;
 		meshTriangles = targetMesh.triangles;
 		meshNormals = targetMesh.normals;
+
+		meshManipulationLogic = rayCastHit.collider.GetComponent<Manipulationlogic>();
+		if (meshManipulationLogic == null)
+		{
+			rayCastHit.collider.gameObject.AddComponent<Manipulationlogic>();
+		}
 	}
 
 	private void UpdateMeshData()
 	{
+		if (meshManipulationLogic != null)
+		{
+			meshManipulationLogic.Manipulating();
+		}
+
 		targetMesh.vertices = meshVertices;
 		targetMesh.RecalculateBounds();
 		//targetMesh.RecalculateNormals();
