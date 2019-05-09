@@ -1010,6 +1010,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2781063671005540617, guid: e63ddb61608315e48b60eadf83553bb5,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2781063671005540628, guid: e63ddb61608315e48b60eadf83553bb5,
         type: 3}
       propertyPath: movementPlaneOrthogonal.x
@@ -1020,10 +1025,10 @@ PrefabInstance:
       propertyPath: movementPlaneOrthogonal.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2781063671005540617, guid: e63ddb61608315e48b60eadf83553bb5,
+    - target: {fileID: 5997314378945587808, guid: e63ddb61608315e48b60eadf83553bb5,
         type: 3}
-      propertyPath: m_UseGravity
-      value: 1
+      propertyPath: field of view
+      value: 65
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e63ddb61608315e48b60eadf83553bb5, type: 3}

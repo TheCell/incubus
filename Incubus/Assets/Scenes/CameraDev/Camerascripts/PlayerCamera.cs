@@ -54,20 +54,43 @@ public class PlayerCamera : MonoBehaviour
     private void Update()
     {
         GetInput();
-    }
+	}
 
-    private void LateUpdate()
+	private void LateUpdate()
     {
-        RotateCamera();
-        UpdateCameraPosition();
+		//RotateCamera();
+		//UpdateCameraPosition();
+		RotateCameraLimited();
 		UpdateFloorLevelDot();
 	}
 
-    private void RotateCamera()
+	private void RotateCameraLimited()
+	{
+		Vector3 rotatemiddlepoint = playerController.transform.position + lookAtPlayerOffset;
+		transform.position = transform.position + playerController.TranslationDeltaSinceLastCheck;
+
+		float angle = Vector3.Angle(transform.forward, Vector3.up);
+		//Debug.Log(angle + " hor: " + cameraHorizontal + " ver: " + cameraVertical);
+		if (cameraVertical > 0f && angle > 176f)
+		{
+
+		}
+		else if (cameraVertical < 0f && angle < 86f)
+		{
+
+		}
+		else
+		{
+			transform.RotateAround(rotatemiddlepoint, transform.right, CameraSpeed(cameraVertical));
+		}
+		transform.RotateAround(rotatemiddlepoint, Vector3.up, CameraSpeed(cameraHorizontal));
+		transform.LookAt(rotatemiddlepoint, Vector3.up);
+	}
+
+	private void RotateCamera()
     {
         Quaternion cameraRotationXDelta = Quaternion.AngleAxis(CameraSpeed(cameraHorizontal), Vector3.up);
         Quaternion cameraRotationYDelta = Quaternion.AngleAxis(CameraSpeed(cameraVertical), transform.right);
-
         // this does not work how I wish it would after rotating around a bit
         cameraPlayerOffset = cameraRotationYDelta * cameraRotationXDelta * cameraPlayerOffset;
 

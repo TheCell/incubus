@@ -51,6 +51,9 @@ public class PlayerController : MonoBehaviour
 	private float lastGroundedTime;
 	private RaycastHit groundHit;
 	private Vector3 groundAngle;
+
+	//private Vector3 translationDeltaSinceLastCheck = Vector3.zero;
+	private Vector3 positionAtLastCheck = Vector3.zero;
 	
 	private enum Surface
 	{
@@ -62,6 +65,21 @@ public class PlayerController : MonoBehaviour
 	public Quaternion TargetRotation
 	{
 		get { return targetRotation; }
+	}
+
+	public Vector3 TranslationDeltaSinceLastCheck
+	{
+		get
+		{
+			/*
+			Vector3 delta = translationDeltaSinceLastCheck;
+			translationDeltaSinceLastCheck = Vector3.zero;
+			*/
+			Vector3 currentPosition = transform.position;
+			Vector3 positionDelta = currentPosition - positionAtLastCheck;
+			positionAtLastCheck = transform.position;
+			return positionDelta;
+		}
 	}
 
 	public void SetImpact(Vector3 impact)
@@ -103,6 +121,7 @@ public class PlayerController : MonoBehaviour
 		lastGroundedTime = Time.timeSinceLevelLoad;
 
 		surfaceCondition = Surface.Normal;
+		positionAtLastCheck = transform.position;
 	}
 
 	private void Update()
