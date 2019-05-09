@@ -18,6 +18,7 @@ public class Manipulationlogic : MonoBehaviour
 	private Vector3[] originalVertices;
 	private Vector3[] originalNormals;
 	private int[] originalTriangles;
+	private bool manipulationResetFinished = false;
 
 	// Start is called before the first frame update
 	void Start()
@@ -45,6 +46,10 @@ public class Manipulationlogic : MonoBehaviour
 		originalVertices = mesh.vertices;
 		originalTriangles = mesh.triangles;
 		originalNormals = mesh.normals;
+
+		// reinit variables
+		manipulationResetFinished = false;
+		lastManipulationTime = Time.timeSinceLevelLoad;
 	}
 
     // Update is called once per frame
@@ -64,6 +69,11 @@ public class Manipulationlogic : MonoBehaviour
 		{
 			ManipulateBack();
 		}
+
+		if (manipulationResetFinished)
+		{
+			RemoveScript();
+		}
 	}
 
 	private void ManipulateBack()
@@ -74,6 +84,10 @@ public class Manipulationlogic : MonoBehaviour
 		float deltatimeAfterManipulation = Time.timeSinceLevelLoad - (lastManipulationTime + timeBeforeLerpBack);
 		deltatimeAfterManipulation = Mathf.Clamp(deltatimeAfterManipulation, 0, lerpTime);
 		float currentProgress = 1 / lerpTime * deltatimeAfterManipulation;
+		if (currentProgress >= 1)
+		{
+			manipulationResetFinished = true;
+		}
 		//currentMesh.vertices = originalVertices;
 		currentMesh.triangles = originalTriangles;
 		currentMesh.normals = originalNormals;
@@ -103,5 +117,10 @@ public class Manipulationlogic : MonoBehaviour
 			currentCollider.gameObject.SetActive(false);
 			currentCollider.gameObject.SetActive(true);
 		}
+	}
+
+	private void RemoveScript()
+	{
+		Destroy(this);
 	}
 }

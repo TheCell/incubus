@@ -36,4 +36,24 @@ public class RespawnInfo : MonoBehaviour
     {
 		RespawnPosition = transform.position;
     }
+
+	private void Update()
+	{
+		if (Input.GetButton("ResetToCheckpoint"))
+		{
+			ManualRespawn();
+		}
+	}
+
+	private void ManualRespawn()
+	{
+		transform.position = RespawnPosition;
+		Rigidbody rb = GetComponent<Rigidbody>();
+		if (rb != null)
+		{
+			rb.velocity = Vector3.zero;
+		}
+
+		RespawnEffect.PlayOnce();
+	}
 }
