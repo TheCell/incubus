@@ -12,7 +12,7 @@ public class MovingPlatform2 : MonoBehaviour
 
 	private bool reverseDirection = false;
 	private float timeSincePlatformStart;
-	private float currentPosition = 0f;
+	private float currentLerp = 0f;
 	private List<Rigidbody> collidingBodies = new List<Rigidbody>();
 	private Vector3 positionDelta = Vector3.zero;
 	private bool finishVisited = false;
@@ -35,16 +35,24 @@ public class MovingPlatform2 : MonoBehaviour
 			somethingOnPlatform = false;
 		}
 		CheckAndStartPlatform();
+		//UpdateCurrentPosition();
+	}
+
+	private void FixedUpdate()
+	{
 		UpdateCurrentPosition();
 	}
 
 	private void OnCollisionEnter(Collision collision)
 	{
+		//Debug.Log("added object");
+		collision.rigidbody.velocity = Vector3.zero;
 		collidingBodies.Add(collision.rigidbody);
 	}
 
 	private void OnCollisionExit(Collision collision)
 	{
+		//Debug.Log("removed object");
 		GameObject collidingObject = collision.gameObject;
 		PlayerController playerController = collidingObject.GetComponent<PlayerController>();
 		if (playerController != null)
@@ -84,15 +92,16 @@ public class MovingPlatform2 : MonoBehaviour
 	private void UpdateCurrentPosition()
 	{
 		UpdateDirectionAndTime();
-		currentPosition = GetCurrentPosition();
+		currentLerp = GetCurrentLerpvalue();
 
-		Vector3 newPosition = Vector3.LerpUnclamped(startPoint.transform.position, endPoint.transform.position, elevatorSpeed.Evaluate(currentPosition));
+		Vector3 newPosition = Vector3.LerpUnclamped(startPoint.transform.position, endPoint.transform.position, elevatorSpeed.Evaluate(currentLerp));
 		positionDelta = newPosition - transform.position;
 		transform.position = transform.position + positionDelta;
 
 		foreach (Rigidbody rb in collidingBodies)
 		{
-			rb.transform.position = rb.transform.position + positionDelta;
+			//rb.transform.position = rb.transform.position + positionDelta;
+			rb.MovePosition(rb.transform.position + positionDelta);
 		}
 	}
 
@@ -119,7 +128,7 @@ public class MovingPlatform2 : MonoBehaviour
 		return Time.timeSinceLevelLoad - timeSincePlatformStart;
 	}
 
-	private float GetCurrentPosition()
+	private float GetCurrentLerpvalue()
 	{
 		float relativeTime = GetRelativeTime();
 		float positionZeroToOne;
