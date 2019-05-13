@@ -243,7 +243,6 @@ public class PlayerController : MonoBehaviour
 			else if (jumpInput == 0 && !justJumped)
 			{
 				velocity.y = 0;
-				justJumped = false;
 			}
 		}
 		else
