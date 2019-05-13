@@ -52,6 +52,8 @@ public class PlayerController : MonoBehaviour
 	private RaycastHit groundHit;
 	private Vector3 groundAngle;
 
+	private bool justJumped = false;
+
 	//private Vector3 translationDeltaSinceLastCheck = Vector3.zero;
 	private Vector3 positionAtLastCheck = Vector3.zero;
 	
@@ -233,19 +235,22 @@ public class PlayerController : MonoBehaviour
 	{
 		if (IsGrounded())
 		{
-			if (jumpInput > 0)
+			if (jumpInput > 0 && !justJumped)
 			{
 				velocity.y = moveSettings.jumpVelocity;
+				justJumped = true;
 			}
-			else if (jumpInput == 0)
+			else if (jumpInput == 0 && !justJumped)
 			{
 				velocity.y = 0;
+				justJumped = false;
 			}
 		}
 		else
 		{
 			// decrease velocity.y
 			velocity.y -= physicsSettings.downAcceleration;
+			justJumped = false;
 		}
 	}
 
