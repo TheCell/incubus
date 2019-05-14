@@ -129,19 +129,20 @@ public class PlayerController : MonoBehaviour
 	private void Update()
 	{
 		GetInput();
-		UpdateMovementPlane();
-		UpdateMovementForward();
 	}
 
 	private void FixedUpdate()
 	{
+		UpdateMovementPlane();
+		UpdateMovementForward();
+
+		UpdateYAcceleration();
 		Jump();
 		Run();
 
-		//Debug.DrawRay(transform.position, velocity, Color.black);
-		rigidb.velocity = transform.TransformDirection(velocity);
-		//Debug.DrawRay(transform.position, rigidb.velocity, Color.green);
+		//rigidb.velocity = transform.TransformDirection(velocity);
 		ApplyImpact();
+		rigidb.velocity = velocity;
 	}
 
 	private bool IsGrounded()
@@ -211,51 +212,42 @@ public class PlayerController : MonoBehaviour
 		Vector3 newVelocity = combinedDirection * moveSettings.movementVelocity;
 		newVelocity.y = newVelocity.y + currentYVelocity;
 
-		if (IsSlippery())
-		{
-			//velocity = velocity * 0.98f + newVelocity * 0.02f;
-			velocity = velocity * 0.98f + newVelocity * 0.02f;
-			//velocity = newVelocity;
-			Vector3 slideDownSpeed = movementForwardDirection;
-			//float surfaceAngle = Vector3.Angle(movementPlaneOrthogonal, Vector3.up);
-			//Debug.Log(surfaceAngle);
-			Vector3 downlookingVector = Vector3.ProjectOnPlane(movementPlaneOrthogonal, Vector3.up);
-			//Debug.Log(downlookingVector);
-			//Vector3.Dot(Vector3.up, movementForwardDirection)
-			//velocity.y = downAcceleration;
-		}
-		else
-		{
-			velocity = newVelocity;
-		}
+		velocity = newVelocity;
+		Debug.DrawRay(transform.position, velocity, Color.blue);
 		Debug.DrawRay(transform.position, movementForwardDirection, Color.red);
 	}
 
 	private void Jump()
 	{
-		if (IsGrounded())
+		if (IsGrounded() && jumpInput > 0 && !justJumped)
 		{
-			if (jumpInput > 0 && !justJumped)
-			{
-				velocity.y = moveSettings.jumpVelocity;
-				justJumped = true;
-			}
-			else if (jumpInput == 0 && !justJumped)
-			{
-				velocity.y = 0;
-			}
+			velocity.y = moveSettings.jumpVelocity;
+			justJumped = true;
+		}
+
+		Debug.Log(velocity);
+	}
+
+	private void UpdateYAcceleration()
+	{
+		if (IsGroundedWithoutCoyoteTime())
+		{
+			velocity.y = 0f;
 		}
 		else
 		{
-			// decrease velocity.y
-			velocity.y -= physicsSettings.downAcceleration;
 			justJumped = false;
+			velocity.y -= physicsSettings.downAcceleration;
+			if (velocity.y < -300f)
+			{
+				velocity.y = -300f;
+			}
 		}
 	}
 
 	private void ApplyImpact()
 	{
-		rigidb.velocity += impactToAdd;
+		velocity += impactToAdd;
 		impactToAdd = Vector3.zero;
 	}
 
@@ -269,6 +261,8 @@ public class PlayerController : MonoBehaviour
 		{
 			UpdateMovementPlaneFromAngle();
 		}
+
+		Debug.DrawRay(transform.position, movementPlaneOrthogonal, Color.black);
 	}
 
 	private void UpdateMovementPlaneFromAngle()
