@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
 		public string FORWARD_AXIS = "Vertical";
 		public string TURN_AXIS = "Horizontal";
 		public string JUMP_AXIS = "Jump";
+		public bool isActive = true;
 	}
 
 	[SerializeField] private MoveSettings moveSettings = new MoveSettings();
@@ -87,6 +88,11 @@ public class PlayerController : MonoBehaviour
 	public void SetImpact(Vector3 impact)
 	{
 		impactToAdd += impact;
+	}
+
+	public void SetInputActive(bool inputState)
+	{
+		inputSettings.isActive = inputState;
 	}
 
 	private void Start()
@@ -179,9 +185,18 @@ public class PlayerController : MonoBehaviour
 	
 	private void GetInput()
 	{
-		forwardInput = Input.GetAxis(inputSettings.FORWARD_AXIS); // interpolated
-		sidewardInput = Input.GetAxis(inputSettings.TURN_AXIS); // interpolated
-		jumpInput = Input.GetAxisRaw(inputSettings.JUMP_AXIS); // non-interpolated
+		if (inputSettings.isActive)
+		{
+			forwardInput = Input.GetAxis(inputSettings.FORWARD_AXIS); // interpolated
+			sidewardInput = Input.GetAxis(inputSettings.TURN_AXIS); // interpolated
+			jumpInput = Input.GetAxisRaw(inputSettings.JUMP_AXIS); // non-interpolated
+		}
+		else
+		{
+			forwardInput = 0f;
+			sidewardInput = 0f;
+			jumpInput = 0f;
+		}
 	}
 
 	private void UpdateMovementForward()
@@ -224,8 +239,6 @@ public class PlayerController : MonoBehaviour
 			velocity.y = moveSettings.jumpVelocity;
 			justJumped = true;
 		}
-
-		Debug.Log(velocity);
 	}
 
 	private void UpdateYAcceleration()

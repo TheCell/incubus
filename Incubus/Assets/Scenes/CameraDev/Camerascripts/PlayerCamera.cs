@@ -14,9 +14,10 @@ public class PlayerCamera : MonoBehaviour
         public string LOCK_TARGET_PYRAMID = "LockToPyramid";
         public string LOCK_TARGET_AREA = "LockToArea";
 		*/
-    }
+		public bool isActive = true;
+	}
 
-    [SerializeField] private Transform target;
+	[SerializeField] private Transform target;
     [SerializeField] private Vector3 lookAtPlayerOffset = new Vector3(0f, 1.2f, 0f);
 	[SerializeField] private bool exponentialCameraTurn = true;
 	[SerializeField] private int exponentialMultiplier = 3;
@@ -37,7 +38,12 @@ public class PlayerCamera : MonoBehaviour
 	{
 		get { return floorLevelDot; }
 	}
-	
+
+	public void SetInputActive(bool inputState)
+	{
+		inputSettings.isActive = inputState;
+	}
+
 	private void Start()
     {
         SetCameraTarget(target);
@@ -107,14 +113,22 @@ public class PlayerCamera : MonoBehaviour
 
     private void GetInput()
     {
-        cameraHorizontal = Input.GetAxis(inputSettings.HORIZONTAL_AXIS); // interpolated
-        cameraVertical = Input.GetAxis(inputSettings.VERTICAL_AXIS); // interpolated
+		if (inputSettings.isActive)
+		{
+			cameraHorizontal = Input.GetAxis(inputSettings.HORIZONTAL_AXIS); // interpolated
+			cameraVertical = Input.GetAxis(inputSettings.VERTICAL_AXIS); // interpolated
+		}
+		else
+		{
+			cameraHorizontal = 0f;
+			cameraVertical = 0f;
+		}
 
 		/*
         lockPyramid = Input.GetAxis(inputSettings.LOCK_TARGET_PYRAMID); // interpolated
         lockArea = Input.GetAxis(inputSettings.LOCK_TARGET_AREA); // interpolated
 		*/
-    }
+	}
 
     private void SetCameraTarget(Transform targetTransform)
     {
