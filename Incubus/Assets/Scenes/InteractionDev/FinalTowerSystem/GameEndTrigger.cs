@@ -8,6 +8,9 @@ using System;
 public class GameEndTrigger : MonoBehaviour
 {
 	[SerializeField] private VideoClip closingVideo;
+	[SerializeField] private PlayerController playerController;
+	[SerializeField] private PlayerCamera playerCamera;
+
 	private VideoPlayer videoPlayer;
 
 	private void Start()
@@ -36,8 +39,15 @@ public class GameEndTrigger : MonoBehaviour
 		if (other.GetComponent<PlayerController>() != null)
 		{
 			//Quit();
+			BlockPlayerMovement();
 			PlayClosingVideo();
 		}
+	}
+
+	private void BlockPlayerMovement()
+	{
+		playerController.SetInputActive(false);
+		playerCamera.SetInputActive(false);
 	}
 
 	private void PlayClosingVideo()
