@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1511221109375487175}
   - component: {fileID: 1511221109375487174}
   - component: {fileID: 1511221109375487173}
-  - component: {fileID: 1511221109375487172}
   m_Layer: 0
   m_Name: StartPoint
   m_TagString: Untagged
@@ -410,28 +409,6 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!114 &1511221109375487172
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1511221109375487178}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc5a483027554fc42a29a5d3521a508f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startPoint: {fileID: 0}
-  endPoint: {fileID: 0}
-  durationSeconds: 2
-  waitForPlayer: 1
-  elevatorSpeed:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &1511221110138136591
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,7 +421,6 @@ GameObject:
   - component: {fileID: 1511221110138136580}
   - component: {fileID: 1511221110138136587}
   - component: {fileID: 1511221110138136586}
-  - component: {fileID: 1511221110138136585}
   m_Layer: 0
   m_Name: EndPoint
   m_TagString: Untagged
@@ -842,28 +818,6 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!114 &1511221110138136585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1511221110138136591}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc5a483027554fc42a29a5d3521a508f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startPoint: {fileID: 0}
-  endPoint: {fileID: 0}
-  durationSeconds: 2
-  waitForPlayer: 1
-  elevatorSpeed:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &1511221110482956833
 GameObject:
   m_ObjectHideFlags: 0
