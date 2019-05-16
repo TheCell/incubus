@@ -18,7 +18,7 @@ public class MeshManipulation2 : MonoBehaviour
 
 	// inputs
 	private float strecht, shrink, force;
-	private ManipulationModes manipulationMode = ManipulationModes.Pyramid;
+	private ManipulationModes manipulationMode = ManipulationModes.Mesh;
 	private bool isManipulating;
 
 	// Ray Logic
