@@ -8,6 +8,7 @@ public class RespawnInfo : MonoBehaviour
 	private Vector3 respawnPosition = Vector3.zero;
 	private List<Vector3> respawnHistory = new List<Vector3>();
 	private RespawnEffect respawnEffect;
+	public ParticleSystem activeParticleSystem;
 
 	public Vector3 RespawnPosition
 	{
