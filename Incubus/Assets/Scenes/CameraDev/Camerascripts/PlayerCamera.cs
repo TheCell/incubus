@@ -57,9 +57,10 @@ public class PlayerCamera : MonoBehaviour
 		floorLevelDot.GetComponent<MeshRenderer>().enabled = false;
     }
 
-    private void Update()
+	private void Update()
     {
         GetInput();
+		Cursor.lockState = CursorLockMode.Confined;
 	}
 
 	private void LateUpdate()
