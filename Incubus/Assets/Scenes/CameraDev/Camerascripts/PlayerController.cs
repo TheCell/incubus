@@ -243,7 +243,12 @@ public class PlayerController : MonoBehaviour
 
 	private void UpdateYAcceleration()
 	{
-		if (IsGroundedWithoutCoyoteTime())
+		if (IsGrounded())
+		{
+			justJumped = false;
+			velocity.y = 0f;
+		}
+		else if (IsGroundedWithoutCoyoteTime())
 		{
 			velocity.y = 0f;
 		}
