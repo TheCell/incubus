@@ -171,7 +171,7 @@ public class PlayerController : MonoBehaviour
 	private bool IsGroundedWithoutCoyoteTime()
 	{
 		Vector3 downwardOffset = new Vector3(0f, -0.20f, 0f);
-		return Physics.CheckSphere(visualContainer.transform.position + downwardOffset, sphereCollider.radius - 0.15f, moveSettings.ground);
+		return Physics.CheckSphere(visualContainer.transform.position + downwardOffset, sphereCollider.radius - 0.15f, moveSettings.ground, QueryTriggerInteraction.Ignore);
 	}
 
 	/*
