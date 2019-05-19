@@ -77,18 +77,17 @@ public class PlayerCamera : MonoBehaviour
 		transform.position = transform.position + playerController.TranslationDeltaSinceLastCheck;
 
 		float angle = Vector3.Angle(transform.forward, Vector3.up);
+		float verticalDelta = CameraSpeed(cameraVertical);
 		//Debug.Log(angle + " hor: " + cameraHorizontal + " ver: " + cameraVertical);
-		if (cameraVertical > 0f && angle > 176f)
+		if (verticalDelta > 0f && angle > 174f)
 		{
-
 		}
-		else if (cameraVertical < 0f && angle < 86f)
+		else if (verticalDelta < 0f && angle < 86f)
 		{
-
 		}
 		else
 		{
-			transform.RotateAround(rotatemiddlepoint, transform.right, CameraSpeed(cameraVertical));
+			transform.RotateAround(rotatemiddlepoint, transform.right, verticalDelta);
 		}
 		transform.RotateAround(rotatemiddlepoint, Vector3.up, CameraSpeed(cameraHorizontal));
 		transform.LookAt(rotatemiddlepoint, Vector3.up);
