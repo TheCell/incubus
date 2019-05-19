@@ -29,6 +29,11 @@ public class PlayerCamera : MonoBehaviour
     private Vector3 cameraPlayerOffset;
 	private GameObject floorLevelDot;
 
+	private float maxTopAngle = 174f;
+	private float minBottomAngle = 86f;
+	public float cameraMultipier = 40f; // 0 - 100 reasonable
+	public bool invertCamera = false;
+
 	public Vector3 LookAtPlayerOffset
 	{
 		get { return lookAtPlayerOffset; }
@@ -61,13 +66,13 @@ public class PlayerCamera : MonoBehaviour
     {
         GetInput();
 		Cursor.lockState = CursorLockMode.Confined;
+		RotateCameraLimited();
 	}
 
 	private void LateUpdate()
     {
 		//RotateCamera();
 		//UpdateCameraPosition();
-		RotateCameraLimited();
 		UpdateFloorLevelDot();
 	}
 
@@ -78,29 +83,40 @@ public class PlayerCamera : MonoBehaviour
 
 		float angle = Vector3.Angle(transform.forward, Vector3.up);
 		float verticalDelta = CameraSpeed(cameraVertical);
-		//Debug.Log(angle + " hor: " + cameraHorizontal + " ver: " + cameraVertical);
-		if (verticalDelta > 0f && angle > 174f)
+		Debug.Log(verticalDelta);
+		if (invertCamera)
 		{
+			verticalDelta *= -1f;
 		}
-		else if (verticalDelta < 0f && angle < 86f)
+
+		//Debug.Log(angle + " hor: " + cameraHorizontal + " ver: " + cameraVertical);
+		if (verticalDelta > 0f && (angle + verticalDelta) > maxTopAngle)
 		{
+			//verticalDelta = maxTopDownAngle - (verticalDelta + angle);
+			verticalDelta = maxTopAngle - angle;
+		}
+		else if (verticalDelta < 0f && (angle + verticalDelta) < minBottomAngle)
+		{
+			verticalDelta = minBottomAngle - angle;
 		}
 		else
 		{
-			transform.RotateAround(rotatemiddlepoint, transform.right, verticalDelta);
 		}
+
+		transform.RotateAround(rotatemiddlepoint, transform.right, verticalDelta);
 		transform.RotateAround(rotatemiddlepoint, Vector3.up, CameraSpeed(cameraHorizontal));
 		transform.LookAt(rotatemiddlepoint, Vector3.up);
 	}
 
+	/*
 	private void RotateCamera()
     {
         Quaternion cameraRotationXDelta = Quaternion.AngleAxis(CameraSpeed(cameraHorizontal), Vector3.up);
         Quaternion cameraRotationYDelta = Quaternion.AngleAxis(CameraSpeed(cameraVertical), transform.right);
         // this does not work how I wish it would after rotating around a bit
         cameraPlayerOffset = cameraRotationYDelta * cameraRotationXDelta * cameraPlayerOffset;
-
     }
+	*/
 
     private void UpdateCameraPosition()
     {
@@ -160,7 +176,7 @@ public class PlayerCamera : MonoBehaviour
 
 	private float CameraSpeed(float direction)
 	{
-		float cameraSpeed = 1;
+		float cameraSpeed = 1f;
 
 		if (exponentialCameraTurn)
 		{
@@ -171,6 +187,11 @@ public class PlayerCamera : MonoBehaviour
 			cameraSpeed = cameraSpeed * direction;
 		}
 
+#if UNITY_EDITOR
+		cameraSpeed *= 10f * Time.deltaTime;
+#else
+		cameraSpeed *= cameraMultipier * Time.deltaTime;
+#endif
 		return cameraSpeed;
 	}
 }
