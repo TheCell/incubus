@@ -31,8 +31,8 @@ public class PlayerCamera : MonoBehaviour
 
 	private float maxTopAngle = 174f;
 	private float minBottomAngle = 86f;
-	public float cameraMultipier = 40f; // 0 - 100 reasonable
-	public bool invertCamera = false;
+	private static float cameraMultipier = 40f; // 0 - 100 reasonable
+	private static bool invertCamera = false;
 
 	public Vector3 LookAtPlayerOffset
 	{
@@ -43,6 +43,9 @@ public class PlayerCamera : MonoBehaviour
 	{
 		get { return floorLevelDot; }
 	}
+
+	public static bool InvertCamera { get => invertCamera; set => invertCamera = value; }
+	public static float CameraMultipier { get => cameraMultipier; set => cameraMultipier = Mathf.Clamp(value, 1f, 100f); }
 
 	public void SetInputActive(bool inputState)
 	{
@@ -83,7 +86,6 @@ public class PlayerCamera : MonoBehaviour
 
 		float angle = Vector3.Angle(transform.forward, Vector3.up);
 		float verticalDelta = CameraSpeed(cameraVertical);
-		Debug.Log(verticalDelta);
 		if (invertCamera)
 		{
 			verticalDelta *= -1f;
