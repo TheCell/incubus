@@ -159,6 +159,7 @@ GameObject:
   - component: {fileID: 2104273052}
   - component: {fileID: 5378915289914387447}
   - component: {fileID: 4306166311602751422}
+  - component: {fileID: 2916705710366482915}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -345,6 +346,21 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
+--- !u!114 &2916705710366482915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5997314378945587810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a291db470239cc04f9ed26b16736eb72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainMenu: {fileID: 4801709007254506659}
+  playerController: {fileID: 2781063671005540628}
+  playerCamera: {fileID: 5997314378945587814}
 --- !u!1 &5997314380659820492
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,32 +491,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 863113213, guid: b57471e17b163eb41a6fb4f674833e08, type: 3}
-      propertyPath: playerController
-      value: 
-      objectReference: {fileID: 2781063671005540628}
-    - target: {fileID: 863113213, guid: b57471e17b163eb41a6fb4f674833e08, type: 3}
-      propertyPath: playerCamera
-      value: 
-      objectReference: {fileID: 5997314378945587814}
     - target: {fileID: 6018334636188976020, guid: b57471e17b163eb41a6fb4f674833e08,
         type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 208777100, guid: b57471e17b163eb41a6fb4f674833e08, type: 3}
-      propertyPath: playerController
+    - target: {fileID: 6018334637252687057, guid: b57471e17b163eb41a6fb4f674833e08,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2781063671005540628}
-    - target: {fileID: 208777100, guid: b57471e17b163eb41a6fb4f674833e08, type: 3}
-      propertyPath: playerCamera
-      value: 
-      objectReference: {fileID: 5997314378945587814}
+      objectReference: {fileID: 2916705710366482915}
+    - target: {fileID: 6018334637252687057, guid: b57471e17b163eb41a6fb4f674833e08,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Toggle
+      objectReference: {fileID: 0}
+    - target: {fileID: 6018334637252687057, guid: b57471e17b163eb41a6fb4f674833e08,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b57471e17b163eb41a6fb4f674833e08, type: 3}
 --- !u!4 &8161800761934397715 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6945387478775189028, guid: b57471e17b163eb41a6fb4f674833e08,
+    type: 3}
+  m_PrefabInstance: {fileID: 1235802218079948599}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4801709007254506659 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6018334636188976020, guid: b57471e17b163eb41a6fb4f674833e08,
     type: 3}
   m_PrefabInstance: {fileID: 1235802218079948599}
   m_PrefabAsset: {fileID: 0}
