@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class SetAndUpdateOptions : MonoBehaviour
 {
 	public Slider cameraSpeedSlider;
+	public Slider audioLevel;
 	public Toggle invertCamera;
 
 	public void SetCameraInvertBool(bool value)
@@ -18,9 +19,15 @@ public class SetAndUpdateOptions : MonoBehaviour
 		PlayerCamera.CameraMultipier = value;
 	}
 
+	public void SetAudioVolume(float value)
+	{
+		AudioListener.volume = value;
+	}
+
 	void Start()
 	{
 		cameraSpeedSlider.value = PlayerCamera.CameraMultipier;
 		invertCamera.isOn = PlayerCamera.InvertCamera;
+		audioLevel.value = AudioListener.volume;
 	}
 }
