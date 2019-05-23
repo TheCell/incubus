@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3236252547614905032}
   - component: {fileID: 3236252547614905033}
   m_Layer: 0
-  m_Name: BuildSimple16
+  m_Name: GeoBuildSimple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bbb5ee6421e534445ba1763ed9486235, type: 2}
+  - {fileID: 2100000, guid: aee63f979e0ad13438b0b63ffbb60651, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

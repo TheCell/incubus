@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8665169664974672720}
   - component: {fileID: 8012969617257324660}
   m_Layer: 0
-  m_Name: Organ3
+  m_Name: Organ3Size5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4739cd5f19d044a059349dd24ed82f57, type: 2}
+  - {fileID: 2100000, guid: 3aed9ff342e1cd249bcaf94f7400aa8f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
