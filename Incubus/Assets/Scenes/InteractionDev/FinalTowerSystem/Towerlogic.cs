@@ -6,12 +6,18 @@ public class Towerlogic : MonoBehaviour
 {
 	[SerializeField] private List<GameObject> towerParts;
 	[SerializeField] private GameObject topPart;
+	private ParticleSystem particles;
 	private GameEndTrigger gameEndTrigger;
 
 	private void Start()
 	{
 		towerParts.Reverse();
 		gameEndTrigger = GetComponentInChildren<GameEndTrigger>();
+		particles = topPart.GetComponentInChildren<ParticleSystem>();
+		if (particles == null)
+		{
+			Debug.LogError("particlesystem not found");
+		}
 	}
 
 	public void RemovePart()
@@ -26,6 +32,7 @@ public class Towerlogic : MonoBehaviour
 			Vector3 topPos = topPart.transform.position;
 			topPos.y = topPos.y - towerPartBounds.size.y;
 			topPart.transform.position = topPos;
+			PlayParticles();
 		}
 
 		if (towerParts.Count <= 0)
@@ -40,6 +47,11 @@ public class Towerlogic : MonoBehaviour
 		{
 			gameEndTrigger.prepareVideo();
 		}
+	}
+
+	private void PlayParticles()
+	{
+		particles.Play();
 	}
 	/*
 	private void OnDrawGizmos()

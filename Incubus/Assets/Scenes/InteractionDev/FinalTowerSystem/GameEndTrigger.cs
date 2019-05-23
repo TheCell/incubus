@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.EventSystems;
 using System;
+using UnityEngine.SceneManagement;
 
 public class GameEndTrigger : MonoBehaviour
 {
@@ -57,6 +58,9 @@ public class GameEndTrigger : MonoBehaviour
 
 	private void Quit(VideoPlayer vp)
 	{
+		SceneManager.LoadScene(0);
+		return;
+
 #if UNITY_EDITOR
 		UnityEditor.EditorApplication.isPlaying = false;
 #else
