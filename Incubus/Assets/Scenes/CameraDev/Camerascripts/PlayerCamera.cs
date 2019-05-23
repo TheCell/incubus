@@ -68,7 +68,6 @@ public class PlayerCamera : MonoBehaviour
 	private void Update()
     {
         GetInput();
-		Cursor.lockState = CursorLockMode.Confined;
 		RotateCameraLimited();
 	}
 

@@ -14,6 +14,15 @@ public class ToggleMenu : MonoBehaviour
 		{
 			Toggle();
 		}
+
+		if (mainMenu.activeSelf)
+		{
+			Cursor.lockState = CursorLockMode.Confined;
+		}
+		else
+		{
+			Cursor.lockState = CursorLockMode.Locked;
+		}
 	}
 
 	public void Toggle()
