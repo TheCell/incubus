@@ -28,7 +28,15 @@ public class AdditionalSceneLoader : MonoBehaviour
 	{
 		if (!sceneName.Equals(rootScene.name))
 		{
-			SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+			if (sceneName.Equals("StarLevel 2"))
+			{
+				Debug.Log("load sync");
+				SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+			}
+			else
+			{
+				SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+			}
 		}
 	}
 
