@@ -18,6 +18,7 @@ public class MovingPlatform2 : MonoBehaviour
 	private bool finishVisited = false;
 	private bool platformRunning = false;
 	private bool somethingOnPlatform = false;
+	private bool somethingInTrigger = false;
 
 	private void Start()
     {
@@ -26,7 +27,7 @@ public class MovingPlatform2 : MonoBehaviour
 
 	private void Update()
 	{
-		if (collidingBodies.Count > 0)
+		if (collidingBodies.Count > 0 || somethingInTrigger)
 		{
 			somethingOnPlatform = true;
 		}
@@ -41,6 +42,16 @@ public class MovingPlatform2 : MonoBehaviour
 	private void FixedUpdate()
 	{
 		UpdateCurrentPosition();
+	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		somethingInTrigger = true;
+	}
+
+	private void OnTriggerExit(Collider other)
+	{
+		somethingInTrigger = false;
 	}
 
 	private void OnCollisionEnter(Collision collision)
