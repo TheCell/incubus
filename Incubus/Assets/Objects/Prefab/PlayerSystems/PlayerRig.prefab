@@ -114,9 +114,11 @@ MonoBehaviour:
   playerCamera: {fileID: 5997314378945587814}
   displacementSpeed: 5
   meshBrushSize: 5
-  manipulationMainSphereMaterial: {fileID: 2100000, guid: 6cecc76a2e930324b8ae3f8805c33ff4,
+  manipulationMainSphereMaterial: {fileID: 2100000, guid: 7de373d89989a2c4cb700245b32b2001,
     type: 2}
-  manipulationSphereMaterial: {fileID: 2100000, guid: 19b084438655af84e88e104c2999406f,
+  manipulationMainSphereActiveMaterial: {fileID: 2100000, guid: 2d232b410bcc99947adc87a3c666720c,
+    type: 2}
+  manipulationSphereMaterial: {fileID: 2100000, guid: 2362ffabfadd7c74cbd63fdaf7edff38,
     type: 2}
 --- !u!114 &1353113964
 MonoBehaviour:

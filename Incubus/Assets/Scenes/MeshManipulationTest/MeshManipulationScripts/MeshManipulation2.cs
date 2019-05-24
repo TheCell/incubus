@@ -47,6 +47,7 @@ public class MeshManipulation2 : MonoBehaviour
 	private GameObject targetmanipulationBall;
 	private GameObject[] areaManipulationBalls = new GameObject[10];
 	[SerializeField] private Material manipulationMainSphereMaterial;
+	[SerializeField] private Material manipulationMainSphereActiveMaterial;
 	[SerializeField] private Material manipulationSphereMaterial;
 
 	private void Start()
@@ -74,6 +75,7 @@ public class MeshManipulation2 : MonoBehaviour
 		UpdateIndicesAndPositions();
 		CheckAndStartManipulation();
 		DisplaySpheres();
+		UpdateMainBallTexture();
 	}
 
 	private void FixedUpdate()
@@ -374,6 +376,18 @@ public class MeshManipulation2 : MonoBehaviour
 		for (; count < areaManipulationBalls.Length; count++)
 		{
 			areaManipulationBalls[count].SetActive(false);
+		}
+	}
+
+	private void UpdateMainBallTexture()
+	{
+		if (isManipulating && force != 0f)
+		{
+			targetmanipulationBall.GetComponent<Renderer>().material = manipulationMainSphereActiveMaterial;
+		}
+		else
+		{
+			targetmanipulationBall.GetComponent<Renderer>().material = manipulationMainSphereMaterial;
 		}
 	}
 
