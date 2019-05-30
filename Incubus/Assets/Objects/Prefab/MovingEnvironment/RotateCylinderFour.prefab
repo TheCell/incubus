@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6584322742418748965}
   - component: {fileID: 618175975948390587}
   - component: {fileID: 367686556162691681}
+  - component: {fileID: 8818760908147722155}
   m_Layer: 0
   m_Name: RotateCylinderFour
   m_TagString: Untagged
@@ -1464,9 +1465,23 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6936914595235610917}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7cae69c0ca7f04c40849d1340411403f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   turnSpeed: 10
+--- !u!114 &8818760908147722155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6936914595235610917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ff3a63f09fc3d944825195d4572aebe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotation: {x: 0, y: 1, z: 0}
+  speed: 10
