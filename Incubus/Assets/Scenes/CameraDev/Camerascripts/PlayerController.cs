@@ -234,27 +234,30 @@ public class PlayerController : MonoBehaviour
 
 	private void Jump()
 	{
-		if (IsGrounded() && jumpInput > 0 && !justJumped)
+		if (IsGrounded() && jumpInput > 0)
 		{
 			velocity.y = moveSettings.jumpVelocity;
 			justJumped = true;
+		}
+
+		if (!IsGrounded())
+		{
+			justJumped = false;
 		}
 	}
 
 	private void UpdateYAcceleration()
 	{
-		if (IsGrounded())
+		if (IsGrounded() && !justJumped)
 		{
-			justJumped = false;
 			velocity.y = 0f;
 		}
-		else if (IsGroundedWithoutCoyoteTime())
+		else if (IsGroundedWithoutCoyoteTime() && !justJumped)
 		{
 			velocity.y = 0f;
 		}
 		else
 		{
-			justJumped = false;
 			velocity.y -= physicsSettings.downAcceleration;
 			if (velocity.y < -300f)
 			{
