@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2156337000942809301}
   - component: {fileID: 5742200531301890623}
   - component: {fileID: 5337197961894016075}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Organ1Size10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
