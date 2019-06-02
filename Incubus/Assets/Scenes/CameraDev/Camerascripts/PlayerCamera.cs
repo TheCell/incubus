@@ -170,9 +170,9 @@ public class PlayerCamera : MonoBehaviour
 
 	private void UpdateFloorLevelDot()
 	{
-		floorLevelDot.transform.position = target.transform.position - new Vector3(0.5f, 0.5f, 0.5f);
+		floorLevelDot.transform.position = target.transform.position - new Vector3(0f, 0.5f, 0f);
 		floorLevelDot.transform.rotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
-		floorLevelDot.transform.position = floorLevelDot.transform.position + floorLevelDot.transform.forward * 3f;
+		floorLevelDot.transform.position = floorLevelDot.transform.position + floorLevelDot.transform.forward * 1.5f;
 	}
 
 	private float CameraSpeed(float direction)
