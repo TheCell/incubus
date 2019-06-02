@@ -9,6 +9,7 @@ public class MeshManipulation2 : MonoBehaviour
 	[SerializeField] private float displacementSpeed = 5f;
 	[SerializeField] private float meshBrushSize = 5f;
 	private PlayerController playerController;
+    private bool isActive = true;
 
 	enum ManipulationModes
 	{
@@ -50,7 +51,12 @@ public class MeshManipulation2 : MonoBehaviour
 	[SerializeField] private Material manipulationMainSphereActiveMaterial;
 	[SerializeField] private Material manipulationSphereMaterial;
 
-	private void Start()
+    public void SetInputActive(bool active)
+    {
+        isActive = active;
+    }
+
+    private void Start()
 	{
 		if (GetComponent<PlayerController>() != null)
 		{
@@ -452,9 +458,16 @@ public class MeshManipulation2 : MonoBehaviour
 			shrink = -1f;
 		}
 
-		force = (shrink + strecht) * displacementSpeed;
+        if (isActive)
+        {
+            force = (shrink + strecht) * displacementSpeed;
+        }
+        else
+        {
+            force = (shrink + strecht) * 0f;
+        }
 
-		if (isManipulating && (Mathf.Abs(shrink) + Mathf.Abs(strecht) <= 0.3f))
+        if (isManipulating && (Mathf.Abs(shrink) + Mathf.Abs(strecht) <= 0.3f))
 		{
 			isManipulating = false;
 		}

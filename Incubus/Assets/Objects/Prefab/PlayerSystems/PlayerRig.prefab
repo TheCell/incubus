@@ -363,6 +363,7 @@ MonoBehaviour:
   mainMenu: {fileID: 4801709007254506659}
   playerController: {fileID: 2781063671005540628}
   playerCamera: {fileID: 5997314378945587814}
+  meshManipulation: {fileID: 1620957198}
 --- !u!1 &5997314380659820492
 GameObject:
   m_ObjectHideFlags: 0
