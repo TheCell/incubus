@@ -8,6 +8,7 @@ public class SetAndUpdateOptions : MonoBehaviour
 	public Slider cameraSpeedSlider;
 	public Slider audioLevel;
 	public Toggle invertCamera;
+    public Button backButton;
 
 	public void SetCameraInvertBool(bool value)
 	{
@@ -24,10 +25,18 @@ public class SetAndUpdateOptions : MonoBehaviour
 		AudioListener.volume = value;
 	}
 
-	void Start()
+	private void Start()
 	{
 		cameraSpeedSlider.value = PlayerCamera.CameraMultipier;
 		invertCamera.isOn = PlayerCamera.InvertCamera;
 		audioLevel.value = AudioListener.volume;
 	}
+
+    private void Update()
+    {
+        if (gameObject.activeSelf && Input.GetButtonDown("Cancel"))
+        {
+            backButton.onClick.Invoke();
+        }
+    }
 }
