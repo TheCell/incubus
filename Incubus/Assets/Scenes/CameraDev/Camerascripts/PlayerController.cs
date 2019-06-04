@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 		public float rotationVelocity = 100;
 		public float jumpVelocity = 25;
 		public float distToGrounded = 0.78f;
+		public float sprintMultiplier = 1.5f;
 		public LayerMask ground;
 	}
 
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
 		public string FORWARD_AXIS = "Vertical";
 		public string TURN_AXIS = "Horizontal";
 		public string JUMP_AXIS = "Jump";
+		public string SPRINT = "Sprint";
 		public bool isActive = true;
 	}
 
@@ -54,6 +56,7 @@ public class PlayerController : MonoBehaviour
 	private Vector3 groundAngle;
 
 	private bool justJumped = false;
+	private bool sprintInput = false;
 
 	//private Vector3 translationDeltaSinceLastCheck = Vector3.zero;
 	private Vector3 positionAtLastCheck = Vector3.zero;
@@ -190,12 +193,21 @@ public class PlayerController : MonoBehaviour
 			forwardInput = Input.GetAxis(inputSettings.FORWARD_AXIS); // interpolated
 			sidewardInput = Input.GetAxis(inputSettings.TURN_AXIS); // interpolated
 			jumpInput = Input.GetAxisRaw(inputSettings.JUMP_AXIS); // non-interpolated
+			if (Input.GetButtonDown(inputSettings.SPRINT))
+			{
+				sprintInput = true;
+			}
+			if (Input.GetButtonUp(inputSettings.SPRINT))
+			{
+				sprintInput = false;
+			}
 		}
 		else
 		{
 			forwardInput = 0f;
 			sidewardInput = 0f;
 			jumpInput = 0f;
+			sprintInput = false;
 		}
 	}
 
@@ -224,7 +236,17 @@ public class PlayerController : MonoBehaviour
 			visualContainer.transform.Rotate(cameraTransform.forward, sidewardInput * -10f, Space.World);
 		}
 
-		Vector3 newVelocity = combinedDirection * moveSettings.movementVelocity;
+		Vector3 newVelocity = Vector3.zero;
+
+		if (HasStamina() && sprintInput)
+		{
+			SprintVisual();
+			newVelocity = combinedDirection * moveSettings.movementVelocity * moveSettings.sprintMultiplier;
+		}
+		else
+		{
+			newVelocity = combinedDirection * moveSettings.movementVelocity;
+		}
 		newVelocity.y = newVelocity.y + currentYVelocity;
 
 		velocity = newVelocity;
@@ -334,5 +356,17 @@ public class PlayerController : MonoBehaviour
 			isSlippery = GetSurfaceType(groundHit.transform.tag) == Surface.Slippery;
 		}
 		return isSlippery;
+	}
+
+	private bool HasStamina()
+	{
+		// how long can you sprint
+		return true;
+	}
+
+	private void SprintVisual()
+	{
+		// generate particles
+		Debug.Log("SprintVisual ");
 	}
 }

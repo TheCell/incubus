@@ -70,6 +70,7 @@ MonoBehaviour:
     rotationVelocity: 100
     jumpVelocity: 15
     distToGrounded: 0.6
+    sprintMultiplier: 1.5
     ground:
       serializedVersion: 2
       m_Bits: 1079
@@ -80,6 +81,7 @@ MonoBehaviour:
     FORWARD_AXIS: Vertical
     TURN_AXIS: Horizontal
     JUMP_AXIS: Jump
+    SPRINT: Sprint
     isActive: 1
   visualContainer: {fileID: 6468289655142998093}
   cameraTransform: {fileID: 5997314378945587815}
@@ -535,16 +537,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2937780211261942151}
     m_Modifications:
-    - target: {fileID: 612532870082909129, guid: 5cc2dad8acefb42b396758c509f280a9,
-        type: 3}
-      propertyPath: m_Name
-      value: Avatar
-      objectReference: {fileID: 0}
-    - target: {fileID: 612532870082909129, guid: 5cc2dad8acefb42b396758c509f280a9,
-        type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 4529353207060373978, guid: 5cc2dad8acefb42b396758c509f280a9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -599,6 +591,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 612532870082909129, guid: 5cc2dad8acefb42b396758c509f280a9,
+        type: 3}
+      propertyPath: m_Name
+      value: Avatar
+      objectReference: {fileID: 0}
+    - target: {fileID: 612532870082909129, guid: 5cc2dad8acefb42b396758c509f280a9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3685337780580457088, guid: 5cc2dad8acefb42b396758c509f280a9,
         type: 3}
