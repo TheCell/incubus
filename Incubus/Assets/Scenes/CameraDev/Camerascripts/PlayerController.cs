@@ -154,7 +154,7 @@ public class PlayerController : MonoBehaviour
 		rigidb.velocity = velocity;
 	}
 
-	private bool IsGrounded()
+	public bool IsGrounded()
 	{
 		bool isGrounded = IsGroundedWithoutCoyoteTime();
 		if (isGrounded)
@@ -225,7 +225,14 @@ public class PlayerController : MonoBehaviour
 		if (Mathf.Abs(forwardInput) > inputSettings.inputThreshold)
 		{
 			combinedDirection = forwardInput * movementForwardDirection;
-			visualContainer.transform.Rotate(cameraTransform.right, forwardInput * 10f, Space.World);
+			if (IsSprinting())
+			{
+				visualContainer.transform.Rotate(cameraTransform.right, forwardInput * 10f * moveSettings.sprintMultiplier, Space.World);
+			}
+			else
+			{
+				visualContainer.transform.Rotate(cameraTransform.right, forwardInput * 10f, Space.World);
+			}
 		}
 
 		if (Mathf.Abs(sidewardInput) > inputSettings.inputThreshold)
@@ -233,12 +240,19 @@ public class PlayerController : MonoBehaviour
 			Vector3 movementSidewardDirection = Quaternion.AngleAxis(90, movementPlaneOrthogonal) * movementForwardDirection;
 
 			combinedDirection = combinedDirection + sidewardInput * movementSidewardDirection;
-			visualContainer.transform.Rotate(cameraTransform.forward, sidewardInput * -10f, Space.World);
+			if (IsSprinting())
+			{
+				visualContainer.transform.Rotate(cameraTransform.forward, sidewardInput * -10f * moveSettings.sprintMultiplier, Space.World);
+			}
+			else
+			{
+				visualContainer.transform.Rotate(cameraTransform.forward, sidewardInput * -10f, Space.World);
+			}
 		}
 
 		Vector3 newVelocity = Vector3.zero;
 
-		if (HasStamina() && sprintInput)
+		if (IsSprinting())
 		{
 			SprintVisual();
 			newVelocity = combinedDirection * moveSettings.movementVelocity * moveSettings.sprintMultiplier;
@@ -367,6 +381,16 @@ public class PlayerController : MonoBehaviour
 	private void SprintVisual()
 	{
 		// generate particles
-		Debug.Log("SprintVisual ");
+		//Debug.Log("SprintVisual ");
+	}
+
+	public bool IsSprinting()
+	{
+		if(HasStamina() && sprintInput)
+		{
+			return true;
+		}
+
+		return false;
 	}
 }
