@@ -246,7 +246,7 @@ InputManager:
     axis: 8
     joyNum: 0
   - serializedVersion: 3
-    m_Name: SwitchManipulation
+    m_Name: SwitchManipulationOld
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
