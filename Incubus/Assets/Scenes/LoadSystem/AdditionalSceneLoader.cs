@@ -9,10 +9,12 @@ public class AdditionalSceneLoader : MonoBehaviour
 	private List<string> scenesToLoad = new List<string>();
 	private List<string> scenesToUnload = new List<string>();
 	private Scene rootScene;
+	private string worldDecoration = "WorldDecoration";
 
 	private void Start()
 	{
 		rootScene = SceneManager.GetActiveScene();
+		SceneManager.LoadScene(worldDecoration, LoadSceneMode.Additive);
 	}
 
 	public void LoadScenes(SceneInformation sceneInformation)
@@ -57,7 +59,7 @@ public class AdditionalSceneLoader : MonoBehaviour
 
 	private void UnloadScene(string sceneName)
 	{
-		if (!sceneName.Equals(rootScene.name))
+		if (!sceneName.Equals(rootScene.name) && !sceneName.Equals(worldDecoration))
 		{
 			SceneManager.UnloadSceneAsync(sceneName);
 		}

@@ -59,6 +59,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerScript: {fileID: 0}
   particleContainer: {fileID: 2665576315715763361}
+  miniatureTowerParts:
+  - {fileID: 493357164010221328}
+  - {fileID: 6886478737058804215}
+  - {fileID: 4841944042571851658}
+  - {fileID: 514890173723596071}
+  replacementMaterial: {fileID: 2100000, guid: 9222245a9c98def46b58c204f3b0f568, type: 2}
 --- !u!1 &2703410612226227270
 GameObject:
   m_ObjectHideFlags: 0
@@ -6008,6 +6014,30 @@ PrefabInstance:
 --- !u!4 &2035555613959479024 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 434719592080582774, guid: 8523ea3c4b5b6b7488e347d675152879,
+    type: 3}
+  m_PrefabInstance: {fileID: 1889207411613824646}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &493357164010221328 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2084904512740383126, guid: 8523ea3c4b5b6b7488e347d675152879,
+    type: 3}
+  m_PrefabInstance: {fileID: 1889207411613824646}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6886478737058804215 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5018839355342276465, guid: 8523ea3c4b5b6b7488e347d675152879,
+    type: 3}
+  m_PrefabInstance: {fileID: 1889207411613824646}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4841944042571851658 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6414773291383689484, guid: 8523ea3c4b5b6b7488e347d675152879,
+    type: 3}
+  m_PrefabInstance: {fileID: 1889207411613824646}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &514890173723596071 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2094897044113367969, guid: 8523ea3c4b5b6b7488e347d675152879,
     type: 3}
   m_PrefabInstance: {fileID: 1889207411613824646}
   m_PrefabAsset: {fileID: 0}
