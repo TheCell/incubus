@@ -9,6 +9,7 @@ public class MovingPlatform2 : MonoBehaviour
 	[SerializeField] private float durationSeconds = 2f;
 	[SerializeField] private bool waitForPlayer = true;
 	[SerializeField] private AnimationCurve elevatorSpeed;
+	[SerializeField] private bool movesObjectsInTrigger = false;
 
 	private bool reverseDirection = false;
 	private float timeSincePlatformStart;
@@ -47,30 +48,58 @@ public class MovingPlatform2 : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		somethingInTrigger = true;
+
+		if (movesObjectsInTrigger)
+		{
+			other.attachedRigidbody.velocity = Vector3.zero;
+			if (!collidingBodies.Contains(other.attachedRigidbody))
+			{
+				collidingBodies.Add(other.attachedRigidbody);
+			}
+		}
 	}
 
 	private void OnTriggerExit(Collider other)
 	{
 		somethingInTrigger = false;
+
+		if (movesObjectsInTrigger)
+		{
+			if (!collidingBodies.Contains(other.attachedRigidbody))
+			{
+				PlayerController playerController = other.GetComponent<PlayerController>();
+				if (playerController != null)
+				{
+					playerController.SetImpact(positionDelta);
+				}
+				collidingBodies.Remove(other.attachedRigidbody);
+			}
+		}
 	}
 
 	private void OnCollisionEnter(Collision collision)
 	{
 		//Debug.Log("added object");
 		collision.rigidbody.velocity = Vector3.zero;
-		collidingBodies.Add(collision.rigidbody);
+		if (!collidingBodies.Contains(collision.rigidbody))
+		{
+			collidingBodies.Add(collision.rigidbody);
+		}
 	}
 
 	private void OnCollisionExit(Collision collision)
 	{
 		//Debug.Log("removed object");
 		GameObject collidingObject = collision.gameObject;
-		PlayerController playerController = collidingObject.GetComponent<PlayerController>();
-		if (playerController != null)
+		if (collidingBodies.Contains(collision.rigidbody))
 		{
-			playerController.SetImpact(positionDelta);
+			PlayerController playerController = collidingObject.GetComponent<PlayerController>();
+			if (playerController != null)
+			{
+				playerController.SetImpact(positionDelta);
+			}
+			collidingBodies.Remove(collision.rigidbody);
 		}
-		collidingBodies.Remove(collision.rigidbody);
 	}
 
 	private void CheckAndStartPlatform()
