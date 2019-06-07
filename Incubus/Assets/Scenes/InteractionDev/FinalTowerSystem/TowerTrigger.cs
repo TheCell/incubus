@@ -16,6 +16,11 @@ public class TowerTrigger : MonoBehaviour
 		UpdateTowerMaterial();
 	}
 
+	public static void ResetCounter()
+	{
+		numberOfPiecesRemoved = 0;
+	}
+
 	private void OnTriggerEnter(Collider other)
 	{
 		if (wasActivated)
