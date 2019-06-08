@@ -7,7 +7,7 @@ public class ShotBehaviour : MonoBehaviour
 	[SerializeField] private float pushForce = 50f;
 	private AudioSource audioSource;
 	private Rigidbody bulletRigidbody;
-	private ParticleSystem particleSystem;
+	private ParticleSystem particles;
 
 	private void Start()
 	{
@@ -17,11 +17,11 @@ public class ShotBehaviour : MonoBehaviour
 
 	private void OnEnable()
 	{
-		particleSystem = GetComponentInChildren<ParticleSystem>();
+		particles = GetComponentInChildren<ParticleSystem>();
 
-		if (particleSystem != null)
+		if (particles != null)
 		{
-			particleSystem.Play();
+			particles.Play();
 		}
 	}
 

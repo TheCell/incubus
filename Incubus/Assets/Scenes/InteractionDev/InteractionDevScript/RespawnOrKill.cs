@@ -4,6 +4,18 @@ using UnityEngine;
 
 public class RespawnOrKill : MonoBehaviour
 {
+	public static void Respawn(GameObject objectToRespawn, RespawnInfo respawnInfo)
+	{
+		objectToRespawn.transform.position = respawnInfo.RespawnPosition;
+		Rigidbody rb = objectToRespawn.GetComponent<Rigidbody>();
+		if (rb != null)
+		{
+			rb.velocity = Vector3.zero;
+		}
+
+		respawnInfo.RespawnEffect.PlayOnce();
+	}
+
 	private void OnTriggerEnter(Collider collider)
 	{
 		GameObject collisionRootObject = collider.transform.root.gameObject;
@@ -25,18 +37,6 @@ public class RespawnOrKill : MonoBehaviour
 		{
 			Respawn(collisionObject, respawnInfo);
 		}
-	}
-
-	private void Respawn(GameObject objectToRespawn, RespawnInfo respawnInfo)
-	{
-		objectToRespawn.transform.position = respawnInfo.RespawnPosition;
-		Rigidbody rb = objectToRespawn.GetComponent<Rigidbody>();
-		if (rb != null)
-		{
-			rb.velocity = Vector3.zero;
-		}
-
-		respawnInfo.RespawnEffect.PlayOnce();
 	}
 
 	private void KillObject(GameObject gameObject)

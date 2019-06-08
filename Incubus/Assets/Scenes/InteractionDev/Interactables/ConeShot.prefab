@@ -892,8 +892,8 @@ GameObject:
   m_Component:
   - component: {fileID: 666838857364733942}
   - component: {fileID: 666838857364733941}
-  - component: {fileID: 666838857364733940}
   - component: {fileID: 1600493707}
+  - component: {fileID: 8257435864938642905}
   m_Layer: 0
   m_Name: ConeShot
   m_TagString: Untagged
@@ -931,19 +931,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2832813, y: 1.6704903, z: 2.6640968}
   m_Center: {x: -0.99265003, y: -0.014564037, z: 0.031942368}
---- !u!114 &666838857364733940
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 666838857364733947}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b794e47ea3c38d34aab27c10c628101b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pushForce: 50
 --- !u!54 &1600493707
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -960,6 +947,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 96
   m_CollisionDetection: 0
+--- !u!114 &8257435864938642905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666838857364733947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c84481bcef193c841b7f88af9fa3e2de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3538343502922773158
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1056,6 +1055,31 @@ PrefabInstance:
         type: 3}
       propertyPath: ShapeModule.m_Position.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7172953144299543651, guid: e2690da3cdbeca54782e4d356bb2f7e1,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3694316067283127498, guid: e2690da3cdbeca54782e4d356bb2f7e1,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1445012610984572899, guid: e2690da3cdbeca54782e4d356bb2f7e1,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2063359359382165234, guid: e2690da3cdbeca54782e4d356bb2f7e1,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2296292163162342292, guid: e2690da3cdbeca54782e4d356bb2f7e1,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2690da3cdbeca54782e4d356bb2f7e1, type: 3}
