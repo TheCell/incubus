@@ -68,7 +68,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 3093446393005926303}
   respawnEffect: {fileID: 6850955465246302331}
-  isActiveParticles: {fileID: 7767132485508909828}
+  activeParticles: {fileID: 7767132485508909828}
+  icoSphere: {fileID: 8415429268170168874}
+  activeMaterial: {fileID: 2100000, guid: d2db8b1e6edf14b40a9007765c5dce39, type: 2}
+  isActive: 0
 --- !u!1 &8336975973654261513
 GameObject:
   m_ObjectHideFlags: 0
@@ -3354,6 +3357,12 @@ PrefabInstance:
 --- !u!4 &6291632740944396449 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3994919829607508654, guid: e6de575950d1c43819bb6fe5692735ba,
+    type: 3}
+  m_PrefabInstance: {fileID: 6926695449669544463}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8415429268170168874 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1506749409410117669, guid: e6de575950d1c43819bb6fe5692735ba,
     type: 3}
   m_PrefabInstance: {fileID: 6926695449669544463}
   m_PrefabAsset: {fileID: 0}

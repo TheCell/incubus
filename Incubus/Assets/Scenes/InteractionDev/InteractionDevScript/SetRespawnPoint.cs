@@ -6,36 +6,63 @@ public class SetRespawnPoint : MonoBehaviour
 {
 	[SerializeField] private Transform spawnPoint;
 	[SerializeField] private RespawnEffect respawnEffect;
-	[SerializeField] private ParticleSystem isActiveParticles;
+	[SerializeField] private ParticleSystem activeParticles;
+	[SerializeField] private GameObject icoSphere;
+	[SerializeField] private Material activeMaterial;
+	public bool isActive = false;
+	private TurnObject turnScript;
+	private Material standardMaterial;
+	private float standardTurnSpeed;
+
+	private void Start()
+	{
+		if (icoSphere == null)
+		{
+			Debug.LogError("icoSphere not set");
+		}
+		if (activeMaterial == null)
+		{
+			Debug.LogError("activeMaterial not set");
+		}
+		standardMaterial = icoSphere.GetComponent<MeshRenderer>().material;
+		turnScript = icoSphere.GetComponent<TurnObject>();
+		standardTurnSpeed = turnScript.turnSpeed;
+	}
+
+	private void Update()
+	{
+		if (!isActive)
+		{
+			turnScript.turnSpeed = standardTurnSpeed;
+			activeParticles.Stop();
+			icoSphere.GetComponent<MeshRenderer>().material = standardMaterial;
+			return;
+		}
+
+		if (!activeParticles.isPlaying)
+		{
+			activeParticles.Play();
+		}
+		turnScript.turnSpeed = 100f;
+		icoSphere.GetComponent<MeshRenderer>().material = activeMaterial;
+	}
 
 	private void OnTriggerEnter(Collider collider)
 	{
 		RespawnInfo respawnInfo = collider.gameObject.GetComponent<RespawnInfo>();
+		if (respawnInfo == null)
+		{
+			return;
+		}
 
-		if (respawnInfo != null)
+		respawnInfo.RespawnPosition = spawnPoint.position;
+		respawnInfo.RespawnEffect = respawnEffect;
+		if (respawnInfo.currentRespawn != null)
 		{
-			respawnInfo.RespawnPosition = spawnPoint.position;
-			respawnInfo.RespawnEffect = respawnEffect;
-			if (respawnInfo.activeParticleSystem != null)
-			{
-				respawnInfo.activeParticleSystem.Stop();
-			}
-			respawnInfo.activeParticleSystem = isActiveParticles;
-			respawnInfo.activeParticleSystem.Play();
+			respawnInfo.currentRespawn.isActive = false;
 		}
-	}
 
-	/*
-	private void SetSpawnActive(bool activeState)
-	{
-		if (activeState)
-		{
-			isActiveParticles.Play();
-		}
-		else
-		{
-			isActiveParticles.Stop();
-		}
+		isActive = true;
+		respawnInfo.currentRespawn = this;
 	}
-	*/
 }
