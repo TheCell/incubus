@@ -65,7 +65,7 @@ public class MovingPlatform2 : MonoBehaviour
 
 		if (movesObjectsInTrigger)
 		{
-			if (!collidingBodies.Contains(other.attachedRigidbody))
+			if (collidingBodies.Contains(other.attachedRigidbody))
 			{
 				PlayerController playerController = other.GetComponent<PlayerController>();
 				if (playerController != null)
@@ -79,7 +79,11 @@ public class MovingPlatform2 : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision)
 	{
-		//Debug.Log("added object");
+		if (movesObjectsInTrigger)
+		{
+			return;
+		}
+
 		collision.rigidbody.velocity = Vector3.zero;
 		if (!collidingBodies.Contains(collision.rigidbody))
 		{
@@ -89,7 +93,11 @@ public class MovingPlatform2 : MonoBehaviour
 
 	private void OnCollisionExit(Collision collision)
 	{
-		//Debug.Log("removed object");
+		if (movesObjectsInTrigger)
+		{
+			return;
+		}
+
 		GameObject collidingObject = collision.gameObject;
 		if (collidingBodies.Contains(collision.rigidbody))
 		{
