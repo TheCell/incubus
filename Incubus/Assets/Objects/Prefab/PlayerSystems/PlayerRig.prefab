@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnOnTrigger: 1
-  activeParticleSystem: {fileID: 0}
+  currentRespawn: {fileID: 0}
 --- !u!114 &7510572002214148794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -612,50 +612,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1989447075033842909, guid: b8217049f7316e741be621e2784ec2f1,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.41299963
-      objectReference: {fileID: 0}
     - target: {fileID: 1989447073059282418, guid: b8217049f7316e741be621e2784ec2f1,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.413
       objectReference: {fileID: 0}
-    - target: {fileID: 1989447074958533567, guid: b8217049f7316e741be621e2784ec2f1,
+    - target: {fileID: 1989447075033842909, guid: b8217049f7316e741be621e2784ec2f1,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.41299963
       objectReference: {fileID: 0}
-    - target: {fileID: 1989447073059282419, guid: b8217049f7316e741be621e2784ec2f1,
+    - target: {fileID: 1989447074958533567, guid: b8217049f7316e741be621e2784ec2f1,
         type: 3}
-      propertyPath: ShapeModule.radius.value
-      value: 2.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1989447073059282419, guid: b8217049f7316e741be621e2784ec2f1,
-        type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1989447074958533560, guid: b8217049f7316e741be621e2784ec2f1,
-        type: 3}
-      propertyPath: ShapeModule.radius.value
-      value: 2.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1989447074958533560, guid: b8217049f7316e741be621e2784ec2f1,
-        type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1989447075033842910, guid: b8217049f7316e741be621e2784ec2f1,
-        type: 3}
-      propertyPath: ShapeModule.radius.value
-      value: 2.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1989447075033842910, guid: b8217049f7316e741be621e2784ec2f1,
-        type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 0
+      propertyPath: m_LocalPosition.z
+      value: 0.41299963
       objectReference: {fileID: 0}
     - target: {fileID: 67171378599934554, guid: b8217049f7316e741be621e2784ec2f1,
         type: 3}
