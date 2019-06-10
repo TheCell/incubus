@@ -105,7 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06faf6b54125c174f8f5d7b3909954fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  closingVideo: {fileID: 32900000, guid: 31a3f081602452b419f61188d82f6f33, type: 3}
+  closingVideo: {fileID: 32900000, guid: c7e4b0faade36a14db09c47200667b51, type: 3}
   playerController: {fileID: 0}
   playerCamera: {fileID: 0}
 --- !u!1 &1887196063594740010
@@ -13407,7 +13407,6 @@ MonoBehaviour:
   - {fileID: 5937504078558078924}
   - {fileID: 5937504078376290420}
   topPart: {fileID: 1887196063594740010}
-  particles: {fileID: 0}
 --- !u!1001 &6432142692682276742
 PrefabInstance:
   m_ObjectHideFlags: 0
