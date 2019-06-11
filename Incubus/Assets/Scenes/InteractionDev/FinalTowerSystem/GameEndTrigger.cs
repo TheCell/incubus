@@ -5,29 +5,35 @@ using UnityEngine.Video;
 using UnityEngine.EventSystems;
 using System;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering.PostProcessing;
 
 public class GameEndTrigger : MonoBehaviour
 {
-	[SerializeField] private VideoClip closingVideo;
+	//[SerializeField] private VideoClip closingVideo;
 	[SerializeField] private PlayerController playerController;
 	[SerializeField] private PlayerCamera playerCamera;
-
+	[SerializeField] private GameObject displayPlane;
 	private VideoPlayer videoPlayer;
+
+	//private VideoPlayer videoPlayer;
 
 	private void Start()
 	{
-		GameObject cameraObj = GameObject.Find("Main Camera");
+		displayPlane.GetComponent<MeshRenderer>().enabled = false;
+		videoPlayer = displayPlane.GetComponent<VideoPlayer>();
+		//GameObject cameraObj = GameObject.Find("Main Camera");
 		//Camera camera = cameraObj.GetComponent<Camera>();
-		videoPlayer = cameraObj.AddComponent<UnityEngine.Video.VideoPlayer>();
+		//videoPlayer = cameraObj.AddComponent<UnityEngine.Video.VideoPlayer>();
 		//videoPlayer = new VideoPlayer();
 		//videoPlayer.targetCamera = camera;
 		//videoPlayer.source = VideoSource.VideoClip;
 		videoPlayer.playOnAwake = false;
-		videoPlayer.isLooping = false;
-		videoPlayer.renderMode = UnityEngine.Video.VideoRenderMode.CameraNearPlane;
+		//videoPlayer.isLooping = false;
+		//videoPlayer.renderMode = UnityEngine.Video.VideoRenderMode.CameraNearPlane;
 		videoPlayer.aspectRatio = VideoAspectRatio.FitInside;
-		videoPlayer.clip = closingVideo;
+		//videoPlayer.clip = closingVideo;
 		videoPlayer.loopPointReached += Quit;
+		prepareVideo();
 	}
 
 	public void prepareVideo()
@@ -53,7 +59,14 @@ public class GameEndTrigger : MonoBehaviour
 
 	private void PlayClosingVideo()
 	{
+		DisablePostProcessing();
+		displayPlane.GetComponent<MeshRenderer>().enabled = true;
 		videoPlayer.Play();
+	}
+
+	private void DisablePostProcessing()
+	{
+		playerCamera.GetComponent<PostProcessLayer>().enabled = false;
 	}
 
 	private void Quit(VideoPlayer vp)
