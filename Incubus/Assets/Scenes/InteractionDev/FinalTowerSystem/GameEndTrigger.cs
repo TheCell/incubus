@@ -70,8 +70,9 @@ public class GameEndTrigger : MonoBehaviour
 
 	private void Quit(VideoPlayer vp)
 	{
-        displayPlane.GetComponent<MeshRenderer>().enabled = false;
-        SceneManager.LoadScene(0);
+        videoPlayer.Stop();
+        //displayPlane.GetComponent<MeshRenderer>().enabled = false;
+        SceneManager.LoadScene(1);
 		return;
 
 #if UNITY_EDITOR
