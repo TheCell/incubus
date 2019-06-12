@@ -9,19 +9,20 @@ public class TowerTrigger : MonoBehaviour
 	[SerializeField] private GameObject[] miniatureTowerParts;
 	[SerializeField] private Material replacementMaterial;
 	private static int numberOfPiecesRemoved = 0;
+    private int materialsUpdated = 0;
 	private bool wasActivated;
-
-	private void Update()
-	{
-		UpdateTowerMaterial();
-	}
-
+    
 	public static void ResetCounter()
 	{
 		numberOfPiecesRemoved = 0;
 	}
 
-	private void OnTriggerEnter(Collider other)
+    private void Update()
+    {
+        UpdateTowerMaterial();
+    }
+
+    private void OnTriggerEnter(Collider other)
 	{
 		if (wasActivated)
 		{
@@ -52,10 +53,15 @@ public class TowerTrigger : MonoBehaviour
 	private void RemoveMiniatureTowerPart()
 	{
 		numberOfPiecesRemoved++;
-	}
+    }
 
 	private void UpdateTowerMaterial()
 	{
+        if (materialsUpdated == numberOfPiecesRemoved)
+        {
+            return;
+        }
+
 		for (int i = 0; i < numberOfPiecesRemoved; i++)
 		{
 			if (miniatureTowerParts.Length > i)
@@ -63,7 +69,9 @@ public class TowerTrigger : MonoBehaviour
 				ReplaceMaterial(miniatureTowerParts[i]);
 			}
 		}
-	}
+
+        materialsUpdated = numberOfPiecesRemoved;
+    }
 
 	private void ReplaceMaterial(GameObject gameObject)
 	{

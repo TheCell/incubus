@@ -15,23 +15,12 @@ public class GameEndTrigger : MonoBehaviour
 	[SerializeField] private GameObject displayPlane;
 	private VideoPlayer videoPlayer;
 
-	//private VideoPlayer videoPlayer;
-
 	private void Start()
 	{
 		displayPlane.GetComponent<MeshRenderer>().enabled = false;
 		videoPlayer = displayPlane.GetComponent<VideoPlayer>();
-		//GameObject cameraObj = GameObject.Find("Main Camera");
-		//Camera camera = cameraObj.GetComponent<Camera>();
-		//videoPlayer = cameraObj.AddComponent<UnityEngine.Video.VideoPlayer>();
-		//videoPlayer = new VideoPlayer();
-		//videoPlayer.targetCamera = camera;
-		//videoPlayer.source = VideoSource.VideoClip;
 		videoPlayer.playOnAwake = false;
-		//videoPlayer.isLooping = false;
-		//videoPlayer.renderMode = UnityEngine.Video.VideoRenderMode.CameraNearPlane;
 		videoPlayer.aspectRatio = VideoAspectRatio.FitInside;
-		//videoPlayer.clip = closingVideo;
 		videoPlayer.loopPointReached += Quit;
 	}
 
@@ -44,7 +33,6 @@ public class GameEndTrigger : MonoBehaviour
 	{
 		if (other.GetComponent<PlayerController>() != null)
 		{
-			//Quit();
 			BlockPlayerMovement();
 			PlayClosingVideo();
 		}
@@ -73,13 +61,7 @@ public class GameEndTrigger : MonoBehaviour
         videoPlayer.Stop();
         displayPlane.GetComponent<MeshRenderer>().enabled = false;
 		playerCamera.GetComponent<PostProcessLayer>().enabled = true;
-        //SceneManager.LoadScene(1, LoadSceneMode.Single);
+        SceneManager.LoadScene(1, LoadSceneMode.Single);
         return;
-
-#if UNITY_EDITOR
-		UnityEditor.EditorApplication.isPlaying = false;
-#else
-		Application.Quit();
-#endif
 	}
 }
