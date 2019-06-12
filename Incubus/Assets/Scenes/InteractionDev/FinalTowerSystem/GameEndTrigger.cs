@@ -33,7 +33,6 @@ public class GameEndTrigger : MonoBehaviour
 		videoPlayer.aspectRatio = VideoAspectRatio.FitInside;
 		//videoPlayer.clip = closingVideo;
 		videoPlayer.loopPointReached += Quit;
-		prepareVideo();
 	}
 
 	public void prepareVideo()
@@ -59,7 +58,7 @@ public class GameEndTrigger : MonoBehaviour
 
 	private void PlayClosingVideo()
 	{
-		DisablePostProcessing();
+        DisablePostProcessing();
 		displayPlane.GetComponent<MeshRenderer>().enabled = true;
 		videoPlayer.Play();
 	}
@@ -71,7 +70,8 @@ public class GameEndTrigger : MonoBehaviour
 
 	private void Quit(VideoPlayer vp)
 	{
-		SceneManager.LoadScene(0);
+        displayPlane.GetComponent<MeshRenderer>().enabled = false;
+        SceneManager.LoadScene(0);
 		return;
 
 #if UNITY_EDITOR
