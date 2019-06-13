@@ -34,6 +34,7 @@ public class GameEndTrigger : MonoBehaviour
 		if (other.GetComponent<PlayerController>() != null)
 		{
 			BlockPlayerMovement();
+			videoPlayer.SetDirectAudioVolume(0, AudioListener.volume);
 			PlayClosingVideo();
 		}
 	}
@@ -61,7 +62,7 @@ public class GameEndTrigger : MonoBehaviour
         videoPlayer.Stop();
         displayPlane.GetComponent<MeshRenderer>().enabled = false;
 		playerCamera.GetComponent<PostProcessLayer>().enabled = true;
-        SceneManager.LoadScene(1, LoadSceneMode.Single);
+		SceneManager.LoadScene(1, LoadSceneMode.Single);
         return;
 	}
 }

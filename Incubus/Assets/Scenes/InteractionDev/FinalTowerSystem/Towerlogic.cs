@@ -11,6 +11,7 @@ public class Towerlogic : MonoBehaviour
 
 	private void Start()
 	{
+		TowerTrigger.ResetCounter();
 		towerParts.Reverse();
 		gameEndTrigger = GetComponentInChildren<GameEndTrigger>();
 		particles = topPart.GetComponentInChildren<ParticleSystem>();

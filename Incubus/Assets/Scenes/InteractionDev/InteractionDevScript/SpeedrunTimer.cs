@@ -35,7 +35,11 @@ public class SpeedrunTimer : MonoBehaviour
 			return;
 		}
 
-		if (!finished && (Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical")))
+		if (!finished
+			&& (Input.GetButtonDown("Horizontal")
+			|| (Input.GetButtonDown("Vertical"))
+			|| (Math.Abs(Input.GetAxis("Horizontal")) > 0.1f)
+			|| (Math.Abs(Input.GetAxis("Vertical")) > 0.1f)))
 		{
 			StartSpeedrun();
 		}
