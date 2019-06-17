@@ -44,6 +44,7 @@ public class Towerlogic : MonoBehaviour
 
 	private void PrepareVideoWhenAllPartsRemoved()
 	{
+		Debug.Log("prepping vid");
 		if (gameEndTrigger != null)
 		{
 			gameEndTrigger.prepareVideo();
