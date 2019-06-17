@@ -56,4 +56,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CUBICO/WorldDecoration.unity
     guid: 2d7dd7ae301de3f4aa9a0e3a8bfe20d5
+  - enabled: 1
+    path: Assets/Scenes/CUBICO/Presentation/Presentation.unity
+    guid: fec675946b7ef430cbc54b8ebe1b50fa
+  - enabled: 1
+    path: Assets/Scenes/CUBICO/Presentation/MemphisAndShader.unity
+    guid: 2a8e8e1b6fb040348957395c33612544
+  - enabled: 1
+    path: Assets/Scenes/CUBICO/Presentation/Systems.unity
+    guid: 52fa7488eebb8644f9c824b0b17bb883
+  - enabled: 1
+    path: Assets/Scenes/CUBICO/Presentation/SoundAndVideo.unity
+    guid: 8565437d35618c5429adef00ce40d0c1
   m_configObjects: {}
