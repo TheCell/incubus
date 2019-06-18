@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/CUBICO/Presentation/Presentation.unity
-    guid: fec675946b7ef430cbc54b8ebe1b50fa
-  - enabled: 1
     path: Assets/Scenes/CUBICO/MainMenu.unity
     guid: 629aa248649dd5043b8905cd87822c4f
   - enabled: 1
@@ -59,6 +56,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CUBICO/WorldDecoration.unity
     guid: 2d7dd7ae301de3f4aa9a0e3a8bfe20d5
+  - enabled: 1
+    path: Assets/Scenes/CUBICO/Presentation/Presentation.unity
+    guid: fec675946b7ef430cbc54b8ebe1b50fa
   - enabled: 1
     path: Assets/Scenes/CUBICO/Presentation/MemphisAndShader.unity
     guid: 2a8e8e1b6fb040348957395c33612544
