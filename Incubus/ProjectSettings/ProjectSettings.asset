@@ -80,6 +80,7 @@ PlayerSettings:
   usePlayerLog: 1
   bakeCollisionMeshes: 0
   forceSingleInstance: 0
+  useFlipModelSwapchain: 1
   resizableWindow: 0
   useMacAppStoreValidation: 0
   macAppStoreCategory: public.app-category.games
@@ -119,7 +120,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 1.4
+  bundleVersion: 1.5
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -269,13 +270,13 @@ PlayerSettings:
     height: 180
     banner: {fileID: 0}
   androidGamepadSupportLevel: 0
-  resolutionDialogBanner: {fileID: 2800000, guid: eab88516618eb904a8e2e00a85338c7d,
+  resolutionDialogBanner: {fileID: 2800000, guid: e618c75092350ae4bae7afb063a7df03,
     type: 3}
   m_BuildTargetIcons:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: eab88516618eb904a8e2e00a85338c7d, type: 3}
+      m_Icon: {fileID: 2800000, guid: aed7da79278af774a9d3c7ef4745344a, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0

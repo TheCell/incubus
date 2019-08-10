@@ -45,7 +45,9 @@ public class SpeedrunTimer : MonoBehaviour
 		}
 
 		UpdateUI();
-	}
+
+        UpdateAchievement();
+    }
 
 	private void StartSpeedrun()
 	{
@@ -109,4 +111,24 @@ public class SpeedrunTimer : MonoBehaviour
 			Finish();
 		}
 	}
+
+    private void UpdateAchievement()
+    {
+        if (finished)
+        {
+            TimeSpan elapsedSpan = new TimeSpan(finishTime.Ticks - speedrunStart.Ticks);
+            if (elapsedSpan.Minutes <= 12)
+            {
+                Achievement_Manager.Set_TWELVE_MINUTES();
+            }
+            if (elapsedSpan.Minutes <= 10)
+            {
+                Achievement_Manager.Set_TEN_MINUTES();
+            }
+            if (elapsedSpan.Minutes <= 8)
+            {
+                Achievement_Manager.Set_EIGHT_MINUTES();
+            }
+        }
+    }
 }

@@ -14,6 +14,7 @@ public class RespawnOrKill : MonoBehaviour
 		}
 
 		respawnInfo.RespawnEffect.PlayOnce();
+        Achievement_Manager.Set_RESPAWN();
 	}
 
 	private void OnTriggerEnter(Collider collider)

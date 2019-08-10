@@ -31,7 +31,23 @@ public class TowerTrigger : MonoBehaviour
 
 		if (other.tag == "Player")
 		{
-			wasActivated = true;
+            switch (numberOfPiecesRemoved)
+            {
+                case 0:
+                    Achievement_Manager.Set_FIRST_PART();
+                    break;
+                case 1:
+                    Achievement_Manager.Set_SECOND_PART();
+                    break;
+                case 2:
+                    Achievement_Manager.Set_THIRD_PART();
+                    break;
+                case 3:
+                    Achievement_Manager.Set_LAST_PART();
+                    break;
+            }
+
+            wasActivated = true;
             PlayParticles();
             towerScript.RemovePart();
 			RemoveMiniatureTowerPart();
