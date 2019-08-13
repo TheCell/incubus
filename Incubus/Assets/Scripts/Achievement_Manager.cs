@@ -42,6 +42,9 @@ public class Achievement_Manager : MonoBehaviour
                 case 10:
                     Set_PLAYTHROUGH();
                     break;
+                case 11:
+                    Set_HEART();
+                    break;
                 default:
                     Debug.LogError($"Case {achievementID} not in list");
                     break;
@@ -106,6 +109,12 @@ public class Achievement_Manager : MonoBehaviour
     private static void Set_PLAYTHROUGH()
     {
         Steamworks.SteamUserStats.SetAchievement("PLAYTHROUGH");
+        Steamworks.SteamUserStats.StoreStats();
+    }
+
+    private static void Set_HEART()
+    {
+        Steamworks.SteamUserStats.SetAchievement("HEART");
         Steamworks.SteamUserStats.StoreStats();
     }
 }
