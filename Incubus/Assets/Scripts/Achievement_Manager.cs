@@ -8,6 +8,11 @@ public class Achievement_Manager : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+		if (!SteamManager.Initialized)
+		{
+			return;
+		}
+
         if (other.name == "CharacterController")
         {
             switch (achievementID)

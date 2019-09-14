@@ -17,6 +17,11 @@ public class TowerTrigger : MonoBehaviour
 		numberOfPiecesRemoved = 0;
 	}
 
+	public static int NumberOfPiecesRemoved()
+	{
+		return numberOfPiecesRemoved + 1;
+	}
+
     private void Update()
     {
         UpdateTowerMaterial();
@@ -28,6 +33,11 @@ public class TowerTrigger : MonoBehaviour
 		{
 			return;
 		}
+
+		wasActivated = true;
+		PlayParticles();
+		towerScript.RemovePart();
+		RemoveMiniatureTowerPart();
 
 		if (other.tag == "Player")
 		{
@@ -46,11 +56,6 @@ public class TowerTrigger : MonoBehaviour
                     Achievement_Manager.Set_LAST_PART();
                     break;
             }
-
-            wasActivated = true;
-            PlayParticles();
-            towerScript.RemovePart();
-			RemoveMiniatureTowerPart();
 		}
 	}
 

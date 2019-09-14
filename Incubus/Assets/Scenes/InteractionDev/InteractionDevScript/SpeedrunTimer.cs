@@ -12,6 +12,7 @@ public class SpeedrunTimer : MonoBehaviour
 	private bool finished = false;
 	private DateTime speedrunStart = DateTime.Now;
 	private DateTime finishTime = DateTime.Now;
+	private bool leaderboardUpdated = false;
 	
 
     // Start is called before the first frame update
@@ -47,7 +48,16 @@ public class SpeedrunTimer : MonoBehaviour
 		UpdateUI();
 
         UpdateAchievement();
-    }
+		
+		if (finished && !leaderboardUpdated)
+		{
+			leaderboardUpdated = true;
+			TimeSpan elapsedSpan = new TimeSpan(finishTime.Ticks - speedrunStart.Ticks);
+			int finalTime = (int)elapsedSpan.TotalMilliseconds;
+			StartCoroutine("UpdateLeaderboard", finalTime);
+			//UpdateLeaderboard(finalTime);
+		}
+	}
 
 	private void StartSpeedrun()
 	{
@@ -92,7 +102,7 @@ public class SpeedrunTimer : MonoBehaviour
 
 	private void Finish()
 	{
-		if (!finished)
+		if (!finished && TowerTrigger.NumberOfPiecesRemoved() >= 4)
 		{
 			finished = true;
 			finishTime = DateTime.Now;
@@ -131,4 +141,80 @@ public class SpeedrunTimer : MonoBehaviour
             }
         }
     }
+
+	private IEnumerator UpdateLeaderboard(int timeInMilliseconds)
+	{
+		Debug.Log("updating leaderboard");
+		if (!SteamManager.Initialized)
+		{
+			Debug.Log("steammanager not initialized");
+			yield break;
+		}
+
+		bool findLeaderboardCallCompleted = false;
+		bool error = false;
+		bool uploadedScoreCallCompleted = false;
+		Steamworks.SteamLeaderboard_t speedrunLeaderboard = new Steamworks.SteamLeaderboard_t();
+		Steamworks.LeaderboardScoreUploaded_t leaderboardScore = new Steamworks.LeaderboardScoreUploaded_t();
+
+		Steamworks.SteamAPICall_t speedrunLeaderboardSearch = Steamworks.SteamUserStats.FindLeaderboard("speedrunlist");
+		Steamworks.CallResult<Steamworks.LeaderboardFindResult_t> findLeaderboardCallResult = Steamworks.CallResult<Steamworks.LeaderboardFindResult_t>.Create();
+		findLeaderboardCallResult.Set(speedrunLeaderboardSearch, (leaderboardFindResult, failure) =>
+		{
+			if (!failure && leaderboardFindResult.m_bLeaderboardFound == 1)
+			{
+				speedrunLeaderboard = leaderboardFindResult.m_hSteamLeaderboard;
+				Debug.Log("speedrunLeaderboard found");
+			}
+			else
+			{
+				error = true;
+			}
+
+			findLeaderboardCallCompleted = true;
+		});
+
+		while (!findLeaderboardCallCompleted) yield return null;
+
+		if (error)
+		{
+			
+			Debug.Log("Error finding High Score leaderboard.");
+			yield break;
+		}
+
+		Steamworks.SteamAPICall_t uploadedScoreCall = Steamworks.SteamUserStats.UploadLeaderboardScore(speedrunLeaderboard, Steamworks.ELeaderboardUploadScoreMethod.k_ELeaderboardUploadScoreMethodKeepBest, timeInMilliseconds, new int[0], 0);
+		Steamworks.CallResult<Steamworks.LeaderboardScoreUploaded_t> leaderboardScoreUploadedCallResult = Steamworks.CallResult<Steamworks.LeaderboardScoreUploaded_t>.Create();
+		leaderboardScoreUploadedCallResult.Set(uploadedScoreCall, (scoreUploadedResult, failure) => 
+		{
+			if (!failure && scoreUploadedResult.m_bSuccess == 1)
+			{
+				leaderboardScore = scoreUploadedResult;
+				Debug.Log("leaderboardScore found");
+			}
+			else
+			{
+				error = true;
+			}
+
+			uploadedScoreCallCompleted = true;
+		});
+
+		while (!uploadedScoreCallCompleted) yield return null;
+
+		if (error)
+		{
+			Debug.Log("Error uploading to High Score leaderboard.");
+			yield break;
+		}
+
+		if (leaderboardScore.m_bScoreChanged == 1)
+		{
+			Debug.Log(String.Format("New high score! Global rank #{0}.", leaderboardScore.m_nGlobalRankNew));
+		}
+		else
+		{
+			Debug.Log(String.Format("A previous score was better. Global rank #{0}.", leaderboardScore.m_nGlobalRankNew));
+		}
+	}
 }
