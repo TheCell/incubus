@@ -13,7 +13,7 @@ public class SpeedrunTimer : MonoBehaviour
 	private DateTime speedrunStart = DateTime.Now;
 	private DateTime finishTime = DateTime.Now;
 	private bool leaderboardUpdated = false;
-	
+	private bool allStatues = false;
 
     // Start is called before the first frame update
     void Start()
@@ -54,7 +54,12 @@ public class SpeedrunTimer : MonoBehaviour
 			leaderboardUpdated = true;
 			TimeSpan elapsedSpan = new TimeSpan(finishTime.Ticks - speedrunStart.Ticks);
 			int finalTime = (int)elapsedSpan.TotalMilliseconds;
-			StartCoroutine("UpdateLeaderboard", finalTime);
+			//StartCoroutine("UpdateLeaderboard", finalTime);
+			StartCoroutine(UpdateLeaderboard(finalTime, "speedrunall"));
+			if (allStatues)
+			{
+				StartCoroutine(UpdateLeaderboard(finalTime, "speedrunlist"));
+			}
 			//UpdateLeaderboard(finalTime);
 		}
 	}
@@ -95,14 +100,28 @@ public class SpeedrunTimer : MonoBehaviour
 		{
 			timeString = "XX:XX:XX";
 		}
-		
+
+		if (allStatues)
+		{
+			timeString = "all statues " + timeString;
+		}
+		else
+		{
+			timeString = "any% " + timeString;
+		}
+
 		//Debug.Log(timeString);
 		textmeshPro.SetText(timeString);
 	}
 
 	private void Finish()
 	{
-		if (!finished && TowerTrigger.NumberOfPiecesRemoved() >= 4)
+		if (TowerTrigger.NumberOfPiecesRemoved() >= 4)
+		{
+			allStatues = true;
+		}
+
+		if (!finished)
 		{
 			finished = true;
 			finishTime = DateTime.Now;
@@ -124,7 +143,7 @@ public class SpeedrunTimer : MonoBehaviour
 
     private void UpdateAchievement()
     {
-        if (finished)
+        if (finished && allStatues)
         {
             TimeSpan elapsedSpan = new TimeSpan(finishTime.Ticks - speedrunStart.Ticks);
             if (elapsedSpan.Minutes <= 12)
@@ -142,7 +161,7 @@ public class SpeedrunTimer : MonoBehaviour
         }
     }
 
-	private IEnumerator UpdateLeaderboard(int timeInMilliseconds)
+	private IEnumerator UpdateLeaderboard(int timeInMilliseconds, string leaderboardName)
 	{
 		Debug.Log("updating leaderboard");
 		if (!SteamManager.Initialized)
@@ -157,7 +176,7 @@ public class SpeedrunTimer : MonoBehaviour
 		Steamworks.SteamLeaderboard_t speedrunLeaderboard = new Steamworks.SteamLeaderboard_t();
 		Steamworks.LeaderboardScoreUploaded_t leaderboardScore = new Steamworks.LeaderboardScoreUploaded_t();
 
-		Steamworks.SteamAPICall_t speedrunLeaderboardSearch = Steamworks.SteamUserStats.FindLeaderboard("speedrunlist");
+		Steamworks.SteamAPICall_t speedrunLeaderboardSearch = Steamworks.SteamUserStats.FindLeaderboard(leaderboardName);
 		Steamworks.CallResult<Steamworks.LeaderboardFindResult_t> findLeaderboardCallResult = Steamworks.CallResult<Steamworks.LeaderboardFindResult_t>.Create();
 		findLeaderboardCallResult.Set(speedrunLeaderboardSearch, (leaderboardFindResult, failure) =>
 		{
