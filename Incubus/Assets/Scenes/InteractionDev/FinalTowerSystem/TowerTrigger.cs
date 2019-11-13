@@ -37,7 +37,6 @@ public class TowerTrigger : MonoBehaviour
 		wasActivated = true;
 		PlayParticles();
 		towerScript.RemovePart();
-		RemoveMiniatureTowerPart();
 
 		if (other.tag == "Player")
 		{
@@ -57,9 +56,11 @@ public class TowerTrigger : MonoBehaviour
                     break;
             }
 		}
+
+		RemoveMiniatureTowerPart();
 	}
 
-    private void PlayParticles()
+	private void PlayParticles()
     {
         if (particleContainer != null)
         {
