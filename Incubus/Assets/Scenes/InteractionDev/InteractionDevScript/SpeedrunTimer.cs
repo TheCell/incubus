@@ -55,10 +55,13 @@ public class SpeedrunTimer : MonoBehaviour
 			TimeSpan elapsedSpan = new TimeSpan(finishTime.Ticks - speedrunStart.Ticks);
 			int finalTime = (int)elapsedSpan.TotalMilliseconds;
 			//StartCoroutine("UpdateLeaderboard", finalTime);
-			StartCoroutine(UpdateLeaderboard(finalTime, "speedrunall"));
 			if (allStatues)
 			{
 				StartCoroutine(UpdateLeaderboard(finalTime, "speedrunlist"));
+			}
+			else
+			{
+				StartCoroutine(UpdateLeaderboard(finalTime, "speedrunall"));
 			}
 			//UpdateLeaderboard(finalTime);
 		}
