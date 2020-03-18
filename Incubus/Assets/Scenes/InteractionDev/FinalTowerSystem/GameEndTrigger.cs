@@ -13,6 +13,7 @@ public class GameEndTrigger : MonoBehaviour
 	[SerializeField] private PlayerController playerController;
 	[SerializeField] private PlayerCamera playerCamera;
 	[SerializeField] private GameObject displayPlane;
+	[SerializeField] private AudioSource musicSource;
 	private VideoPlayer videoPlayer;
 
 	private void Start()
@@ -50,6 +51,7 @@ public class GameEndTrigger : MonoBehaviour
         DisablePostProcessing();
 		displayPlane.GetComponent<MeshRenderer>().enabled = true;
 		videoPlayer.Play();
+		musicSource.Stop();
 	}
 
 	private void DisablePostProcessing()
