@@ -5,20 +5,39 @@ using UnityEngine.SceneManagement;
 
 public class AdditionalSceneLoader : MonoBehaviour
 {
+	public string[] allScenesToBeLoaded;
 	private List<string> currentScenes = new List<string>();
 	private List<string> scenesToLoad = new List<string>();
 	private List<string> scenesToUnload = new List<string>();
 	private Scene rootScene;
 	private string worldDecoration = "WorldDecoration";
 
+	private static bool preloadLevel;
+	public static bool PreloadLevel { get => preloadLevel; set => preloadLevel = value; }
+
 	private void Start()
 	{
 		rootScene = SceneManager.GetActiveScene();
-		SceneManager.LoadScene(worldDecoration, LoadSceneMode.Additive);
+		if (preloadLevel)
+		{
+			for (int i = 0; i < allScenesToBeLoaded.Length; i++)
+			{
+				SceneManager.LoadScene(allScenesToBeLoaded[i], LoadSceneMode.Additive);
+			}
+		}
+		else
+		{
+			SceneManager.LoadScene(worldDecoration, LoadSceneMode.Additive);
+		}
 	}
 
 	public void LoadScenes(SceneInformation sceneInformation)
 	{
+		if (preloadLevel)
+		{
+			return;
+		}
+
 		UpdateScenesToLoad(sceneInformation);
 		LoadScenes();
 
@@ -51,6 +70,11 @@ public class AdditionalSceneLoader : MonoBehaviour
 
 	private void UnloadScenes()
 	{
+		if (preloadLevel)
+		{
+			return;
+		}
+
 		scenesToUnload.ForEach(item =>
 		{
 			UnloadScene(item);

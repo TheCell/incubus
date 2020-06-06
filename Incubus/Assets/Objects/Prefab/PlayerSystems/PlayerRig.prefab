@@ -151,6 +151,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f8363fc6302dea4da9041df074c3bda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allScenesToBeLoaded:
+  - StartLevel 2
+  - WorldDecoration
+  - Black Tower
+  - Boulder
+  - HighLabyrinth
+  - HighTower
+  - PillarGarden
+  - Plateau
 --- !u!114 &2511746001244396082
 MonoBehaviour:
   m_ObjectHideFlags: 0

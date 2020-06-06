@@ -8,7 +8,8 @@ public class SetAndUpdateOptions : MonoBehaviour
 	public Slider cameraSpeedSlider;
 	public Slider audioLevel;
 	public Toggle invertCamera;
-    public Button backButton;
+	public Toggle preloadLevel;
+	public Button backButton;
 
 	public void SetCameraInvertBool(bool value)
 	{
@@ -25,11 +26,17 @@ public class SetAndUpdateOptions : MonoBehaviour
 		AudioListener.volume = value;
 	}
 
+	public void SetPreloadLevel(bool value)
+	{
+		AdditionalSceneLoader.PreloadLevel = value;
+	}
+
 	private void Start()
 	{
 		cameraSpeedSlider.value = PlayerCamera.CameraMultipier;
 		invertCamera.isOn = PlayerCamera.InvertCamera;
 		audioLevel.value = AudioListener.volume;
+		preloadLevel.isOn = AdditionalSceneLoader.PreloadLevel;
 	}
 
     private void Update()
