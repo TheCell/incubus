@@ -14,6 +14,8 @@ public class SetRespawnPoint : MonoBehaviour
 	private Material standardMaterial;
 	private float standardTurnSpeed;
 
+	AudioSource soundEffectWhenSet;
+
 	private void Start()
 	{
 		if (icoSphere == null)
@@ -27,6 +29,8 @@ public class SetRespawnPoint : MonoBehaviour
 		standardMaterial = icoSphere.GetComponent<MeshRenderer>().material;
 		turnScript = icoSphere.GetComponent<TurnObject>();
 		standardTurnSpeed = turnScript.turnSpeed;
+
+		soundEffectWhenSet = GetComponent<AudioSource>();
 	}
 
 	private void Update()
@@ -53,6 +57,11 @@ public class SetRespawnPoint : MonoBehaviour
 		if (respawnInfo == null)
 		{
 			return;
+		}
+
+		if (!isActive)
+		{
+			soundEffectWhenSet.Play();
 		}
 
 		respawnInfo.RespawnPosition = spawnPoint.position;
