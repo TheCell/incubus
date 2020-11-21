@@ -11,6 +11,8 @@ public class AdditionalSceneLoader : MonoBehaviour
 	private List<string> scenesToUnload = new List<string>();
 	private Scene rootScene;
 	private string worldDecoration = "WorldDecoration";
+	[SerializeField]
+	private bool loadWorldDecoration = true;
 
 	private static bool preloadLevel;
 	public static bool PreloadLevel { get => preloadLevel; set => preloadLevel = value; }
@@ -27,7 +29,10 @@ public class AdditionalSceneLoader : MonoBehaviour
 		}
 		else
 		{
-			SceneManager.LoadScene(worldDecoration, LoadSceneMode.Additive);
+			if (loadWorldDecoration)
+            {
+				SceneManager.LoadScene(worldDecoration, LoadSceneMode.Additive);
+			}
 		}
 	}
 
