@@ -152,6 +152,7 @@ public class PlayerController : MonoBehaviour
 		//rigidb.velocity = transform.TransformDirection(velocity);
 		ApplyImpact();
 		rigidb.velocity = velocity;
+		//Debug.Log(rigidb.velocity);
 	}
 
 	public bool IsGrounded()
