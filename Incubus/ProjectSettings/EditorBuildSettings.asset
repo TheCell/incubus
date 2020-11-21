@@ -80,4 +80,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Community-Content/Scenes/Luke/Jumping.unity
     guid: e6c6f964115eccd448cca8b230a65ce0
+  - enabled: 1
+    path: Assets/Community-Content/Scenes/Luke/Parkour.unity
+    guid: bcbe06b7cb7cb5e469973fee857cfd50
   m_configObjects: {}
